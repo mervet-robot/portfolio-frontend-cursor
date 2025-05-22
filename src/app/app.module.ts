@@ -50,6 +50,9 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import { BioCorrectionDialogComponent } from './features/bio-correction-dialog/bio-correction-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {ResponsableViewComponent} from './features/directeur/responsable-view/responsable-view.component';
+import {ResponsableListComponent} from './features/directeur/responsable-list/responsable-list.component';
+import {ResponsableFormComponent} from './features/directeur/responsable-form/responsable-form.component';
 
 
 
@@ -74,8 +77,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     UserMediaComponent,
     BioCorrectionDialogComponent,
 
-
-
+    ResponsableViewComponent,
+    ResponsableListComponent,
+    ResponsableFormComponent
   ],
     imports: [
         BrowserModule,
