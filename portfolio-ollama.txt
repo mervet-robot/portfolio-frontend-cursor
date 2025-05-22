@@ -1,0 +1,11 @@
+portfolio-ollama
+
+in console
+**
+http://localhost:11434/
+**
+ollama run tinyllama
+
+
+NUN---
+ollama run llama3

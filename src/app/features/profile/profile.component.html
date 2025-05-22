@@ -1,0 +1,110 @@
+<!--<div class="portfolio-container">-->
+<!--  <div *ngIf="isLoading; else content" class="loading-spinner">-->
+<!--    <mat-spinner></mat-spinner>-->
+<!--  </div>-->
+
+<!--  <ng-template #content>-->
+<!--    &lt;!&ndash; Profile Header &ndash;&gt;-->
+<!--    <div class="profile-header">-->
+<!--      <div class="profile-image">-->
+<!--        <img [src]="profile?.profilePicture || 'assets/default-avatar.png'" alt="Profile Picture">-->
+<!--      </div>-->
+<!--      <div class="profile-info">-->
+<!--        <h1>{{profile?.firstName}} {{profile?.lastName}}</h1>-->
+<!--        <p class="profile-bio">{{profile?.bio || 'No bio yet'}}</p>-->
+<!--        <p class="profile-contact">-->
+<!--          <mat-icon>phone</mat-icon> {{profile?.phoneNumber || 'Not provided'}} |-->
+<!--          <mat-icon>email</mat-icon> {{tokenService.getUser().email}}-->
+<!--        </p>-->
+<!--      </div>-->
+<!--      <div class="completion-indicator">-->
+<!--        <mat-progress-spinner-->
+<!--          [value]="getCompletionPercentage()"-->
+<!--          [color]="getCompletionPercentage() === 100 ? 'primary' : 'accent'"-->
+<!--          mode="determinate"-->
+<!--          diameter="80">-->
+<!--        </mat-progress-spinner>-->
+<!--        <span>{{getCompletionPercentage()}}% Complete</span>-->
+<!--        <button mat-raised-button color="primary" routerLink="/profile-wizard">-->
+<!--          Complete Profile-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Experiences Section &ndash;&gt;-->
+<!--    <mat-card class="section-card" *ngIf="experiences.length > 0">-->
+<!--      <mat-card-header>-->
+<!--        <mat-card-title>Work Experience</mat-card-title>-->
+<!--      </mat-card-header>-->
+<!--      <mat-card-content>-->
+<!--        <div *ngFor="let exp of experiences" class="experience-item">-->
+<!--          <h3>{{exp.title}} at {{exp.company}}</h3>-->
+<!--          <p class="date-range">-->
+<!--            {{exp.startDate | date:'MMM yyyy'}} - -->
+<!--            {{exp.current ? 'Present' : (exp.endDate | date:'MMM yyyy')}}-->
+<!--            <span *ngIf="exp.location"> • {{exp.location}}</span>-->
+<!--          </p>-->
+<!--          <p class="description">{{exp.description}}</p>-->
+<!--        </div>-->
+<!--      </mat-card-content>-->
+<!--    </mat-card>-->
+
+<!--    &lt;!&ndash; Formations Section &ndash;&gt;-->
+<!--    <mat-card class="section-card" *ngIf="formations.length > 0">-->
+<!--      <mat-card-header>-->
+<!--        <mat-card-title>Education</mat-card-title>-->
+<!--      </mat-card-header>-->
+<!--      <mat-card-content>-->
+<!--        <div *ngFor="let formation of formations" class="formation-item">-->
+<!--          <h3>{{formation.degree}} in {{formation.fieldOfStudy}}</h3>-->
+<!--          <p class="institution">{{formation.institution}}</p>-->
+<!--          <p class="date-range">-->
+<!--            {{formation.startDate | date:'MMM yyyy'}} - -->
+<!--            {{formation.endDate ? (formation.endDate | date:'MMM yyyy') : 'Present'}}-->
+<!--          </p>-->
+<!--        </div>-->
+<!--      </mat-card-content>-->
+<!--    </mat-card>-->
+
+<!--    &lt;!&ndash; Skills Section &ndash;&gt;-->
+<!--    <mat-card class="section-card" *ngIf="skills.length > 0">-->
+<!--      <mat-card-header>-->
+<!--        <mat-card-title>Skills</mat-card-title>-->
+<!--      </mat-card-header>-->
+<!--      <mat-card-content>-->
+<!--        <mat-chip-listbox>-->
+<!--          <mat-chip *ngFor="let skill of skills" [style.opacity]="skill.level/10 + 0.2">-->
+<!--            {{skill.name}}-->
+<!--          </mat-chip>-->
+<!--        </mat-chip-listbox>-->
+<!--      </mat-card-content>-->
+<!--    </mat-card>-->
+
+<!--    &lt;!&ndash; Languages Section &ndash;&gt;-->
+<!--    <mat-card class="section-card" *ngIf="languages.length > 0">-->
+<!--      <mat-card-header>-->
+<!--        <mat-card-title>Languages</mat-card-title>-->
+<!--      </mat-card-header>-->
+<!--      <mat-card-content>-->
+<!--        <mat-list>-->
+<!--          <mat-list-item *ngFor="let lang of languages">-->
+<!--            <span matListItemTitle>{{lang.name}}</span>-->
+<!--            <span matListItemLine>{{lang.proficiency}}</span>-->
+<!--          </mat-list-item>-->
+<!--        </mat-list>-->
+<!--      </mat-card-content>-->
+<!--    </mat-card>-->
+
+<!--    &lt;!&ndash; Empty State &ndash;&gt;-->
+<!--    <div *ngIf="experiences.length === 0 && formations.length === 0 &&-->
+<!--                languages.length === 0 && skills.length === 0"-->
+<!--         class="empty-state">-->
+<!--      <mat-icon>info</mat-icon>-->
+<!--      <h3>Your portfolio is empty</h3>-->
+<!--      <p>Complete your profile to showcase your skills and experience</p>-->
+<!--      <button mat-raised-button color="primary" routerLink="/profile-wizard">-->
+<!--        Complete Profile Now-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </ng-template>-->
+<!--</div>-->

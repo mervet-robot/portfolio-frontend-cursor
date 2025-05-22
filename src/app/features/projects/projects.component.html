@@ -1,0 +1,133 @@
+<div class="wizard-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Projects</mat-card-title>
+      <mat-card-subtitle>Manage your professional projects</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Project Form -->
+      <div class="step-content">
+        <h3>{{ isEditing ? 'Edit Project' : 'Add New Project' }}</h3>
+
+        <form [formGroup]="projectForm" class="project-form">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Project Title</mat-label>
+              <input matInput formControlName="title" required>
+              <mat-error *ngIf="projectForm.get('title')?.hasError('required')">
+                Title is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status" required>
+                <mat-option *ngFor="let status of projectStatuses" [value]="status">
+                  {{ status | titlecase }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="projectForm.get('status')?.hasError('required')">
+                Status is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" rows="4" required></textarea>
+            <mat-error *ngIf="projectForm.get('description')?.hasError('required')">
+              Description is required
+            </mat-error>
+          </mat-form-field>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Start Date</mat-label>
+              <input matInput formControlName="startDate" type="date">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>End Date</mat-label>
+              <input matInput formControlName="endDate" type="date">
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Skills Used</mat-label>
+            <input matInput [(ngModel)]="newSkill"
+                   [ngModelOptions]="{standalone: true}"
+                   (keydown.enter)="addSkillFromInput($event)"
+                   placeholder="Type skill and press Enter">
+            <mat-hint>Press Enter to add each skill</mat-hint>
+          </mat-form-field>
+
+<!--          <div class="skills-list" *ngIf="projectForm.get('skills')?.value?.length">-->
+          <div class="skills-list" *ngIf="(projectForm.get('skills')?.value ?? []).length > 0">
+          <div class="skill-item" *ngFor="let skill of projectForm.get('skills')?.value">
+              {{ skill }}
+              <button mat-icon-button (click)="removeSkill(skill)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button mat-raised-button color="primary" (click)="addProject()" [disabled]="!projectForm.valid">
+              <mat-icon>{{ isEditing ? 'save' : 'add' }}</mat-icon>
+              {{ isEditing ? 'Update' : 'Add' }} Project
+            </button>
+            <button mat-button *ngIf="isEditing" (click)="resetForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Projects List -->
+      <div class="section-header" *ngIf="projects.length > 0">
+        <h4>Your Projects</h4>
+      </div>
+
+      <div *ngIf="projects.length === 0" class="no-projects">
+        <p>No projects added yet. Add your first project!</p>
+      </div>
+
+      <div class="projects-list">
+        <mat-card *ngFor="let project of projects" class="project-card">
+          <mat-card-header>
+            <mat-card-title>{{ project.title }}</mat-card-title>
+            <mat-card-subtitle>
+              {{ project.status | titlecase }}
+              <span *ngIf="project.startDate"> • Started: {{ project.startDate | date }}</span>
+              <span *ngIf="project.endDate"> • Ended: {{ project.endDate | date }}</span>
+            </mat-card-subtitle>
+            <span class="spacer"></span>
+            <button mat-icon-button (click)="editProject(project)">
+              <mat-icon color="primary">edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteProject(project.id)">
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+
+
+              <!-- Inside your mat-card-header, after the edit/delete buttons -->
+              <button mat-icon-button (click)="navigateToMediaManagement(project.id)">
+                  <mat-icon>attach_file</mat-icon>
+              </button>
+
+          </mat-card-header>
+
+          <mat-card-content>
+            <p>{{ project.description }}</p>
+
+            <div *ngIf="project.skills?.length" class="skills-section">
+              <p><strong>Skills Used:</strong></p>
+              <div class="skills-container">
+                <span class="skill-badge" *ngFor="let skill of project.skills">{{ skill }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

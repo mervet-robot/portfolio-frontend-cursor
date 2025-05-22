@@ -1,0 +1,120 @@
+<div class="container mt-4">
+  <h2>{{ isAddMode ? 'Add' : 'Edit' }} Responsable</h2>
+  
+  <div class="alert alert-success" *ngIf="successMessage">{{ successMessage }}</div>
+  <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+  
+  <form [formGroup]="responsableForm" (ngSubmit)="onSubmit()" class="card p-4 shadow">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="username" class="form-label">Username *</label>
+        <input 
+          type="text" 
+          formControlName="username" 
+          class="form-control" 
+          [ngClass]="{ 'is-invalid': submitted && f['username'].errors }"
+          id="username"
+        />
+        <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+          <div *ngIf="f['username'].errors['required']">Username is required</div>
+          <div *ngIf="f['username'].errors['minlength']">Username must be at least 3 characters</div>
+          <div *ngIf="f['username'].errors['maxlength']">Username must not exceed 20 characters</div>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <label for="email" class="form-label">Email *</label>
+        <input 
+          type="email" 
+          formControlName="email" 
+          class="form-control" 
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          id="email"
+        />
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">Email is required</div>
+          <div *ngIf="f['email'].errors['email']">Email must be a valid email address</div>
+          <div *ngIf="f['email'].errors['maxlength']">Email must not exceed 50 characters</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="firstName" class="form-label">First Name *</label>
+        <input 
+          type="text" 
+          formControlName="firstName" 
+          class="form-control" 
+          [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }"
+          id="firstName"
+        />
+        <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
+          <div *ngIf="f['firstName'].errors['required']">First name is required</div>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <label for="lastName" class="form-label">Last Name *</label>
+        <input 
+          type="text" 
+          formControlName="lastName" 
+          class="form-control" 
+          [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }"
+          id="lastName"
+        />
+        <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
+          <div *ngIf="f['lastName'].errors['required']">Last name is required</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="department" class="form-label">Department</label>
+        <input 
+          type="text" 
+          formControlName="department" 
+          class="form-control" 
+          id="department"
+        />
+      </div>
+      
+      <div class="col-md-6">
+        <label for="phoneNumber" class="form-label">Phone Number</label>
+        <input 
+          type="text" 
+          formControlName="phoneNumber" 
+          class="form-control" 
+          id="phoneNumber"
+        />
+      </div>
+    </div>
+    
+    <div class="mb-3">
+      <label for="password" class="form-label">
+        {{ isAddMode ? 'Password *' : 'Password (leave blank to keep current password)' }}
+      </label>
+      <input 
+        type="password" 
+        formControlName="password" 
+        class="form-control" 
+        [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+        id="password"
+      />
+      <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+        <div *ngIf="f['password'].errors['required']">Password is required</div>
+        <div *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters</div>
+        <div *ngIf="f['password'].errors['maxlength']">Password must not exceed 40 characters</div>
+      </div>
+    </div>
+    
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+        {{ isAddMode ? 'Create' : 'Update' }}
+      </button>
+    </div>
+  </form>
+</div> 

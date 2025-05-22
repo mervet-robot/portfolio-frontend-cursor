@@ -1,0 +1,46 @@
+<!--&lt;!&ndash; media-upload.component.html &ndash;&gt;-->
+<!--<div class="container mt-4">-->
+<!--  <h2>Upload Media</h2>-->
+<!--  <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">-->
+<!--    <div class="mb-3">-->
+<!--      <label for="file" class="form-label">Select File</label>-->
+<!--      <input type="file" class="form-control" id="file" (change)="onFileSelected($event)" required>-->
+<!--    </div>-->
+
+<!--    <div class="mb-3">-->
+<!--      <label for="title" class="form-label">Title</label>-->
+<!--      <input type="text" class="form-control" id="title" formControlName="title">-->
+<!--    </div>-->
+
+<!--    <div class="mb-3">-->
+<!--      <label for="description" class="form-label">Description</label>-->
+<!--      <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>-->
+<!--    </div>-->
+
+<!--    <div class="mb-3">-->
+<!--      <label for="mediaType" class="form-label">Media Type</label>-->
+<!--      <select class="form-select" id="mediaType" formControlName="mediaType">-->
+<!--        <option value="PHOTO">Photo</option>-->
+<!--        <option value="VIDEO">Video</option>-->
+<!--        <option value="DOCUMENT">Document</option>-->
+<!--        <option value="AUDIO">Audio</option>-->
+<!--        <option value="OTHER">Other</option>-->
+<!--      </select>-->
+<!--    </div>-->
+
+<!--    <div class="mb-3 form-check">-->
+<!--      <input type="checkbox" class="form-check-input" id="isPublic" formControlName="isPublic">-->
+<!--      <label class="form-check-label" for="isPublic">Make this media public</label>-->
+<!--    </div>-->
+
+<!--    <button type="submit" class="btn btn-primary" [disabled]="uploadForm.invalid || !selectedFile">-->
+<!--      Upload-->
+<!--    </button>-->
+
+<!--    <div *ngIf="uploadProgress !== null" class="mt-3">-->
+<!--      <div class="progress">-->
+<!--        <div class="progress-bar" [style.width.%]="uploadProgress"></div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </form>-->
+<!--</div>-->

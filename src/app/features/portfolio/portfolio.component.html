@@ -1,0 +1,686 @@
+<div class="cv-container">
+  <!-- Header Section -->
+  <header class="cv-header">
+
+
+    <div class="profile-photo-container">
+      <img [src]="getProfilePictureUrl() || 'assets/default-avatar.png'"
+           alt="Profile Photo" class="profile-photo">
+
+      <input type="file" #fileInput
+             (change)="onFileSelected($event)"
+             style="display: none;"
+             accept="image/jpeg, image/png, image/gif">
+
+      <!-- Verification status -->
+      <div class="verification-status"
+           [class.verified]="isHumanVerified"
+           [class.not-verified]="!isHumanVerified && verificationMessage"
+           [class.verifying]="isVerifying">
+        <mat-spinner *ngIf="isVerifying" diameter="20"></mat-spinner>
+        <mat-icon *ngIf="!isVerifying && isHumanVerified">check_circle</mat-icon>
+        <mat-icon *ngIf="!isVerifying && !isHumanVerified && verificationMessage">warning</mat-icon>
+        {{ verificationMessage }}
+      </div>
+
+
+      <button mat-icon-button (click)="fileInput.click()" class="upload-btn">
+        <mat-icon>photo_camera</mat-icon>
+      </button>
+
+
+    </div>
+
+
+
+    <div class="header-content">
+      <h1>{{profileForm.get('firstName')?.value || 'First'}} {{profileForm.get('lastName')?.value || 'Last'}}</h1>
+      <p class="title">{{profileForm.get('diploma')?.value || 'Your Profession'}}</p>
+
+      <div class="contact-info">
+
+          <span *ngIf="profileForm.get('email')?.value" class="contact-item">
+            <mat-icon>email</mat-icon>
+            {{ profileForm.get('email')?.value }}
+          </span>
+
+        <span *ngIf="profileForm.get('phoneNumber')?.value" class="contact-item">
+          <mat-icon>phone</mat-icon>
+          {{ profileForm.get('phoneNumber')?.value }}
+        </span>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="cv-main">
+    <!-- Left Column -->
+    <div class="cv-left-column">
+      <!-- Profile Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>person</mat-icon> Profile
+          <button mat-icon-button (click)="editProfile()" class="edit-btn">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </h2>
+        <div *ngIf="!editingProfile; else profileEditForm">
+          <p class="bio">{{profileForm.get('bio')?.value || 'Add your professional summary'}}</p>
+        </div>
+        <ng-template #profileEditForm>
+          <form [formGroup]="profileForm" class="edit-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Bio</mat-label>
+              <textarea matInput formControlName="bio" rows="4"></textarea>
+            </mat-form-field>
+            <div class="form-actions">
+              <button mat-button (click)="cancelEdit()">Cancel</button>
+              <button mat-raised-button color="primary" (click)="saveProfile()">Save</button>
+            </div>
+          </form>
+        </ng-template>
+      </section>
+
+      <!-- Experience Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>work</mat-icon> Experience
+          <button mat-icon-button (click)="showExperienceForm = true" *ngIf="!showExperienceForm" class="add-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </h2>
+
+        <!-- Experience Form -->
+        <div *ngIf="showExperienceForm" class="experience-form">
+          <form [formGroup]="experienceForm">
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Job Title</mat-label>
+                <input matInput formControlName="title" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Company</mat-label>
+                <input matInput formControlName="company" required>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Location</mat-label>
+              <input matInput formControlName="location">
+            </mat-form-field>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Start Date</mat-label>
+                <input matInput formControlName="startDate" type="date" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline" *ngIf="!experienceForm.get('current')?.value">
+                <mat-label>End Date</mat-label>
+                <input matInput formControlName="endDate" type="date">
+              </mat-form-field>
+            </div>
+
+            <mat-checkbox formControlName="current">Currently working here</mat-checkbox>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description" rows="4"></textarea>
+            </mat-form-field>
+
+            <div class="form-actions">
+              <button mat-button (click)="showExperienceForm = false">Cancel</button>
+              <button mat-raised-button color="primary"
+                      (click)="addExperience()"
+                      [disabled]="!experienceForm.valid">
+                {{editingExperience ? 'Update' : 'Add'}} Experience
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Experience List -->
+        <div class="experience-list">
+          <div *ngFor="let experience of experiences" class="experience-item">
+            <div class="experience-header">
+              <h3>{{experience.title}}</h3>
+              <span class="spacer"></span>
+              <button mat-icon-button (click)="editExperience(experience)" class="edit-btn">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteExperience(experience.id)" class="delete-btn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <p class="company">{{experience.company}}</p>
+            <p class="dates">
+              {{experience.startDate | date:'MMM yyyy'}} -
+              {{experience.current ? 'Present' : (experience.endDate | date:'MMM yyyy')}}
+              <span *ngIf="experience.location"> • {{experience.location}}</span>
+            </p>
+            <p *ngIf="experience.description" class="description">{{experience.description}}</p>
+          </div>
+
+          <div *ngIf="experiences.length === 0" class="empty-state">
+            <p>No work experience added yet</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Education Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>school</mat-icon> Education
+          <button mat-icon-button (click)="showEducationForm = true" *ngIf="!showEducationForm" class="add-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </h2>
+
+        <!-- Education Form -->
+        <div *ngIf="showEducationForm" class="education-form">
+          <form [formGroup]="formationForm">
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Degree</mat-label>
+                <input matInput formControlName="degree" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Institution</mat-label>
+                <input matInput formControlName="institution" required>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Field of Study</mat-label>
+              <input matInput formControlName="fieldOfStudy">
+            </mat-form-field>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Start Date</mat-label>
+                <input matInput formControlName="startDate" type="date" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline" *ngIf="!formationForm.get('current')?.value">
+                <mat-label>End Date</mat-label>
+                <input matInput formControlName="endDate" type="date">
+              </mat-form-field>
+            </div>
+
+            <mat-checkbox formControlName="current">Currently studying</mat-checkbox>
+
+            <div class="form-actions">
+              <button mat-button (click)="showEducationForm = false">Cancel</button>
+              <button mat-raised-button color="primary"
+                      (click)="addFormation()"
+                      [disabled]="!formationForm.valid">
+                {{editingEducation ? 'Update' : 'Add'}} Education
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Education List -->
+        <div class="education-list">
+          <div *ngFor="let formation of formations" class="education-item">
+            <div class="education-header">
+              <h3>{{formation.degree}}</h3>
+              <span class="spacer"></span>
+              <button mat-icon-button (click)="editEducation(formation)" class="edit-btn">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteFormation(formation.id)" class="delete-btn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <p class="institution">{{formation.institution}}</p>
+            <p class="dates">
+              {{formation.startDate | date:'MMM yyyy'}} -
+              {{formation.current ? 'Present' : (formation.endDate | date:'MMM yyyy')}}
+            </p>
+            <p *ngIf="formation.fieldOfStudy" class="field">{{formation.fieldOfStudy}}</p>
+          </div>
+
+          <div *ngIf="formations.length === 0" class="empty-state">
+            <p>No education added yet</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>folder</mat-icon> Projects
+          <button mat-icon-button (click)="showProjectForm = true" *ngIf="!showProjectForm" class="add-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </h2>
+
+        <!-- Project Form -->
+        <div *ngIf="showProjectForm" class="project-form">
+          <form [formGroup]="projectForm">
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Project Title</mat-label>
+                <input matInput formControlName="title" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status" required>
+                  <mat-option *ngFor="let status of projectStatuses" [value]="status">
+                    {{status | titlecase}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description" rows="4" required></textarea>
+            </mat-form-field>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Start Date</mat-label>
+                <input matInput formControlName="startDate" type="date">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>End Date</mat-label>
+                <input matInput formControlName="endDate" type="date">
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Technologies</mat-label>
+              <mat-chip-grid #chipGrid>
+                <mat-chip-row *ngFor="let tech of projectForm.get('skills')?.value"
+                              (removed)="removeTech(tech)">
+                  {{tech}}
+                  <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+                <input placeholder="Add technology..."
+                       [matChipInputFor]="chipGrid"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="true"
+                       (matChipInputTokenEnd)="addTech($event)">
+              </mat-chip-grid>
+            </mat-form-field>
+
+            <div class="form-actions">
+              <button mat-button (click)="showProjectForm = false">Cancel</button>
+              <button mat-raised-button color="primary"
+                      (click)="addProject()"
+                      [disabled]="!projectForm.valid">
+                {{editingProject ? 'Update' : 'Add'}} Project
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Project List -->
+        <div class="project-list">
+          <div *ngFor="let project of projects" class="project-item">
+            <div class="project-header">
+              <h3>{{project.title}}</h3>
+              <span class="spacer"></span>
+              <span class="project-status">{{project.status | titlecase}}</span>
+              <button mat-icon-button (click)="editProject(project)" class="edit-btn">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteProject(project.id)" class="delete-btn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <p class="project-dates" *ngIf="project.startDate || project.endDate">
+              {{project.startDate | date:'MMM yyyy'}} -
+              {{project.endDate ? (project.endDate | date:'MMM yyyy') : 'Present'}}
+            </p>
+            <p class="project-description">{{project.description}}</p>
+
+            <div *ngIf="project.skills?.length" class="project-technologies">
+              <mat-chip-listbox>
+                <mat-chip-option *ngFor="let tech of project.skills">
+                  {{tech}}
+                </mat-chip-option>
+              </mat-chip-listbox>
+            </div>
+          </div>
+
+          <div *ngIf="projects.length === 0" class="empty-state">
+            <p>No projects added yet</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Right Column -->
+    <div class="cv-right-column">
+      <!-- Skills Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>code</mat-icon> Skills
+        </h2>
+
+        <!-- Technical Skills -->
+        <div class="skills-subsection">
+          <h3>Technical Skills</h3>
+          <button mat-icon-button (click)="showTechSkillForm = true" *ngIf="!showTechSkillForm" class="add-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+
+          <div *ngIf="showTechSkillForm" class="skill-form">
+            <form [formGroup]="techSkillForm">
+              <div class="form-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Skill Name</mat-label>
+                  <input matInput formControlName="name" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Category</mat-label>
+                  <mat-select formControlName="category" required>
+                    <mat-option *ngFor="let category of skillCategories" [value]="category">
+                      {{category}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="form-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Level</mat-label>
+                  <mat-select formControlName="level" required>
+                    <mat-option *ngFor="let level of skillLevels" [value]="level">
+                      {{level | titlecase}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Years of Experience</mat-label>
+                  <input matInput type="number" formControlName="yearsOfExperience" min="0" max="50" required>
+                </mat-form-field>
+              </div>
+
+<!--              <mat-checkbox formControlName="verified">Verified Skill</mat-checkbox>-->
+
+              <div class="form-actions">
+                <button mat-button (click)="showTechSkillForm = false">Cancel</button>
+                <button mat-raised-button color="primary"
+                        (click)="addTechSkill()"
+                        [disabled]="!techSkillForm.valid">
+                  {{editingTechSkill ? 'Update' : 'Add'}} Skill
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="skills-grid">
+            <div *ngFor="let skill of techSkills" class="skill-item">
+              <div class="skill-header">
+                <span class="skill-name">{{skill.name}}</span>
+                <span class="spacer"></span>
+<!--                <mat-icon *ngIf="skill.verified" color="primary" class="verified-icon">verified</mat-icon>-->
+                <button mat-icon-button (click)="editTechSkill(skill)" class="edit-btn">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteTechSkill(skill.id)" class="delete-btn">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+              <div class="skill-details">
+                <span class="skill-level">{{skill.level | titlecase}}</span>
+                <span class="skill-experience">{{skill.yearsOfExperience}} year(s)</span>
+                <span class="skill-category">{{skill.category}}</span>
+              </div>
+            </div>
+
+            <div *ngIf="techSkills.length === 0" class="empty-state">
+              <p>No technical skills added yet</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Soft Skills -->
+        <div class="skills-subsection">
+          <h3>Soft Skills</h3>
+          <button mat-icon-button (click)="showSoftSkillForm = true" *ngIf="!showSoftSkillForm" class="add-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+
+          <div *ngIf="showSoftSkillForm" class="skill-form">
+            <form [formGroup]="softSkillForm">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Skill Name</mat-label>
+                <input matInput formControlName="name" required [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let skill of softSkillExamples" [value]="skill">
+                    {{skill}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
+              <div class="form-actions">
+                <button mat-button (click)="showSoftSkillForm = false">Cancel</button>
+                <button mat-raised-button color="primary"
+                        (click)="addSoftSkill()"
+                        [disabled]="!softSkillForm.valid">
+                  {{editingSoftSkill ? 'Update' : 'Add'}} Skill
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="skills-list">
+            <div *ngFor="let skill of softSkills" class="skill-item">
+              <span class="skill-name">{{skill.name}}</span>
+              <span class="spacer"></span>
+              <button mat-icon-button (click)="editSoftSkill(skill)" class="edit-btn">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteSoftSkill(skill.id)" class="delete-btn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+
+            <div *ngIf="softSkills.length === 0" class="empty-state">
+              <p>No soft skills added yet</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Certifications Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>verified</mat-icon> Certifications
+          <button mat-icon-button (click)="showCertificationForm = true" *ngIf="!showCertificationForm" class="add-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </h2>
+
+        <!-- Certification Form -->
+        <div *ngIf="showCertificationForm" class="certification-form">
+          <form [formGroup]="certificationForm">
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Certification Name</mat-label>
+                <input matInput formControlName="name" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Issuing Organization</mat-label>
+                <input matInput formControlName="issuingOrganization" required>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Issue Date</mat-label>
+                <input matInput formControlName="issueDate" type="date">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Expiration Date</mat-label>
+                <input matInput formControlName="expirationDate" type="date">
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Credential ID</mat-label>
+                <input matInput formControlName="credentialId">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Credential URL</mat-label>
+                <input matInput formControlName="credentialUrl" type="url">
+              </mat-form-field>
+            </div>
+
+            <div class="form-actions">
+              <button mat-button (click)="showCertificationForm = false">Cancel</button>
+              <button mat-raised-button color="primary"
+                      (click)="addCertification()"
+                      [disabled]="!certificationForm.valid">
+                {{editingCertification ? 'Update' : 'Add'}} Certification
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Certification List -->
+        <div class="certification-list">
+          <div *ngFor="let cert of certifications" class="certification-item">
+            <div class="certification-header">
+              <h3>{{cert.name}}</h3>
+              <span class="spacer"></span>
+              <button mat-icon-button (click)="editCertification(cert)" class="edit-btn">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteCertification(cert.id)" class="delete-btn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <p class="organization">{{cert.issuingOrganization}}</p>
+            <div class="certification-details">
+              <div *ngIf="cert.issueDate">
+                <strong>Issued:</strong> {{cert.issueDate | date:'MMM yyyy'}}
+              </div>
+              <div *ngIf="cert.expirationDate">
+                <strong>Expires:</strong> {{cert.expirationDate | date:'MMM yyyy'}}
+              </div>
+              <div *ngIf="cert.credentialId">
+                <strong>Credential ID:</strong> {{cert.credentialId}}
+              </div>
+              <div *ngIf="cert.credentialUrl">
+                <a href="{{cert.credentialUrl}}" target="_blank" rel="noopener noreferrer">
+                  <mat-icon class="link-icon">open_in_new</mat-icon> View Credential
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="certifications.length === 0" class="empty-state">
+            <p>No certifications added yet</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Languages Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>language</mat-icon> Languages
+          <button mat-icon-button (click)="showLanguageForm = true" *ngIf="!showLanguageForm" class="add-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </h2>
+
+        <!-- Language Form -->
+        <div *ngIf="showLanguageForm" class="language-form">
+          <form [formGroup]="languageForm">
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Language</mat-label>
+                <input matInput formControlName="name" required [matAutocomplete]="autoLang">
+                <mat-autocomplete #autoLang="matAutocomplete">
+                  <mat-option *ngFor="let language of languageExamples" [value]="language">
+                    {{language}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Proficiency</mat-label>
+                <mat-select formControlName="proficiency" required>
+                  <mat-option *ngFor="let level of proficiencyLevels" [value]="level">
+                    {{level | titlecase}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Certification</mat-label>
+                <mat-select formControlName="certification">
+                  <mat-option *ngFor="let cert of certificationTypes" [value]="cert">
+                    {{cert}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field *ngIf="languageForm.get('certification')?.value &&
+                                    languageForm.get('certification')?.value !== 'None'"
+                              appearance="outline">
+                <mat-label>Certificate URL</mat-label>
+                <input matInput formControlName="certificateUrl" type="url">
+              </mat-form-field>
+            </div>
+
+            <mat-checkbox formControlName="nativeLanguage">Native Language</mat-checkbox>
+
+            <div class="form-actions">
+              <button mat-button (click)="showLanguageForm = false">Cancel</button>
+              <button mat-raised-button color="primary"
+                      (click)="addLanguage()"
+                      [disabled]="!languageForm.valid">
+                {{editingLanguage ? 'Update' : 'Add'}} Language
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Language List -->
+        <div class="language-list">
+          <div *ngFor="let language of languages" class="language-item">
+            <div class="language-header">
+              <h3>{{language.name}}</h3>
+              <span class="spacer"></span>
+              <span class="proficiency">{{language.proficiency | titlecase}}</span>
+              <span *ngIf="language.nativeLanguage" class="native-tag">(Native)</span>
+              <button mat-icon-button (click)="editLanguage(language)" class="edit-btn">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteLanguage(language.id)" class="delete-btn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="language.certification || language.certificateUrl" class="language-details">
+              <div *ngIf="language.certification">
+                <strong>Certification:</strong> {{language.certification}}
+              </div>
+              <div *ngIf="language.certificateUrl">
+                <a [href]="language.certificateUrl" target="_blank" rel="noopener noreferrer">
+                  <mat-icon class="link-icon">open_in_new</mat-icon> View Certificate
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="languages.length === 0" class="empty-state">
+            <p>No languages added yet</p>
+          </div>
+        </div>
+      </section>
+
+
+    </div>
+  </main>
+</div>

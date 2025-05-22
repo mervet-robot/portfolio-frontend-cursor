@@ -1,0 +1,158 @@
+<!-- project-media-management.component.html -->
+<div class="media-management-container">
+  <h2>Manage Document Media</h2>
+
+  <div class="upload-section">
+    <h3>Upload New Document Media</h3>
+
+    <div class="upload-controls">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput [(ngModel)]="titre" placeholder="Enter title">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea matInput [(ngModel)]="description" placeholder="Enter description"></textarea>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select [(ngModel)]="category" placeholder="Select a category">
+          <mat-option *ngFor="let docCategory of docCategories" [value]="docCategory">
+            {{ docCategory }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+      <mat-checkbox [(ngModel)]="verified">isPrivate</mat-checkbox>
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Media Type</mat-label>
+        <mat-select [(ngModel)]="selectedMediaType">
+          <mat-option *ngFor="let type of mediaTypes" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <input type="file" #fileInput multiple (change)="onFileSelected($event)" style="display: none">
+      <button mat-stroked-button (click)="fileInput.click()">
+        <mat-icon>attach_file</mat-icon>
+        Select Files
+      </button>
+
+      <button mat-raised-button color="primary"
+              (click)="uploadMedia()"
+              [disabled]="!selectedFiles.length || isUploading">
+        <mat-icon>cloud_upload</mat-icon>
+        Upload
+      </button>
+    </div>
+
+    <div *ngIf="selectedFiles.length" class="selected-files">
+      <p>Selected files:</p>
+      <ul>
+        <li *ngFor="let file of selectedFiles">{{ file.name }} ({{ file.size | fileSize }})</li>
+      </ul>
+    </div>
+
+    <div *ngIf="isUploading" class="upload-progress">
+      <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+      <span>{{ uploadProgress }}%</span>
+    </div>
+  </div>
+
+  <div class="media-list-section">
+    <h3>Existing Media</h3>
+
+
+
+    <!-- Add this above the media list section -->
+    <div class="filter-section">
+      <h3>Filters</h3>
+
+      <div class="filter-controls">
+        <!-- Search by title -->
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search by title</mat-label>
+          <input matInput [(ngModel)]="searchQuery" (keyup.enter)="searchByTitle()" placeholder="Enter title">
+          <button mat-icon-button matSuffix (click)="searchByTitle()">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <!-- Filter by category -->
+        <mat-form-field appearance="outline">
+          <mat-label>Filter by category</mat-label>
+          <mat-select [(ngModel)]="selectedCategory" (selectionChange)="filterByCategory(selectedCategory)">
+            <mat-option value="">All Categories</mat-option>
+            <mat-option *ngFor="let docCategory of docCategories" [value]="docCategory">
+              {{ docCategory }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Filter by media type -->
+        <mat-form-field appearance="outline">
+          <mat-label>Filter by type</mat-label>
+          <mat-select [(ngModel)]="selectedMediaType" (selectionChange)="applyFilters()">
+            <mat-option value="">All Types</mat-option>
+            <mat-option *ngFor="let type of mediaTypes" [value]="type">
+              {{ type }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-button (click)="resetFilters()" color="primary">
+          <mat-icon>refresh</mat-icon>
+          Reset Filters
+        </button>
+      </div>
+    </div>
+    <!-- End Add this above the media list section -->
+
+
+
+
+
+    <div *ngIf="mediaList.length === 0" class="no-media">
+      <p>No media files uploaded yet.</p>
+    </div>
+
+    <mat-card *ngFor="let media of mediaList" class="media-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>{{ getMediaIcon(media.mediaType) }}</mat-icon>
+          {{ media.titre || media.fileName }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{ media.mediaType }} • {{ media.fileSize | fileSize }} • Uploaded: {{ media.uploadDate | date }}
+          <div *ngIf="media.description">{{ media.description }}</div>
+          <div>Category: {{ media.category }}</div>
+
+          <div>
+            <mat-icon>{{ media.verified ? 'lock' : 'public' }}</mat-icon>
+            {{ media.verified ? 'Private' : 'Public' }}
+          </div>
+
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-actions align="end">
+        <button mat-button (click)="downloadMedia(media)">
+          <mat-icon>download</mat-icon>
+          Download
+        </button>
+        <button mat-button color="warn" (click)="deleteMedia(media.id)">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
