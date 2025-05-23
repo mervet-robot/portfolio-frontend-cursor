@@ -54,7 +54,8 @@ export class AuthService {
       password: user.password,
       firstName: user.firstName,
       lastName: user.lastName,
-      phoneNumber: user.phoneNumber
+      phoneNumber: user.phoneNumber,
+      company: user.company
     }, httpOptions);
   }
 }

@@ -41,6 +41,13 @@
           <mat-error *ngIf="registerForm.get('phoneNumber')?.hasError('required')">Phone number is required</mat-error>
         </mat-form-field>
 
+        <mat-form-field appearance="outline">
+          <mat-label>Company</mat-label>
+          <input matInput formControlName="company" required>
+          <mat-error *ngIf="registerForm.get('company')?.hasError('required')">company is required</mat-error>
+        </mat-form-field>
+
+
         <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">Register</button>
       </form>
       <mat-error *ngIf="errorMessage">

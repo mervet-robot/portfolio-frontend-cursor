@@ -1,0 +1,32 @@
+<div class="landing-container">
+  <div class="section login">
+    <h2>Already have an account?</h2>
+    <button mat-raised-button color="primary" (click)="goTo('/login')">Login</button>
+  </div>
+
+  <div class="section register">
+    <h2>Register as</h2>
+    <div class="roles">
+      <button mat-stroked-button color="accent" (click)="goTo('/register/laureat')">
+        🎓 LAURÉAT APPRENANT
+      </button>
+      <button mat-stroked-button color="accent" (click)="goTo('/register/recruteur')">
+        🧑‍💼 RECRUTEUR
+      </button>
+
+      <!-- Directeur with expandable submenu -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            🏫 DIRECTEUR
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-action-list>
+          <button mat-list-item (click)="goTo('/register/directeur')">➕ Register Directeur</button>
+          <button mat-list-item (click)="goTo('/admin/helps')">❓ Helps</button>
+        </mat-action-list>
+      </mat-expansion-panel>
+    </div>
+  </div>
+</div>

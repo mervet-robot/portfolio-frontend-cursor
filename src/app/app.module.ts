@@ -55,6 +55,8 @@ import {ResponsableListComponent} from './features/directeur/responsable-list/re
 import {ResponsableFormComponent} from './features/directeur/responsable-form/responsable-form.component';
 import {DirecteurRegisterComponent} from './auth/directeur-register/directeur-register.component';
 import { RecruteurRegisterComponent } from './auth/recruteur-register/recruteur-register.component';
+import { LandingPageComponent } from './core/layout/landing-page/landing-page.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 
@@ -86,6 +88,7 @@ import { RecruteurRegisterComponent } from './auth/recruteur-register/recruteur-
     ResponsableViewComponent,
     ResponsableListComponent,
     ResponsableFormComponent,
+    LandingPageComponent,
 
 
   ],
@@ -139,7 +142,10 @@ import { RecruteurRegisterComponent } from './auth/recruteur-register/recruteur-
       MatTooltipModule,
 
         MatButtonToggleModule,
-        NgOptimizedImage
+        NgOptimizedImage,
+
+      MatExpansionModule
+
     ],
   providers: [
     provideClientHydration(withEventReplay()),

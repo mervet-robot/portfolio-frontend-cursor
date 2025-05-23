@@ -40,4 +40,6 @@ export interface RecruteurRequest {
   firstName: string;
   lastName: string;
   phoneNumber: string;
+  company: string;
+
 }

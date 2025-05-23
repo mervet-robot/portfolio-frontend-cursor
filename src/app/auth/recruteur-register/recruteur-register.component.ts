@@ -29,7 +29,8 @@ export class RecruteurRegisterComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      phoneNumber: ['', Validators.required]
+      phoneNumber: ['', Validators.required],
+      company: ['', Validators.required]
     });
   }
 

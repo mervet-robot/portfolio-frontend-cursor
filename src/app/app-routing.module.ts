@@ -20,14 +20,18 @@ import { ResponsableListComponent } from './features/directeur/responsable-list/
 import { ResponsableFormComponent } from './features/directeur/responsable-form/responsable-form.component';
 import { ResponsableViewComponent } from './features/directeur/responsable-view/responsable-view.component';
 import { AuthGuard } from './_guards/auth.guard';
+import {LandingPageComponent} from './core/layout/landing-page/landing-page.component';
 
 const routes: Routes = [
+
+  { path: '', component: LandingPageComponent },
+
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 
-  { path: 'directeur-register', component: DirecteurRegisterComponent },
-  { path: 'recruteur-register', component: RecruteurRegisterComponent },
+  { path: 'register/directeur', component: DirecteurRegisterComponent },
+  { path: 'register/recruteur', component: RecruteurRegisterComponent },
 
   { path: 'projects', component: ProjectsComponent },
   { path: 'dashboard', component: DashboardComponent },

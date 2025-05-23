@@ -1,0 +1,30 @@
+.landing-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2rem;
+  flex-wrap: wrap;
+  min-height: 80vh;
+
+  .section {
+    flex: 1 1 300px;
+    margin: 1rem;
+    text-align: center;
+    background: #f5f5f5;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  .roles {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  button {
+    font-size: 1.1rem;
+  }
+}
