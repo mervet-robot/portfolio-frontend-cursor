@@ -17,6 +17,7 @@ import {PortfolioComponent} from './features/portfolio/portfolio.component';
 import { ResponsableListComponent } from './features/directeur/responsable-list/responsable-list.component';
 import { ResponsableFormComponent } from './features/directeur/responsable-form/responsable-form.component';
 import { ResponsableViewComponent } from './features/directeur/responsable-view/responsable-view.component';
+import { AuthGuard } from './_guards/auth.guard';
 
 const routes: Routes = [
 
@@ -26,10 +27,10 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
 
   { path: 'certifications', component: CertificationsComponent },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  // { path: '', redirectTo: 'login', pathMatch: 'full' },
 
 
-  { path: 'profile-wizard', component: ProfileWizardComponent },
+  { path: 'profile-wizard', component: ProfileWizardComponent, canActivate: [AuthGuard] },
   { path: 'projects/:projectId/media', component: ProjectMediaComponent },
   { path: 'projects/media', component: ProjectMediaComponent },
 

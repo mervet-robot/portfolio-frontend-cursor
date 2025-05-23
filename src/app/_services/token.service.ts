@@ -1,5 +1,6 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
@@ -11,7 +12,25 @@ export class TokenService {
   private readonly TOKEN_KEY = 'auth-token';
   private readonly USER_KEY = 'auth-user';
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  private userSubject: BehaviorSubject<any | null>;
+  public user$: Observable<any | null>;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    let initialUser = null;
+    if (isPlatformBrowser(this.platformId)) {
+      const userStr = window.sessionStorage.getItem(this.USER_KEY);
+      if (userStr) {
+        try {
+          initialUser = JSON.parse(userStr);
+        } catch (e) {
+          console.error('Error parsing user from session storage', e);
+          window.sessionStorage.removeItem(this.USER_KEY);
+        }
+      }
+    }
+    this.userSubject = new BehaviorSubject<any | null>(initialUser);
+    this.user$ = this.userSubject.asObservable();
+  }
 
   saveToken(token: string): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -30,6 +49,7 @@ export class TokenService {
   signOut(): void {
     if (isPlatformBrowser(this.platformId)) {
       window.sessionStorage.clear();
+      this.userSubject.next(null);
     }
   }
 
@@ -37,15 +57,12 @@ export class TokenService {
     if (isPlatformBrowser(this.platformId)) {
       window.sessionStorage.removeItem(this.USER_KEY);
       window.sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
+      this.userSubject.next(user);
     }
   }
 
   getUser(): any {
-    if (isPlatformBrowser(this.platformId)) {
-      const user = window.sessionStorage.getItem(this.USER_KEY);
-      return user ? JSON.parse(user) : null;
-    }
-    return null;
+    return this.userSubject.getValue();
   }
 
   isTokenExpired(token: string): boolean {

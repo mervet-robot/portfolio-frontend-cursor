@@ -62,15 +62,22 @@ export class LoginComponent implements OnInit {
 
         this.showRoleBasedMessage(data.role);
 
-        if (!['LAUREAT', 'RESPONSABLE', 'DIRECTEUR'].includes(data.role)) {
+        if (!['LAUREAT','APPRENANT', 'RESPONSABLE', 'DIRECTEUR'].includes(data.role)) {
           this.tokenService.signOut();
           this.isLoggedIn = false;
           return;
         }
 
+        const user = this.tokenService.getUser();
+        if (!user || !user.id) {
+            console.error("User data or user ID is not available after login.");
+            this.router.navigate(['/login']);
+            return;
+        }
+
         setTimeout(() => {
-          this.redirectBasedOnRole(data.role);
-        }, 2000);
+          this.redirectBasedOnRoleAndFirstLogin(user);
+        }, 100);
       },
       error: err => {
         if (err.status === 401) {
@@ -94,34 +101,50 @@ export class LoginComponent implements OnInit {
       case 'LAUREAT':
         this.successMessage = 'Login successful as LAUREAT';
         break;
+      case 'APPRENANT':
+        this.successMessage = 'Login successful as APPRENANT';
+        break;
       case 'RESPONSABLE':
         this.successMessage = 'Login successful as RESPONSABLE';
         break;
       case 'DIRECTEUR':
         this.successMessage = 'Login successful as DIRECTEUR';
         break;
-      case 'APPRENANT':
-        this.errorMessage = 'Sorry, you are still an APPRENANT. You should register again to benefit from this service.';
-        this.tokenService.signOut();
-        this.isLoginFailed = true;
-        this.isLoggedIn = false;
-        break;
+      // case 'APPRENANT':
+      //   this.errorMessage = 'Sorry, you are still an APPRENANT. You should register again to benefit from this service.';
+      //   this.tokenService.signOut();
+      //   this.isLoginFailed = true;
+      //   this.isLoggedIn = false;
+      //   break;
       default:
         this.unauthorizedRoleMessage = 'Vous n\'êtes pas inscrit au programme. Vous devez d\'abord vous inscrire en tant qu\'apprenant pour profiter de ce service.';
         this.isLoginFailed = true;
     }
   }
 
-  redirectBasedOnRole(role: string): void {
-    switch (role) {
+  redirectBasedOnRoleAndFirstLogin(user: any): void {
+    const firstLoginFlagKey = `hasSeenProfileWizard_${user.id}`;
+
+    switch (user.role) {
       case 'LAUREAT':
-        this.router.navigateByUrl("/profile-wizard");
+      case 'APPRENANT':
+        const hasSeenWizard = localStorage.getItem(firstLoginFlagKey);
+        if (!hasSeenWizard) {
+          localStorage.setItem(firstLoginFlagKey, 'true');
+          this.router.navigate(["/profile-wizard"]);
+        } else {
+          this.router.navigate(["/portfolio"]);
+        }
         break;
       case 'RESPONSABLE':
         this.router.navigate(['/dashboard']);
         break;
       case 'DIRECTEUR':
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/directeur/responsables']);
+        break;
+      default:
+        this.router.navigate(['/login']);
+        break;
     }
   }
 }
