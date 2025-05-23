@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Responsable } from '../../../_models/responsable';
-import { DirecteurService } from '../../../_services/directeur.service';
+import {DirecteurService} from '../../../_services/directeur.service';
 
 @Component({
   selector: 'app-responsable-view',

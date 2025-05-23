@@ -53,6 +53,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {ResponsableViewComponent} from './features/directeur/responsable-view/responsable-view.component';
 import {ResponsableListComponent} from './features/directeur/responsable-list/responsable-list.component';
 import {ResponsableFormComponent} from './features/directeur/responsable-form/responsable-form.component';
+import {DirecteurRegisterComponent} from './auth/directeur-register/directeur-register.component';
 
 
 
@@ -79,7 +80,8 @@ import {ResponsableFormComponent} from './features/directeur/responsable-form/re
 
     ResponsableViewComponent,
     ResponsableListComponent,
-    ResponsableFormComponent
+    ResponsableFormComponent,
+    DirecteurRegisterComponent
   ],
     imports: [
         BrowserModule,

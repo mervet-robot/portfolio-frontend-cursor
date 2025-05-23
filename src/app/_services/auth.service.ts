@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {JwtResponse, LoginRequest, RegisterRequest} from '../_models/auth';
+import {JwtResponse, LoginRequest, RegisterRequest, DirecteurRequest} from '../_models/auth';
 import {Observable} from 'rxjs';
 
 const AUTH_API = 'http://localhost:8080/api/auth/';
+const DIRECTEUR_API = 'http://localhost:8080/api/directeur/';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -30,6 +31,17 @@ export class AuthService {
       role: user.role,
       firstName: user.firstName,
       lastName: user.lastName
+    }, httpOptions);
+  }
+
+  directeurRegister(user: DirecteurRequest): Observable<any> {
+    return this.http.post(DIRECTEUR_API + 'register', {
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phoneNumber: user.phoneNumber
     }, httpOptions);
   }
 }

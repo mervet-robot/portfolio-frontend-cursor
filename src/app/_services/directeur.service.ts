@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Responsable, ResponsableRequest } from '../_models/responsable';
+import { DirecteurRequest } from '../_models/directeur';
 
 const API_URL = 'http://localhost:8080/api/directeur/';
 
@@ -14,6 +15,10 @@ const httpOptions = {
 })
 export class DirecteurService {
   constructor(private http: HttpClient) { }
+
+  register(request: DirecteurRequest): Observable<any> {
+    return this.http.post(API_URL + 'register', request, httpOptions);
+  }
 
   createResponsable(request: ResponsableRequest): Observable<any> {
     return this.http.post(API_URL + 'responsables', request, httpOptions);
