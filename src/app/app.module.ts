@@ -54,6 +54,7 @@ import {ResponsableViewComponent} from './features/directeur/responsable-view/re
 import {ResponsableListComponent} from './features/directeur/responsable-list/responsable-list.component';
 import {ResponsableFormComponent} from './features/directeur/responsable-form/responsable-form.component';
 import {DirecteurRegisterComponent} from './auth/directeur-register/directeur-register.component';
+import { RecruteurRegisterComponent } from './auth/recruteur-register/recruteur-register.component';
 
 
 
@@ -62,6 +63,10 @@ import {DirecteurRegisterComponent} from './auth/directeur-register/directeur-re
     AppComponent,
     LoginComponent,
     RegisterComponent,
+
+    DirecteurRegisterComponent,
+    RecruteurRegisterComponent,
+
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
@@ -81,7 +86,8 @@ import {DirecteurRegisterComponent} from './auth/directeur-register/directeur-re
     ResponsableViewComponent,
     ResponsableListComponent,
     ResponsableFormComponent,
-    DirecteurRegisterComponent
+
+
   ],
     imports: [
         BrowserModule,

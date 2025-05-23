@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../_services/auth.service';
-import { DirecteurRequest } from '../../_models/auth';
+import { RecruteurRequest } from '../../_models/auth';
 import { Router } from '@angular/router';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-directeur-register',
-  templateUrl: './directeur-register.component.html',
-  styleUrls: ['./directeur-register.component.scss'],
-  standalone: false,
-
+  selector: 'app-recruteur-register',
+  templateUrl: './recruteur-register.component.html',
+  styleUrls: ['./recruteur-register.component.scss'],
+  standalone: false
 })
-export class DirecteurRegisterComponent implements OnInit {
+export class RecruteurRegisterComponent implements OnInit {
   registerForm!: FormGroup;
   errorMessage = '';
   isSuccessful = false;
@@ -40,9 +38,9 @@ export class DirecteurRegisterComponent implements OnInit {
       return;
     }
 
-    const directeurRequest: DirecteurRequest = this.registerForm.value;
+    const recruteurRequest: RecruteurRequest = this.registerForm.value;
 
-    this.authService.directeurRegister(directeurRequest).subscribe({
+    this.authService.recruteurRegister(recruteurRequest).subscribe({
       next: data => {
         console.log(data);
         this.isSuccessful = true;

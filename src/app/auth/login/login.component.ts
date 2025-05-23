@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
 
         this.showRoleBasedMessage(data.role);
 
-        if (!['LAUREAT','APPRENANT', 'RESPONSABLE', 'DIRECTEUR'].includes(data.role)) {
+        if (!['LAUREAT','APPRENANT', 'RESPONSABLE','RECRUTEUR', 'DIRECTEUR'].includes(data.role)) {
           this.tokenService.signOut();
           this.isLoggedIn = false;
           return;
@@ -107,6 +107,9 @@ export class LoginComponent implements OnInit {
       case 'RESPONSABLE':
         this.successMessage = 'Login successful as RESPONSABLE';
         break;
+      case 'RECRUTEUR':
+        this.successMessage = 'Login successful as RECRUTEUR';
+        break;
       case 'DIRECTEUR':
         this.successMessage = 'Login successful as DIRECTEUR';
         break;
@@ -137,6 +140,9 @@ export class LoginComponent implements OnInit {
         }
         break;
       case 'RESPONSABLE':
+        this.router.navigate(['/dashboard']);
+        break;
+      case 'RECRUTEUR':
         this.router.navigate(['/dashboard']);
         break;
       case 'DIRECTEUR':
