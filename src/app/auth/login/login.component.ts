@@ -153,4 +153,10 @@ export class LoginComponent implements OnInit {
         break;
     }
   }
+
+
+  goBack(): void {
+    this.router.navigate(['/landing-page']);
+  }
+
 }

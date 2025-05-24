@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button class="example-icon" routerLink="/portfolio">
+  <button mat-icon-button class="example-icon" routerLink="/#">
     <mat-icon>home</mat-icon>
   </button>
   <span>WEB4JOBS Portfolio</span>
@@ -11,10 +11,23 @@
   </ng-container>
 
   <ng-container *ngIf="isLoggedIn">
-    <button mat-button routerLink="/profile-wizard">My Profile</button>
-    <button mat-button routerLink="/projects">Projects</button>
-    <button mat-button routerLink="/media">Media</button>
-    <button mat-button routerLink="/portfolio">Portfolio</button>
+<!--    LAUREAT || APPRENANT-->
+    <button mat-button routerLink="/profile-wizard"  *ngIf="role === 'LAUREAT' || role === 'APPRENANT'">My Profile</button>
+    <button mat-button routerLink="/projects" *ngIf="role === 'LAUREAT' || role === 'APPRENANT'">Projects</button>
+    <button mat-button routerLink="/media" *ngIf="role === 'LAUREAT' || role === 'APPRENANT'">Media</button>
+    <button mat-button routerLink="/portfolio"  *ngIf="role === 'LAUREAT' || role === 'APPRENANT'">Portfolio</button>
+
+    <!--    DIRECTEUR -->
+    <button mat-button routerLink="/directeur/responsables" *ngIf="role === 'DIRECTEUR'">All Responsable</button>
+    <button mat-button routerLink="/directeur/responsables/create" *ngIf="role === 'DIRECTEUR'">Add Responsable</button>
+
+
+    <!--    RESPONSABLE -->
+    <button mat-button routerLink="/dashboard" *ngIf="role === 'RESPONSABLE'">Dashboard</button>
+    <button mat-button routerLink="/certifications" *ngIf="role === 'RESPONSABLE'">All Certifications</button>
+
+    <!--    RECRUTEUR -->
+    <button mat-button routerLink="/dashboard" *ngIf="role === 'RECRUTEUR'">Dashboard</button>
 
     <button mat-button [matMenuTriggerFor]="userMenu">
       {{ username }}

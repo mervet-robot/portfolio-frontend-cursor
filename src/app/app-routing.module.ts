@@ -25,6 +25,8 @@ import {LandingPageComponent} from './core/layout/landing-page/landing-page.comp
 const routes: Routes = [
 
   { path: '', component: LandingPageComponent },
+  { path: 'landing-page', component: LandingPageComponent },
+
 
 
   { path: 'login', component: LoginComponent },
@@ -33,33 +35,38 @@ const routes: Routes = [
   { path: 'register/directeur', component: DirecteurRegisterComponent },
   { path: 'register/recruteur', component: RecruteurRegisterComponent },
 
-  { path: 'projects', component: ProjectsComponent },
-  { path: 'dashboard', component: DashboardComponent },
 
-  { path: 'certifications', component: CertificationsComponent },
-  // { path: '', redirectTo: 'login', pathMatch: 'full' },
-
-
+  // Laureat || Apprenant routes
   { path: 'profile-wizard', component: ProfileWizardComponent, canActivate: [AuthGuard] },
+  //route Test projects
+  { path: 'projects', component: ProjectsComponent },
   { path: 'projects/:projectId/media', component: ProjectMediaComponent },
   { path: 'projects/media', component: ProjectMediaComponent },
-
-  // { path: 'userMedia', component: UserMediaComponent },
-
+  //route Test Media
+  { path: 'media', component: UserMediaComponent },
+  { path: 'media/upload', component: ProjectMediaUploadComponentComponent },
+  { path: 'media/:id', component: ProfileComponent },
+  //route Portfolio
   { path: 'portfolio', component: PortfolioComponent },
 
-  // Directeur and Responsable routes
+
+  //Responsable
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'certifications', component: CertificationsComponent },
+
+
+
+  // Directeur routes
   { path: 'directeur/responsables', component: ResponsableListComponent },
   { path: 'directeur/responsables/create', component: ResponsableFormComponent },
   { path: 'directeur/responsables/edit/:id', component: ResponsableFormComponent },
   { path: 'directeur/responsables/view/:id', component: ResponsableViewComponent },
 
 
-//route Test
-  { path: 'media', component: UserMediaComponent },
-  { path: 'media/upload', component: ProjectMediaUploadComponentComponent },
-  { path: 'media/:id', component: ProfileComponent },
 
+
+  // { path: '', redirectTo: 'login', pathMatch: 'full' },
+  // { path: 'userMedia', component: UserMediaComponent },
 
 
   // {
