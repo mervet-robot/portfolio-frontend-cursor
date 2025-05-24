@@ -58,6 +58,7 @@ import { RecruteurRegisterComponent } from './auth/recruteur-register/recruteur-
 import { LandingPageComponent } from './core/layout/landing-page/landing-page.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { UserRegisterComponent } from './auth/user-register/user-register.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 
@@ -107,6 +108,7 @@ import { UserRegisterComponent } from './auth/user-register/user-register.compon
         MatButtonModule,
         ReactiveFormsModule,
         MatSelectModule,
+        MatRadioModule,
         MatToolbarModule,
         MatIconModule,
 

@@ -21,6 +21,7 @@ export class ResponsableFormComponent implements OnInit {
   successMessage = '';
   loading = false;
   submitted = false;
+  centres = ['LAYOUN_CENTRE', 'DAKHLA_CENTRE', 'CASA_CENTRE'];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -44,7 +45,10 @@ export class ResponsableFormComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       department: [''],
-      phoneNumber: ['']
+      phoneNumber: [''],
+      sexe: ['', Validators.required],
+      address: ['', Validators.required],
+      centre: ['', Validators.required]
     });
 
     if (!this.isAddMode) {
@@ -56,7 +60,10 @@ export class ResponsableFormComponent implements OnInit {
             firstName: responsable.profile?.firstName,
             lastName: responsable.profile?.lastName,
             department: responsable.profile?.department,
-            phoneNumber: responsable.profile?.phoneNumber
+            phoneNumber: responsable.profile?.phoneNumber,
+            sexe: responsable.profile?.sexe,
+            address: responsable.profile?.address,
+            centre: responsable.profile?.centre
           });
           // Remove password validation in edit mode
           this.responsableForm.get('password')?.setValidators(
@@ -92,7 +99,10 @@ export class ResponsableFormComponent implements OnInit {
       firstName: this.f['firstName'].value,
       lastName: this.f['lastName'].value,
       department: this.f['department'].value,
-      phoneNumber: this.f['phoneNumber'].value
+      phoneNumber: this.f['phoneNumber'].value,
+      sexe: this.f['sexe'].value,
+      address: this.f['address'].value,
+      centre: this.f['centre'].value
     };
 
     if (this.isAddMode) {

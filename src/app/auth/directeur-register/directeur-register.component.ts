@@ -17,6 +17,7 @@ export class DirecteurRegisterComponent implements OnInit {
   registerForm!: FormGroup;
   errorMessage = '';
   isSuccessful = false;
+  centres = ['LAYOUN_CENTRE', 'DAKHLA_CENTRE', 'CASA_CENTRE'];
 
   constructor(
     private fb: FormBuilder,
@@ -31,7 +32,10 @@ export class DirecteurRegisterComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      phoneNumber: ['', Validators.required]
+      phoneNumber: ['', Validators.required],
+      sexe: ['', Validators.required],
+      address: ['', Validators.required],
+      centre: ['', Validators.required]
     });
   }
 

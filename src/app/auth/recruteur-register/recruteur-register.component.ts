@@ -15,6 +15,7 @@ export class RecruteurRegisterComponent implements OnInit {
   registerForm!: FormGroup;
   errorMessage = '';
   isSuccessful = false;
+  centres = ['LAYOUN_CENTRE', 'DAKHLA_CENTRE', 'CASA_CENTRE'];
 
   constructor(
     private fb: FormBuilder,
@@ -30,7 +31,10 @@ export class RecruteurRegisterComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       phoneNumber: ['', Validators.required],
-      company: ['', Validators.required]
+      company: ['', Validators.required],
+      sexe: ['', Validators.required],
+      address: ['', Validators.required],
+      centre: ['', Validators.required]
     });
   }
 

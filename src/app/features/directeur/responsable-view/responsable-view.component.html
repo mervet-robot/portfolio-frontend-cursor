@@ -33,6 +33,9 @@
                 <p><strong>Email:</strong> {{ responsable.email }}</p>
                 <p *ngIf="responsable.profile?.department"><strong>Department:</strong> {{ responsable.profile?.department }}</p>
                 <p *ngIf="responsable.profile?.phoneNumber"><strong>Phone:</strong> {{ responsable.profile?.phoneNumber }}</p>
+                <p *ngIf="responsable.profile?.sexe"><strong>Sexe:</strong> {{ responsable.profile?.sexe }}</p>
+                <p *ngIf="responsable.profile?.address"><strong>Address:</strong> {{ responsable.profile?.address }}</p>
+                <p *ngIf="responsable.profile?.centre"><strong>Centre:</strong> {{ responsable.profile?.centre }}</p>
                 <p><strong>Status:</strong>
                   <span class="badge" [ngClass]="responsable.active ? 'bg-success' : 'bg-danger'">
                     {{ responsable.active ? 'Active' : 'Inactive' }}

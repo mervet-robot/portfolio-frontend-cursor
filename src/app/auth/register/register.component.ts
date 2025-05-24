@@ -16,6 +16,7 @@ export class RegisterComponent implements OnInit {
   errorMessage = '';
   message = '';
   roles = ['APPRENANT', 'LAUREAT', 'RESPONSABLE', 'RECRUTEUR'];
+  centres = ['LAYOUN_CENTRE', 'DAKHLA_CENTRE', 'CASA_CENTRE'];
 
   constructor(
     private authService: AuthService,
@@ -30,7 +31,10 @@ export class RegisterComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       role: ['APPRENANT'],
       firstName: ['', Validators.required],
-      lastName: ['', Validators.required]
+      lastName: ['', Validators.required],
+      sexe: ['', Validators.required],
+      address: ['', Validators.required],
+      centre: ['', Validators.required]
     });
   }
 

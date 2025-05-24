@@ -91,6 +91,43 @@
       </div>
     </div>
     
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label class="form-label">Sexe *</label>
+        <div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="male" value="Male" formControlName="sexe" [ngClass]="{ 'is-invalid': submitted && f['sexe'].errors }">
+            <label class="form-check-label" for="male">Male</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="female" value="Female" formControlName="sexe" [ngClass]="{ 'is-invalid': submitted && f['sexe'].errors }">
+            <label class="form-check-label" for="female">Female</label>
+          </div>
+        </div>
+        <div *ngIf="submitted && f['sexe'].errors" class="invalid-feedback d-block">
+          <div *ngIf="f['sexe'].errors['required']">Sexe is required</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label for="centre" class="form-label">Centre *</label>
+        <select id="centre" class="form-select" formControlName="centre" [ngClass]="{ 'is-invalid': submitted && f['centre'].errors }">
+          <option value="" disabled>Select a Centre</option>
+          <option *ngFor="let c of centres" [value]="c">{{c}}</option>
+        </select>
+        <div *ngIf="submitted && f['centre'].errors" class="invalid-feedback">
+          <div *ngIf="f['centre'].errors['required']">Centre is required</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="address" class="form-label">Address *</label>
+      <input type="text" formControlName="address" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['address'].errors }" id="address"/>
+      <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
+        <div *ngIf="f['address'].errors['required']">Address is required</div>
+      </div>
+    </div>
+    
     <div class="mb-3">
       <label for="password" class="form-label">
         {{ isAddMode ? 'Password *' : 'Password (leave blank to keep current password)' }}

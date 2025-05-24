@@ -6,6 +6,9 @@ export interface ResponsableRequest {
   lastName: string;
   department?: string;
   phoneNumber?: string;
+  sexe?: string;
+  address?: string;
+  centre?: string;
 }
 
 export interface Responsable {
@@ -20,5 +23,8 @@ export interface Responsable {
     email: string;
     phoneNumber?: string;
     department?: string;
+    sexe?: string;
+    address?: string;
+    centre?: string;
   };
 } 

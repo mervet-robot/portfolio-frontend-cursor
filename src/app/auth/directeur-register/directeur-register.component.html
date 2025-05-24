@@ -41,6 +41,33 @@
           <mat-error *ngIf="registerForm.get('phoneNumber')?.hasError('required')">Phone number is required</mat-error>
         </mat-form-field>
 
+        <div class="form-group">
+          <label>Sexe</label>
+          <mat-radio-group formControlName="sexe" class="radio-group-spacing">
+            <mat-radio-button value="Male" class="radio-button-spacing">Male</mat-radio-button>
+            <mat-radio-button value="Female" class="radio-button-spacing">Female</mat-radio-button>
+          </mat-radio-group>
+          <mat-error *ngIf="registerForm.get('sexe')?.errors?.['required'] && registerForm.get('sexe')?.touched">
+            Sexe is required
+          </mat-error>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="address" required>
+          <mat-error *ngIf="registerForm.get('address')?.hasError('required')">Address is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Centre</mat-label>
+          <mat-select formControlName="centre" required>
+            <mat-option *ngFor="let centre of centres" [value]="centre">
+              {{centre}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="registerForm.get('centre')?.hasError('required')">Centre is required</mat-error>
+        </mat-form-field>
+
         <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">Register</button>
       </form>
       <mat-error *ngIf="errorMessage">

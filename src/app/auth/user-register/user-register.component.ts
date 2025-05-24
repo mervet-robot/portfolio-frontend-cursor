@@ -15,6 +15,7 @@ export class UserRegisterComponent implements OnInit {
   isSignUpFailed = false;
   errorMessage = '';
   message = '';
+  centres = ['LAYOUN_CENTRE', 'DAKHLA_CENTRE', 'CASA_CENTRE'];
 
   constructor(
     private authService: AuthService,
@@ -28,7 +29,10 @@ export class UserRegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       firstName: ['', Validators.required],
-      lastName: ['', Validators.required]
+      lastName: ['', Validators.required],
+      sexe: ['', Validators.required],
+      address: ['', Validators.required],
+      centre: ['', Validators.required]
       // No 'role' field needed for basic user registration
     });
   }

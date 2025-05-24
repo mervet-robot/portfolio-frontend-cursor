@@ -70,6 +70,47 @@
               </div>
             </div>
 
+            <div class="mb-3">
+              <label class="form-label">Sexe</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="male" value="Male" formControlName="sexe">
+                  <label class="form-check-label" for="male">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="female" value="Female" formControlName="sexe">
+                  <label class="form-check-label" for="female">Female</label>
+                </div>
+              </div>
+              <div *ngIf="registerForm.get('sexe')?.touched && registerForm.get('sexe')?.errors?.['required']"
+                   class="text-danger small">
+                Sexe is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <input type="text" id="address" class="form-control" formControlName="address"
+                     [ngClass]="{ 'is-invalid': registerForm.get('address')?.touched && registerForm.get('address')?.errors }">
+              <div *ngIf="registerForm.get('address')?.touched && registerForm.get('address')?.errors?.['required']"
+                   class="invalid-feedback">
+                Address is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="centre" class="form-label">Centre</label>
+              <select id="centre" class="form-select" formControlName="centre"
+                      [ngClass]="{ 'is-invalid': registerForm.get('centre')?.touched && registerForm.get('centre')?.errors }">
+                <option value="" disabled>Select a Centre</option>
+                <option *ngFor="let centre of centres" [value]="centre">{{centre}}</option>
+              </select>
+              <div *ngIf="registerForm.get('centre')?.touched && registerForm.get('centre')?.errors?.['required']"
+                   class="invalid-feedback">
+                Centre is required.
+              </div>
+            </div>
+
             <div class="d-grid gap-2">
               <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Register</button>
             </div>
