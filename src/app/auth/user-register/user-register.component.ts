@@ -30,6 +30,7 @@ export class UserRegisterComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
       sexe: ['', Validators.required],
       address: ['', Validators.required],
       centre: ['', Validators.required]
@@ -58,4 +59,4 @@ export class UserRegisterComponent implements OnInit {
       }
     });
   }
-} 
+}

@@ -31,7 +31,8 @@ export class AuthService {
       email: user.email,
       password: user.password,
       firstName: user.firstName,
-      lastName: user.lastName
+      lastName: user.lastName,
+      phoneNumber: user.phoneNumber
     }, httpOptions);
   }
 
@@ -41,7 +42,9 @@ export class AuthService {
       email: user.email,
       password: user.password,
       firstName: user.firstName,
-      lastName: user.lastName
+      lastName: user.lastName,
+      phoneNumber: user.phoneNumber
+
     }, httpOptions);
   }
 

@@ -32,6 +32,7 @@ export class RegisterComponent implements OnInit {
       role: ['APPRENANT'],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
       sexe: ['', Validators.required],
       address: ['', Validators.required],
       centre: ['', Validators.required]

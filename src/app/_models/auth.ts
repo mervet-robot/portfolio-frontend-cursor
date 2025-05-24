@@ -10,6 +10,8 @@ export interface RegisterRequest {
   role?: string;
   firstName?: string;
   lastName?: string;
+  phoneNumber: string;
+
 }
 
 export interface JwtResponse {
@@ -22,6 +24,8 @@ export interface JwtResponse {
 
   firstName?: string;  // Add these
   lastName?: string;   // Add these
+  phoneNumber: string;
+
 }
 
 export interface DirecteurRequest {

@@ -70,6 +70,19 @@
               </div>
             </div>
 
+
+
+            <div class="mb-3">
+              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber"
+                     [ngClass]="{ 'is-invalid': registerForm.get('phoneNumber')?.touched && registerForm.get('phoneNumber')?.errors }">
+              <div *ngIf="registerForm.get('phoneNumber')?.touched && registerForm.get('phoneNumber')?.errors?.['required']"
+                   class="invalid-feedback">
+                Phone number is required.
+              </div>
+            </div>
+
+
             <div class="mb-3">
               <label class="form-label">Sexe</label>
               <div>
@@ -126,4 +139,4 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
