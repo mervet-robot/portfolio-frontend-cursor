@@ -21,6 +21,7 @@ import { ResponsableFormComponent } from './features/directeur/responsable-form/
 import { ResponsableViewComponent } from './features/directeur/responsable-view/responsable-view.component';
 import { AuthGuard } from './_guards/auth.guard';
 import {LandingPageComponent} from './core/layout/landing-page/landing-page.component';
+import { UserRegisterComponent } from './auth/user-register/user-register.component';
 
 const routes: Routes = [
 
@@ -31,6 +32,7 @@ const routes: Routes = [
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'user-register', component: UserRegisterComponent },
 
   { path: 'register/directeur', component: DirecteurRegisterComponent },
   { path: 'register/recruteur', component: RecruteurRegisterComponent },

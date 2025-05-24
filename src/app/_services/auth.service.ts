@@ -25,12 +25,21 @@ export class AuthService {
     }, httpOptions);
   }
 
-  register(user: RegisterRequest): Observable<any> {
+  registerProfessional(user: RegisterRequest): Observable<any> {
+    return this.http.post(AUTH_API + 'register-professional', {
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      firstName: user.firstName,
+      lastName: user.lastName
+    }, httpOptions);
+  }
+
+  registerUser(user: RegisterRequest): Observable<any> {
     return this.http.post(AUTH_API + 'register', {
       username: user.username,
       email: user.email,
       password: user.password,
-      role: user.role,
       firstName: user.firstName,
       lastName: user.lastName
     }, httpOptions);

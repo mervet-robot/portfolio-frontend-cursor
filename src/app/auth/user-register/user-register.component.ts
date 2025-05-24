@@ -1,21 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../../_services/auth.service';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../_services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-user-register',
   standalone: false,
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  templateUrl: './user-register.component.html',
+  styleUrls: ['./user-register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class UserRegisterComponent implements OnInit {
   registerForm!: FormGroup;
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
   message = '';
-  roles = ['APPRENANT', 'LAUREAT', 'RESPONSABLE', 'RECRUTEUR'];
 
   constructor(
     private authService: AuthService,
@@ -28,9 +27,9 @@ export class RegisterComponent implements OnInit {
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['APPRENANT'],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required]
+      // No 'role' field needed for basic user registration
     });
   }
 
@@ -39,21 +38,20 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.authService.registerProfessional(this.registerForm.value).subscribe({
+    this.authService.registerUser(this.registerForm.value).subscribe({
       next: (res: any) => {
         this.isSuccessful = true;
         this.isSignUpFailed = false;
-        this.message = res.message || 'Registration successful';
-
+        this.message = res.message || 'User registration successful';
+        // Optionally navigate to login or a success page
         setTimeout(() => {
           this.router.navigate(['/login']);
         }, 2000);
       },
-
-      error: err => {
-        this.errorMessage = err.error.message;
+      error: (err: any) => {
+        this.errorMessage = err.error?.message || 'An unknown error occurred';
         this.isSignUpFailed = true;
       }
     });
   }
-}
+} 

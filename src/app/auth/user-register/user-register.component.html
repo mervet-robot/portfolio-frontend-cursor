@@ -1,0 +1,88 @@
+<!-- Basic structure, similar to a simplified version of the existing register.component.html -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Register New User</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" id="username" class="form-control" formControlName="username"
+                     [ngClass]="{ 'is-invalid': registerForm.get('username')?.touched && registerForm.get('username')?.errors }">
+              <div *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.errors?.['required']"
+                   class="invalid-feedback">
+                Username is required.
+              </div>
+              <div *ngIf="registerForm.get('username')?.errors?.['minlength']" class="invalid-feedback">
+                Username must be at least 3 characters.
+              </div>
+              <div *ngIf="registerForm.get('username')?.errors?.['maxlength']" class="invalid-feedback">
+                Username cannot exceed 20 characters.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" id="email" class="form-control" formControlName="email"
+                     [ngClass]="{ 'is-invalid': registerForm.get('email')?.touched && registerForm.get('email')?.errors }">
+              <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']"
+                   class="invalid-feedback">
+                Email is required.
+              </div>
+              <div *ngIf="registerForm.get('email')?.errors?.['email']" class="invalid-feedback">
+                Please enter a valid email.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" id="password" class="form-control" formControlName="password"
+                     [ngClass]="{ 'is-invalid': registerForm.get('password')?.touched && registerForm.get('password')?.errors }">
+              <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']"
+                   class="invalid-feedback">
+                Password is required.
+              </div>
+              <div *ngIf="registerForm.get('password')?.errors?.['minlength']" class="invalid-feedback">
+                Password must be at least 6 characters.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="firstName" class="form-label">First Name</label>
+              <input type="text" id="firstName" class="form-control" formControlName="firstName"
+                     [ngClass]="{ 'is-invalid': registerForm.get('firstName')?.touched && registerForm.get('firstName')?.errors }">
+              <div *ngIf="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.errors?.['required']"
+                   class="invalid-feedback">
+                First Name is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input type="text" id="lastName" class="form-control" formControlName="lastName"
+                     [ngClass]="{ 'is-invalid': registerForm.get('lastName')?.touched && registerForm.get('lastName')?.errors }">
+              <div *ngIf="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.errors?.['required']"
+                   class="invalid-feedback">
+                Last Name is required.
+              </div>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Register</button>
+            </div>
+
+            <div *ngIf="isSignUpFailed" class="alert alert-danger mt-3">
+              Registration failed: {{ errorMessage }}
+            </div>
+            <div *ngIf="isSuccessful" class="alert alert-success mt-3">
+              {{ message }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

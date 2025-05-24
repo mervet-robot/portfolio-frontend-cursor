@@ -57,6 +57,7 @@ import {DirecteurRegisterComponent} from './auth/directeur-register/directeur-re
 import { RecruteurRegisterComponent } from './auth/recruteur-register/recruteur-register.component';
 import { LandingPageComponent } from './core/layout/landing-page/landing-page.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { UserRegisterComponent } from './auth/user-register/user-register.component';
 
 
 
@@ -65,6 +66,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     AppComponent,
     LoginComponent,
     RegisterComponent,
+    UserRegisterComponent,
 
     DirecteurRegisterComponent,
     RecruteurRegisterComponent,
