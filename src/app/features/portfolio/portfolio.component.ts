@@ -196,7 +196,7 @@ export class PortfolioComponent implements OnInit {
     this.languageForm = this.fb.group({
       name: ['', Validators.required],
       proficiency: [ProficiencyLevel.INTERMEDIATE, Validators.required],
-      certification: [''],
+      // certification: [''],
       certificateUrl: [''],
       nativeLanguage: [false]
     });
@@ -1018,7 +1018,7 @@ export class PortfolioComponent implements OnInit {
     this.languageForm.patchValue({
       name: language.name,
       proficiency: language.proficiency,
-      certification: language.certification,
+      // certification: language.certification,
       certificateUrl: language.certificateUrl,
       nativeLanguage: language.nativeLanguage
     });

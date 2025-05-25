@@ -205,7 +205,7 @@ export class ProfileWizardComponent  implements OnInit {
     this.languageForm = this.fb.group({
       name: ['', Validators.required],
       proficiency: [ProficiencyLevel.INTERMEDIATE, Validators.required],
-      certification: [''],
+      // certification: [''],
       certificateUrl: [''],
       nativeLanguage: [false]
     });
