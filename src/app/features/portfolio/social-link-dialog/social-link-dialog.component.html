@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>{{ data.link ? 'Edit' : 'Add' }} Social Link</h2>
+<mat-dialog-content [formGroup]="socialLinkForm">
+  <div class="form-container">
+    <mat-form-field appearance="outline" class="full-width-field">
+      <mat-label>Platform</mat-label>
+      <mat-select formControlName="platform" required>
+        <mat-option *ngFor="let platform of availablePlatforms" [value]="platform">
+          {{ platform }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="socialLinkForm.get('platform')?.hasError('required')">
+        Platform is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width-field">
+      <mat-label>URL</mat-label>
+      <input matInput formControlName="url" required placeholder="https://www.example.com/yourprofile">
+      <mat-error *ngIf="socialLinkForm.get('url')?.hasError('required')">
+        URL is required.
+      </mat-error>
+      <mat-error *ngIf="socialLinkForm.get('url')?.hasError('pattern') && !socialLinkForm.get('url')?.hasError('required')">
+        Please enter a valid URL (e.g., https://linkedin.com/in/username).
+      </mat-error>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!socialLinkForm.valid">
+    {{ data.link ? 'Update' : 'Add' }}
+  </button>
+</mat-dialog-actions> 

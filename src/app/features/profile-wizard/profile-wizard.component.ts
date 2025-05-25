@@ -25,6 +25,7 @@ import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-d
 import {CertificationType, LanguageRequest, LanguageResponse, ProficiencyLevel} from '../../_models/language';
 import {BioCorrectionDialogComponent} from '../bio-correction-dialog/bio-correction-dialog.component';
 import { Centre } from '../../_models/centre.enum';
+import { SocialLink, SocialLinkRequest } from '../../_models/social-link';
 
 @Component({
   selector: 'app-profile-wizard',
@@ -34,7 +35,7 @@ import { Centre } from '../../_models/centre.enum';
 })
 export class ProfileWizardComponent  implements OnInit {
   currentStep = 1;
-  totalSteps = 8;
+  totalSteps = 9;
   userId: number;
 
 // Add these to your component class
@@ -47,7 +48,10 @@ export class ProfileWizardComponent  implements OnInit {
   certificationTypes = Object.values(CertificationType);
   centres = Object.values(Centre);
 
-
+// Social Links properties
+  socialLinks: SocialLink[] = [];
+  editingSocialLinkId: number | null = null;
+  availablePlatforms: string[] = ['LinkedIn', 'GitHub', 'Twitter', 'Facebook', 'Instagram', 'Portfolio', 'Personal Website', 'Other'];
 
   // Add to your component class --Suggestion
   skillCategories = [
@@ -104,6 +108,7 @@ export class ProfileWizardComponent  implements OnInit {
   techSkillForm!: FormGroup;
   certificationForm!: FormGroup;
   projectForm!: FormGroup;
+  socialLinkForm!: FormGroup;
 
   // Data lists
   experiences: Experience[] = [];
@@ -153,7 +158,7 @@ export class ProfileWizardComponent  implements OnInit {
       bio: [''],
       profilePicture: [''],
       address: [''],
-      centre: [null]
+      centre: ['']
     });
 
     this.formationForm = this.fb.group({
@@ -215,6 +220,11 @@ export class ProfileWizardComponent  implements OnInit {
       projectUrl: [''],
       repositoryUrl: ['']
     });
+
+    this.socialLinkForm = this.fb.group({
+      platform: ['', Validators.required],
+      url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
+    });
   }
 
   loadExistingData(): void {
@@ -228,7 +238,6 @@ export class ProfileWizardComponent  implements OnInit {
           diploma: profile.diploma,
           bio: profile.bio,
           address: profile.address,
-          centre: profile.centre,
           profilePicture: profile.profilePicture
         });
 
@@ -245,6 +254,7 @@ export class ProfileWizardComponent  implements OnInit {
     this.loadTechSkills();
     this.loadCertifications();
     this.loadProjects();
+    this.loadSocialLinks();
   }
 
   loadFormations(): void {
@@ -322,7 +332,20 @@ export class ProfileWizardComponent  implements OnInit {
     });
   }
 
-
+  loadSocialLinks(): void {
+    this.profileService.getSocialLinks(this.userId).subscribe({
+      next: (links) => {
+        this.socialLinks = links;
+      },
+      error: (err) => {
+        console.error('Failed to load social links:', err);
+        this.snackBar.open('Failed to load social links', 'Close', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
+  }
 
   // -----------------Upload Image + Save Profile
 
@@ -546,8 +569,8 @@ export class ProfileWizardComponent  implements OnInit {
   private setupAutoSave(): void {
     this.profileForm.valueChanges.pipe(
       debounceTime(120000),
-      distinctUntilChanged(),
-      filter(() => this.profileForm.valid)
+      distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
+      filter(() => this.profileForm.valid && this.currentStep === 1)
     ).subscribe(() => {
       this.saveProfile();
     });
@@ -697,6 +720,93 @@ export class ProfileWizardComponent  implements OnInit {
     }
   }
 
+  addOrUpdateSocialLink(): void {
+    if (this.socialLinkForm.invalid) {
+      this.snackBar.open('Please select a platform and enter a valid URL.', 'Close', { duration: 3000, panelClass: ['warning-snackbar'] });
+      return;
+    }
+    const socialLinkReq: SocialLinkRequest = this.socialLinkForm.value;
+    if (this.editingSocialLinkId !== null) {
+      this.profileService.updateSocialLink(this.userId, this.editingSocialLinkId, socialLinkReq).subscribe({
+        next: (updatedLink) => {
+          const index = this.socialLinks.findIndex(link => link.id === this.editingSocialLinkId);
+          if (index !== -1) {
+            this.socialLinks[index] = updatedLink;
+          }
+          this.cancelEditSocialLink();
+          this.snackBar.open('Social link updated!', 'Close', { duration: 3000, panelClass: ['success-snackbar'] });
+        },
+        error: (err) => {
+          console.error('Failed to update social link:', err);
+          this.snackBar.open('Error updating social link.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
+        }
+      });
+    } else {
+      this.profileService.addSocialLink(this.userId, socialLinkReq).subscribe({
+        next: (newLink) => {
+          this.socialLinks.push(newLink);
+          this.socialLinkForm.reset();
+          this.snackBar.open('Social link added!', 'Close', { duration: 3000, panelClass: ['success-snackbar'] });
+        },
+        error: (err) => {
+          console.error('Failed to add social link:', err);
+          this.snackBar.open('Error adding social link.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
+        }
+      });
+    }
+  }
+
+  editSocialLink(linkToEdit: SocialLink): void {
+    if (linkToEdit.id === undefined) {
+        console.error("Cannot edit a social link without an ID");
+        return;
+    }
+    this.editingSocialLinkId = linkToEdit.id;
+    this.socialLinkForm.patchValue({
+      platform: linkToEdit.platform,
+      url: linkToEdit.url
+    });
+  }
+
+  deleteSocialLink(linkId: number | undefined): void {
+    if (linkId === undefined) {
+        console.error("Cannot delete social link: ID is undefined.");
+        this.snackBar.open('Error: Could not delete link, ID missing.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
+        return;
+    }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '450px',
+      data: {
+        title: 'Delete Social Link',
+        message: 'Are you sure you want to remove this social link?',
+        confirmText: 'Delete',
+        cancelText: 'Cancel',
+        confirmColor: 'warn'
+      }
+    });
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.profileService.deleteSocialLink(this.userId, linkId).subscribe({
+          next: () => {
+            this.socialLinks = this.socialLinks.filter(link => link.id !== linkId);
+            this.snackBar.open('Social link deleted.', 'Close', { duration: 3000, panelClass: ['success-snackbar'] });
+            if (this.editingSocialLinkId === linkId) {
+              this.cancelEditSocialLink();
+            }
+          },
+          error: (err) => {
+            console.error('Failed to delete social link:', err);
+            this.snackBar.open('Error deleting social link.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
+          }
+        });
+      }
+    });
+  }
+
+  cancelEditSocialLink(): void {
+    this.editingSocialLinkId = null;
+    this.socialLinkForm.reset();
+  }
 
   deleteFormation(formationId: number): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -948,6 +1058,8 @@ export class ProfileWizardComponent  implements OnInit {
       this.experiences.length > 0,
       this.formations.length > 0,
       this.languages.length > 0,
+      this.socialLinks.length > 0,
+
       this.softSkills.length > 0,
       this.techSkills.length > 0,
       this.projects.length > 0

@@ -1,8 +1,8 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProfileUpdateRequest } from '../_models/profile';
+import { SocialLink, SocialLinkRequest } from '../_models/social-link';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,7 @@ import { ProfileUpdateRequest } from '../_models/profile';
 export class ProfileService {
   private apiBaseUrl = 'http://localhost:8080'; // Base API URL
   private apiUrl = `${this.apiBaseUrl}/api/profiles`; // Full profiles endpoint
+  private socialLinksApiUrl = (userId: number) => `${this.apiUrl}/${userId}/social-links`; // Added for social links
 
   constructor(private http: HttpClient) { }
 
@@ -54,7 +55,20 @@ export class ProfileService {
     return this.http.post(`${this.apiUrl}/bio-check`, { bio }, { responseType: 'text' });
   }
 
+  // --- SocialLink Methods for Frontend Service ---
+  getSocialLinks(userId: number): Observable<SocialLink[]> {
+    return this.http.get<SocialLink[]>(this.socialLinksApiUrl(userId));
+  }
 
+  addSocialLink(userId: number, socialLinkReq: SocialLinkRequest): Observable<SocialLink> {
+    return this.http.post<SocialLink>(this.socialLinksApiUrl(userId), socialLinkReq);
+  }
 
+  updateSocialLink(userId: number, linkId: number, socialLinkReq: SocialLinkRequest): Observable<SocialLink> {
+    return this.http.put<SocialLink>(`${this.socialLinksApiUrl(userId)}/${linkId}`, socialLinkReq);
+  }
 
+  deleteSocialLink(userId: number, linkId: number): Observable<void> {
+    return this.http.delete<void>(`${this.socialLinksApiUrl(userId)}/${linkId}`);
+  }
 }

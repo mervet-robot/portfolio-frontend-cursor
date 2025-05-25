@@ -580,8 +580,8 @@
           <div class="form-row">
             <mat-form-field appearance="outline" class="form-field">
               <mat-label>Language Name</mat-label>
-              <input matInput formControlName="name" required [matAutocomplete]="auto"/>
-              <mat-autocomplete #auto="matAutocomplete">
+              <input matInput formControlName="name" required [matAutocomplete]="autoLang"/>
+              <mat-autocomplete #autoLang="matAutocomplete">
                 <mat-option *ngFor="let language of languageExamples" [value]="language">
                   {{ language }}
                 </mat-option>
@@ -625,7 +625,6 @@
             </mat-form-field>
           </div>
 
-
           <mat-checkbox formControlName="nativeLanguage">Native Language</mat-checkbox>
 
           <div class="button-row">
@@ -636,11 +635,9 @@
           </div>
         </form>
 
-        <!-- List of existing languages -->
         <div class="section-header" *ngIf="languages.length > 0">
           <h4>Your Languages</h4>
         </div>
-
         <div class="languages-grid">
           <mat-card *ngFor="let language of languages" class="language-card">
             <mat-card-header>
@@ -654,7 +651,6 @@
                 <mat-icon color="warn">delete</mat-icon>
               </button>
             </mat-card-header>
-
             <mat-card-content *ngIf="language.certification || language.certificateUrl">
               <div class="language-details">
                 <div *ngIf="language.certification">
@@ -669,11 +665,86 @@
             </mat-card-content>
           </mat-card>
         </div>
+
       </div>
 
 
-      <!-- Step 8: Bio-profile -->
-      <div *ngIf="currentStep === 8" [formGroup]="profileForm" class="step-content">
+        <!-- Step 8: Social Links -->
+      <div *ngIf="currentStep === 8" class="step-content">
+        <mat-divider style="margin-top: 30px; margin-bottom: 20px;"></mat-divider>
+        <h3>Social Links</h3>
+
+        <div class="section-header">
+          <h4>{{ editingSocialLinkId !== null ? 'Edit' : 'Add' }} Social Link</h4>
+        </div>
+
+        <form [formGroup]="socialLinkForm" (ngSubmit)="addOrUpdateSocialLink()" class="social-link-form">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Platform</mat-label>
+              <mat-select formControlName="platform" required>
+                <mat-option *ngFor="let platform of availablePlatforms" [value]="platform">
+                  {{ platform }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="socialLinkForm.get('platform')?.hasError('required')">
+                Platform is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field url-field">
+              <mat-label>URL</mat-label>
+              <input matInput formControlName="url" required placeholder="https://www.linkedin.com/in/yourprofile">
+              <mat-error *ngIf="socialLinkForm.get('url')?.hasError('required')">
+                URL is required
+              </mat-error>
+              <mat-error *ngIf="socialLinkForm.get('url')?.hasError('pattern') && !socialLinkForm.get('url')?.hasError('required')">
+                Please enter a valid URL (e.g., https://example.com)
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="button-row">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!socialLinkForm.valid">
+              <mat-icon>{{ editingSocialLinkId !== null ? 'save' : 'add' }}</mat-icon>
+              {{ editingSocialLinkId !== null ? 'Update Link' : 'Add Link' }}
+            </button>
+            <button mat-button type="button" (click)="cancelEditSocialLink()" *ngIf="editingSocialLinkId !== null">
+              <mat-icon>cancel</mat-icon>
+              Cancel Edit
+            </button>
+          </div>
+        </form>
+
+        <div class="section-header" *ngIf="socialLinks.length > 0">
+          <h4>Your Social Links</h4>
+        </div>
+
+        <mat-list *ngIf="socialLinks.length > 0">
+          <mat-list-item *ngFor="let link of socialLinks" class="social-list-item">
+            <mat-icon matListItemIcon class="platform-icon">link</mat-icon>
+            <div matListItemTitle class="link-url"><a [href]="link.url" target="_blank" rel="noopener noreferrer">{{ link.url }}</a></div>
+            <div matListItemLine class="link-platform">{{ link.platform }}</div>
+
+            <span class="spacer"></span>
+
+            <button mat-icon-button (click)="editSocialLink(link)" matTooltip="Edit Link" class="list-action-button">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteSocialLink(link.id)" matTooltip="Delete Link" class="list-action-button">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+
+        <p *ngIf="socialLinks.length === 0 && !editingSocialLinkId">
+            You haven't added any social links yet. Use the form above to add them.
+        </p>
+        <!-- End of Social Links Section -->
+      </div>
+
+      <!-- Step 9: Bio-profile -->
+      <div *ngIf="currentStep === 9" [formGroup]="profileForm" class="step-content">
         <h3>Bio-profile</h3>
 
 
@@ -749,6 +820,11 @@
       </button>
 
 
+      <button *ngIf="currentStep === 9" mat-button  (click)="prevStep()">
+        <mat-icon>arrow_back</mat-icon>
+        Back
+      </button>
+
 
       <span class="spacer"></span>
 
@@ -778,13 +854,17 @@
         Next:  Language
       </button>
 
-
       <button *ngIf="currentStep === 7" mat-raised-button color="primary" (click)="nextStep()">
+        Next:  Socials
+      </button>
+
+
+      <button *ngIf="currentStep === 8" mat-raised-button color="primary" (click)="nextStep()">
         Next:  Bio-profile
       </button>
 
-      <button *ngIf="currentStep === 8" mat-raised-button color="primary" (click)="saveProfile()">
-        Save
+      <button *ngIf="currentStep === 9" mat-raised-button color="primary" (click)="saveProfile()">
+        Save & Complete
       </button>
 
 

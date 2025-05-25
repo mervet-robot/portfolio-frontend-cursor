@@ -1,54 +1,64 @@
 <div class="cv-container">
   <!-- Header Section -->
   <header class="cv-header">
-
-
     <div class="profile-photo-container">
       <img [src]="getProfilePictureUrl() || 'assets/default-avatar.png'"
            alt="Profile Photo" class="profile-photo">
-
-      <input type="file" #fileInput
-             (change)="onFileSelected($event)"
-             style="display: none;"
-             accept="image/jpeg, image/png, image/gif">
-
-      <!-- Verification status -->
-      <div class="verification-status"
-           [class.verified]="isHumanVerified"
-           [class.not-verified]="!isHumanVerified && verificationMessage"
-           [class.verifying]="isVerifying">
+      <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" accept="image/jpeg, image/png, image/gif">
+      <div class="verification-status" [class.verified]="isHumanVerified" [class.not-verified]="!isHumanVerified && verificationMessage" [class.verifying]="isVerifying">
         <mat-spinner *ngIf="isVerifying" diameter="20"></mat-spinner>
         <mat-icon *ngIf="!isVerifying && isHumanVerified">check_circle</mat-icon>
         <mat-icon *ngIf="!isVerifying && !isHumanVerified && verificationMessage">warning</mat-icon>
         {{ verificationMessage }}
       </div>
-
-
       <button mat-icon-button (click)="fileInput.click()" class="upload-btn">
         <mat-icon>photo_camera</mat-icon>
       </button>
-
-
     </div>
-
-
 
     <div class="header-content">
       <h1>{{profileForm.get('firstName')?.value || 'First'}} {{profileForm.get('lastName')?.value || 'Last'}}</h1>
       <p class="title">{{profileForm.get('diploma')?.value || 'Your Profession'}}</p>
 
       <div class="contact-info">
-
-          <span *ngIf="profileForm.get('email')?.value" class="contact-item">
-            <mat-icon>email</mat-icon>
-            {{ profileForm.get('email')?.value }}
-          </span>
-
+        <span *ngIf="profileForm.get('email')?.value" class="contact-item">
+          <mat-icon>email</mat-icon> {{ profileForm.get('email')?.value }}
+        </span>
         <span *ngIf="profileForm.get('phoneNumber')?.value" class="contact-item">
-          <mat-icon>phone</mat-icon>
-          {{ profileForm.get('phoneNumber')?.value }}
+          <mat-icon>phone</mat-icon> {{ profileForm.get('phoneNumber')?.value }}
+        </span>
+        <span *ngIf="profileForm.get('address')?.value" class="contact-item">
+          <mat-icon>home</mat-icon> {{ profileForm.get('address')?.value }}
         </span>
 
+        <!-- Social Links Display and Management in Header -->
+        <div class="social-links-contact-group">
+          <div *ngFor="let link of socialLinks" class="contact-item social-link-item-header">
+            <a [href]="link.url" target="_blank" [matTooltip]="link.platform + ': ' + link.url" class="social-link-anchor">
+              <mat-icon [fontSet]="link.platform.toLowerCase() === 'linkedin' ? 'fab' : 'fas'" 
+                        [fontIcon]="link.platform.toLowerCase() === 'linkedin' ? 'fa-linkedin' : 
+                                    link.platform.toLowerCase() === 'github' ? 'fa-github' : 
+                                    link.platform.toLowerCase() === 'twitter' ? 'fa-twitter' : 
+                                    'fa-link'"
+                        aria-hidden="true"></mat-icon>
+              <span class="social-link-platform-name">{{ link.platform }}</span>
+            </a>
+            <button mat-icon-button (click)="openSocialLinkDialog(link)" class="control-button edit-social-link-btn" matTooltip="Edit {{link.platform}} link">
+              <mat-icon>edit_note</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteSocialLink(link.id)" color="warn" class="control-button delete-social-link-btn" matTooltip="Delete {{link.platform}} link">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+          <div class="contact-item add-social-link-header" *ngIf="socialLinks.length < 5"> <!-- Limit number of links or adjust UI -->
+            <button mat-stroked-button color="primary" (click)="openSocialLinkDialog()" matTooltip="Add new social link">
+              <mat-icon>add_link</mat-icon> Add Link
+            </button>
+          </div>
+           <p *ngIf="!socialLinks || socialLinks.length === 0" class="no-social-links-text">
+            No social links yet. Click 'Add Link' to connect.
+          </p>
+        </div>
       </div>
     </div>
   </header>
@@ -58,13 +68,17 @@
     <!-- Left Column -->
     <div class="cv-left-column">
       <!-- Profile Section -->
-      <section class="cv-section">
-        <h2 class="section-title">
-          <mat-icon>person</mat-icon> Profile
-          <button mat-icon-button (click)="editProfile()" class="edit-btn">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </h2>
+      <section class="cv-section profile-section-card">
+        <div class="section-header-controls">
+          <h2 class="section-title">
+            <mat-icon>person</mat-icon> Profile
+          </h2>
+          <div>
+            <button mat-icon-button (click)="editProfile()" *ngIf="!editingProfile" class="edit-btn" matTooltip="Edit Bio">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+        </div>
         <div *ngIf="!editingProfile; else profileEditForm">
           <p class="bio">{{profileForm.get('bio')?.value || 'Add your professional summary'}}</p>
         </div>

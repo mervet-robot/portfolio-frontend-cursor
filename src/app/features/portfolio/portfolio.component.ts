@@ -1,10 +1,8 @@
-
 import {Component, Input, OnInit} from '@angular/core';
 import {ProfileService} from '../../_services/profile.service';
 import {ExperienceService} from '../../_services/experience.service';
 import {FormationService} from '../../_services/formation.service';
 import {LanguageService} from '../../_services/language.service';
-import {SkillService} from '../../_services/skill.service';
 import {TokenService} from '../../_services/token.service';
 import {Experience} from '../../_models/experience';
 import {Formation} from '../../_models/formation';
@@ -13,6 +11,7 @@ import {SoftSkillRequest, SoftSkillResponse} from '../../_models/soft-skill';
 import {SkillLevel, TechSkillRequest, TechSkillResponse} from '../../_models/tech-skill';
 import {CertificationRequest, CertificationResponse} from '../../_models/certification';
 import {ProjectRequest, ProjectResponse, ProjectStatus} from '../../_models/project';
+import {SocialLink, SocialLinkRequest} from '../../_models/social-link';
 import {SoftSkillService} from '../../_services/soft-skill.service';
 import {TechSkillService} from '../../_services/tech-skill.service';
 import {CertificationService} from '../../_services/certification.service';
@@ -23,8 +22,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {HttpClient, HttpEventType} from '@angular/common/http';
-import {ProfileUpdateRequest} from '../../_models/profile';
+import {ProfileUpdateRequest, Profile} from '../../_models/profile';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
+import {SocialLinkDialogComponent, SocialLinkDialogData} from './social-link-dialog/social-link-dialog.component';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 
@@ -35,9 +35,10 @@ import {MatChipInputEvent} from '@angular/material/chips';
   styleUrl: './portfolio.component.scss'
 })
 export class PortfolioComponent implements OnInit {
-  // User ID
   userId: number;
-  profileId: number;
+  profile: Profile | null = null;
+  socialLinks: SocialLink[] = [];
+  availablePlatforms: string[] = ['LinkedIn', 'GitHub', 'Twitter', 'Facebook', 'Instagram', 'Portfolio', 'Personal Website', 'Other'];
 
   // Form visibility toggles
   editingProfile = false;
@@ -71,6 +72,9 @@ export class PortfolioComponent implements OnInit {
   profileForm!: FormGroup;
   previewUrl: string | ArrayBuffer | null = null;
   uploadProgress: number | null = null;
+  verificationMessage: string = '';
+  isHumanVerified: boolean = false;
+  isVerifying: boolean = false;
 
   // Experience Form
   experienceForm!: FormGroup;
@@ -129,40 +133,29 @@ export class PortfolioComponent implements OnInit {
     private projectService: ProjectService,
     private tokenService: TokenService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog,
+    public dialog: MatDialog,
     private http: HttpClient,
-
   ) {
     this.userId = this.tokenService.getUser().id;
-    this.profileId = this.tokenService.getUser().id;
-
   }
 
   ngOnInit(): void {
     this.initForms();
-    this.loadProfileData();
-    this.loadExperiences();
-    this.loadFormations();
-    this.loadTechSkills();
-    this.loadSoftSkills();
-    this.loadCertifications();
-    this.loadLanguages();
-    this.loadProjects();
+    this.loadInitialData();
   }
 
   initForms(): void {
-    // Profile Form
     this.profileForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       phoneNumber: [''],
       diploma: [''],
       bio: [''],
-      profilePicture: ['']
+      profilePicture: [''],
+      address: [''],
+      centre: [null]
     });
-
-    // Experience Form
     this.experienceForm = this.fb.group({
       title: ['', Validators.required],
       company: ['', Validators.required],
@@ -172,8 +165,6 @@ export class PortfolioComponent implements OnInit {
       endDate: [''],
       current: [false]
     });
-
-    // Education Form
     this.formationForm = this.fb.group({
       degree: ['', Validators.required],
       institution: ['', Validators.required],
@@ -183,8 +174,6 @@ export class PortfolioComponent implements OnInit {
       current: [false],
       description: ['']
     });
-
-    // Technical Skills Form
     this.techSkillForm = this.fb.group({
       name: ['', Validators.required],
       level: [SkillLevel.INTERMEDIATE, Validators.required],
@@ -192,13 +181,9 @@ export class PortfolioComponent implements OnInit {
       yearsOfExperience: [0, [Validators.required, Validators.min(0), Validators.max(50)]],
       verified: [false]
     });
-
-    // Soft Skills Form
     this.softSkillForm = this.fb.group({
       name: ['', Validators.required]
     });
-
-    // Certification Form
     this.certificationForm = this.fb.group({
       name: ['', Validators.required],
       issuingOrganization: ['', Validators.required],
@@ -207,8 +192,6 @@ export class PortfolioComponent implements OnInit {
       credentialId: [''],
       credentialUrl: ['']
     });
-
-    // Language Form
     this.languageForm = this.fb.group({
       name: ['', Validators.required],
       proficiency: [ProficiencyLevel.INTERMEDIATE, Validators.required],
@@ -216,8 +199,6 @@ export class PortfolioComponent implements OnInit {
       certificateUrl: [''],
       nativeLanguage: [false]
     });
-
-    // Project Form
     this.projectForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -230,14 +211,124 @@ export class PortfolioComponent implements OnInit {
     });
   }
 
-  // Load Data Methods
-  loadProfileData(): void {
-    this.profileService.getProfile(this.userId).subscribe(profile => {
-      if (profile) {
-        this.profileForm.patchValue(profile);
+  loadInitialData(): void {
+    this.profileService.getProfile(this.userId).subscribe({
+      next: profileData => {
+        if (profileData) {
+          this.profile = profileData as Profile;
+          this.profileForm.patchValue(this.profile);
+          // if (this.profile.profilePicture) { // This line was commented out, check if needed
+          //   // previewUrl is used by getProfilePictureUrl if image just uploaded
+          //   // this.previewUrl = this.profileService.getFullImageUrl(this.profile.profilePicture);
+          // }
+        }
+      },
+      error: error => {
+        console.error('Failed to load profile:', error);
+        this.snackBar.open('Could not load profile data.', 'Close', { duration: 3000 });
+      }
+    });
+    // Load other data after attempting to load profile
+    this.loadSocialLinks();
+    this.loadExperiences();
+    this.loadFormations();
+    this.loadTechSkills();
+    this.loadSoftSkills();
+    this.loadCertifications();
+    this.loadLanguages();
+    this.loadProjects();
+  }
+  
+  loadSocialLinks(): void {
+    this.profileService.getSocialLinks(this.userId).subscribe({
+      next: (links) => {
+        this.socialLinks = links;
+      },
+      error: (err) => {
+        console.error('Failed to load social links:', err);
+        this.snackBar.open('Could not load social links.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
       }
     });
   }
+
+  // --- Social Link Management via Dialog ---
+  openSocialLinkDialog(linkToEdit?: SocialLink): void {
+    const dialogRef = this.dialog.open(SocialLinkDialogComponent, {
+      width: '500px',
+      data: { 
+        link: linkToEdit, 
+        availablePlatforms: this.availablePlatforms,
+        userId: this.userId
+      } as SocialLinkDialogData
+    });
+
+    dialogRef.afterClosed().subscribe((result: SocialLinkRequest | undefined) => {
+      if (result) { // User saved the dialog
+        if (linkToEdit && linkToEdit.id !== undefined) {
+          // Update existing link
+          this.profileService.updateSocialLink(this.userId, linkToEdit.id, result).subscribe({
+            next: (updatedLink) => {
+              const index = this.socialLinks.findIndex(l => l.id === updatedLink.id);
+              if (index !== -1) {
+                this.socialLinks[index] = updatedLink;
+              }
+              this.snackBar.open('Social link updated!', 'Close', { duration: 3000, panelClass: ['success-snackbar'] });
+            },
+            error: (err) => {
+                console.error('Failed to update social link:', err);
+                this.snackBar.open('Error updating social link.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
+            }
+          });
+        } else {
+          // Add new link
+          this.profileService.addSocialLink(this.userId, result).subscribe({
+            next: (newLink) => {
+              this.socialLinks.push(newLink);
+              this.snackBar.open('Social link added!', 'Close', { duration: 3000, panelClass: ['success-snackbar'] });
+            },
+            error: (err) => {
+                console.error('Failed to add social link:', err);
+                this.snackBar.open('Error adding social link.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
+            }
+          });
+        }
+      }
+    });
+  }
+
+  deleteSocialLink(linkId: number | undefined): void {
+    if (linkId === undefined) {
+      this.snackBar.open('Cannot delete: Link ID is missing.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '450px',
+      data: { 
+        title: 'Delete Social Link',
+        message: 'Are you sure you want to delete this social link?',
+        confirmText: 'Delete',
+        cancelText: 'Cancel',
+        confirmColor: 'warn' // Good practice to make delete destructive actions clear
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.profileService.deleteSocialLink(this.userId, linkId).subscribe({
+          next: () => {
+            this.socialLinks = this.socialLinks.filter(l => l.id !== linkId);
+            this.snackBar.open('Social link deleted.', 'Close', { duration: 3000, panelClass: ['success-snackbar'] });
+          },
+          error: (err) => {
+            console.error('Failed to delete social link:', err);
+            this.snackBar.open('Error deleting social link.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
+          }
+        });
+      }
+    });
+  }
+  // --- End Social Link Management ---
 
   loadExperiences(): void {
     this.experienceService.getExperiences(this.userId).subscribe({
@@ -314,25 +405,32 @@ export class PortfolioComponent implements OnInit {
     });
   }
 
-  // Profile Methods
   editProfile(): void {
     this.editingProfile = true;
   }
 
   cancelEdit(): void {
     this.editingProfile = false;
-    this.loadProfileData();
+    // Re-patch form with original profile data if changes are cancelled
+    if (this.profile) {
+        this.profileForm.patchValue(this.profile);
+    } else {
+        this.loadInitialData(); // Or reload if profile is null for some reason
+    }
   }
 
   saveProfile(): void {
     if (this.profileForm.valid) {
       const profileData: ProfileUpdateRequest = {
         ...this.profileForm.value,
-        socialLinks: []
+        // socialLinks are managed separately, so not sending them from here.
+        // id: this.profile?.id, // id is part of the URL path, not body
       };
 
       this.profileService.updateProfile(this.userId, profileData).subscribe({
-        next: () => {
+        next: (updatedProfile) => {
+          this.profile = updatedProfile as Profile; // Update local profile cache
+          this.profileForm.patchValue(this.profile); // Re-patch form with response
           this.editingProfile = false;
           this.snackBar.open('Profile updated successfully', 'Close', {
             duration: 3000,
@@ -350,7 +448,6 @@ export class PortfolioComponent implements OnInit {
     }
   }
 
-  // Experience Methods
   addExperience(): void {
     if (this.experienceForm.valid) {
       if (this.editingExperience && this.currentExperienceId) {
@@ -394,7 +491,7 @@ export class PortfolioComponent implements OnInit {
 
   updateExperience(): void {
     if (this.currentExperienceId) {
-      this.experienceService.updateExperience(this.profileId,this.currentExperienceId, this.experienceForm.value).subscribe({
+      this.experienceService.updateExperience(this.userId ,this.currentExperienceId, this.experienceForm.value).subscribe({
         next: (updatedExperience) => {
           const index = this.experiences.findIndex(e => e.id === this.currentExperienceId);
           if (index !== -1) {
@@ -457,7 +554,6 @@ export class PortfolioComponent implements OnInit {
     this.currentExperienceId = null;
   }
 
-  // Education Methods
   addFormation(): void {
     if (this.formationForm.valid) {
       if (this.editingEducation && this.currentFormationId) {
@@ -501,7 +597,7 @@ export class PortfolioComponent implements OnInit {
 
   updateFormation(): void {
     if (this.currentFormationId) {
-      this.formationService.updateFormation(this.profileId, this.currentFormationId, this.formationForm.value).subscribe({
+      this.formationService.updateFormation(this.userId, this.currentFormationId, this.formationForm.value).subscribe({
         next: (updatedFormation) => {
           const index = this.formations.findIndex(f => f.id === this.currentFormationId);
           if (index !== -1) {
@@ -564,7 +660,6 @@ export class PortfolioComponent implements OnInit {
     this.currentFormationId = null;
   }
 
-  // Technical Skills Methods
   addTechSkill(): void {
     if (this.techSkillForm.valid) {
       const request: TechSkillRequest = this.techSkillForm.value;
@@ -676,7 +771,6 @@ export class PortfolioComponent implements OnInit {
     this.currentTechSkillId = null;
   }
 
-  // Soft Skills Methods
   addSoftSkill(): void {
     if (this.softSkillForm.valid) {
       const request: SoftSkillRequest = { name: this.softSkillForm.value.name };
@@ -780,7 +874,6 @@ export class PortfolioComponent implements OnInit {
     this.currentSoftSkillId = null;
   }
 
-  // Certification Methods
   addCertification(): void {
     if (this.certificationForm.valid) {
       const request: CertificationRequest = this.certificationForm.value;
@@ -889,7 +982,6 @@ export class PortfolioComponent implements OnInit {
     this.currentCertificationId = null;
   }
 
-  // Language Methods
   addLanguage(): void {
     if (this.languageForm.valid) {
       const request: LanguageRequest = this.languageForm.value;
@@ -1000,7 +1092,6 @@ export class PortfolioComponent implements OnInit {
     this.currentLanguageId = null;
   }
 
-  // Project Methods
   addProject(): void {
     if (this.projectForm.valid) {
       const request: ProjectRequest = this.projectForm.value;
@@ -1112,7 +1203,6 @@ export class PortfolioComponent implements OnInit {
     this.currentProjectId = null;
   }
 
-  // Technology chips methods
   addTech(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
@@ -1132,53 +1222,42 @@ export class PortfolioComponent implements OnInit {
     }
   }
 
-  // Profile Photo Upload
-  // -----------------Upload Image + Save Profile
-
-// This method should be added to your component
   getProfilePictureUrl(): string {
+    // Use this.profile.profilePicture if available and valid, otherwise form, then preview, then default
+    let picPath = this.profile?.profilePicture;
+    
+    if (!picPath) {
+      picPath = this.profileForm.get('profilePicture')?.value;
+    }
+
+    if (picPath) {
+      if (picPath.startsWith('http://') || picPath.startsWith('https://')) {
+        return picPath;
+      }
+      return this.profileService.getFullImageUrl(picPath);
+    }
+
     if (this.previewUrl) {
       return this.previewUrl as string;
     }
-
-    const profilePicture = this.profileForm.get('profilePicture')?.value;
-    if (!profilePicture) {
-      return 'assets/default-avatar.png';
-    }
-
-    // If the path already starts with http:// or https://, return it as is
-    if (profilePicture.startsWith('http://') || profilePicture.startsWith('https://')) {
-      return profilePicture;
-    }
-
-    // Otherwise, prepend the base URL
-    return this.profileService.getFullImageUrl(profilePicture);
+    
+    return 'assets/default-avatar.png';
   }
 
-  // Add these properties to your component class
-  verificationMessage: string = '';
-  isHumanVerified: boolean = false;
-  isVerifying: boolean = false;
-  //------ Add this new method for LLM verification PICTURE-----
   async verifyWithLLM(file: File): Promise<void> {
     this.verificationMessage = 'Verifying image...';
-
-    // Convert file to base64
     const base64Image = await this.fileToBase64(file);
-
-    // Call Hugging Face API (using a free model)
     const response: any = await this.http.post(
       'https://api-inference.huggingface.co/models/facebook/detr-resnet-50',
       { inputs: base64Image },
       {
         headers: {
-          'Authorization': 'Bearer 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', // Get free key from Hugging Face
+          'Authorization': 'Bearer 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', 
           'Content-Type': 'application/json'
         }
       }
     ).toPromise();
 
-    // Check if human is detected
     const hasPerson = response.some((item: any) =>
       item.label.toLowerCase().includes('person') && item.score > 0.7
     );
@@ -1192,35 +1271,26 @@ export class PortfolioComponent implements OnInit {
     }
   }
 
-  // Helper method to convert file to base64
   private fileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
         const result = reader.result as string;
-        // Remove the data:image/...;base64, prefix
         resolve(result.split(',')[1]);
       };
       reader.onerror = error => reject(error);
     });
   }
 
-  // ----- END LLM verification PICTURE ---------
-
-
-// Update your onFileSelected method
-// Update your onFileSelected method
   async onFileSelected(event: any): Promise<void> {
     const file: File = event.target.files[0];
     if (file) {
-      // Reset states
       this.uploadProgress = 0;
       this.verificationMessage = '';
       this.isHumanVerified = false;
       this.isVerifying = true;
 
-      // Validate file type and size first
       if (!file.type.match(/image\/(jpeg|png|gif)/)) {
         this.snackBar.open('Only JPEG, PNG, or GIF images are allowed', 'Close', {
           duration: 5000,
@@ -1239,17 +1309,13 @@ export class PortfolioComponent implements OnInit {
         return;
       }
 
-      // Create preview
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = async () => {
-        this.previewUrl = reader.result;
+        this.previewUrl = reader.result; // Set preview for immediate display
 
-        // Perform verification
         try {
           await this.verifyWithLLM(file);
-
-          // Only proceed with upload if human is verified
           if (this.isHumanVerified) {
             this.uploadProfilePicture(file);
           } else {
@@ -1257,9 +1323,8 @@ export class PortfolioComponent implements OnInit {
               duration: 5000,
               panelClass: ['error-snackbar']
             });
-            // Reset preview if not human
-            this.previewUrl = null;
-            event.target.value = ''; // Clear the file input
+            this.previewUrl = this.profile?.profilePicture ? this.profileService.getFullImageUrl(this.profile.profilePicture) : 'assets/default-avatar.png'; // Revert to original or default if verification fails
+            event.target.value = ''; 
           }
         } catch (error) {
           console.error('Verification failed:', error);
@@ -1269,6 +1334,7 @@ export class PortfolioComponent implements OnInit {
             duration: 5000,
             panelClass: ['error-snackbar']
           });
+           this.previewUrl = this.profile?.profilePicture ? this.profileService.getFullImageUrl(this.profile.profilePicture) : 'assets/default-avatar.png'; // Revert on error
         } finally {
           this.isVerifying = false;
         }
@@ -1276,28 +1342,18 @@ export class PortfolioComponent implements OnInit {
     }
   }
 
-// Extract the upload logic to a separate method
   private uploadProfilePicture(file: File): void {
     this.profileService.uploadProfilePicture(this.userId, file).subscribe({
       next: (event: any) => {
         if (event.type === HttpEventType.UploadProgress) {
-          // Update progress
           this.uploadProgress = Math.round(100 * event.loaded / event.total);
         } else if (event.type === HttpEventType.Response) {
-          // Handle successful upload
           this.uploadProgress = null;
-
-          // Get the profile data from the response
-          const profileData = event.body;
-
-          if (profileData && profileData.profilePicture) {
-            // Update form with the new image path
-            this.profileForm.patchValue({ profilePicture: profileData.profilePicture });
-
-            // Reset preview (will now use the form value)
-            this.previewUrl = null;
-
-            // Show success message
+          const updatedProfile = event.body as Profile;
+          if (updatedProfile && updatedProfile.profilePicture) {
+            this.profile = updatedProfile; // Update the main profile object
+            this.profileForm.patchValue({ profilePicture: updatedProfile.profilePicture });
+            this.previewUrl = null; // Clear preview, getProfilePictureUrl will now use profile.profilePicture
             this.snackBar.open('Profile picture updated successfully!', 'Close', {
               duration: 3000,
               panelClass: ['success-snackbar']
@@ -1308,7 +1364,7 @@ export class PortfolioComponent implements OnInit {
       error: (err) => {
         console.error('Upload error:', err);
         this.uploadProgress = null;
-        this.previewUrl = null;
+        this.previewUrl = this.profile?.profilePicture ? this.profileService.getFullImageUrl(this.profile.profilePicture) : 'assets/default-avatar.png'; // Revert to original or default on error
         this.snackBar.open('Error uploading image. Please try again.', 'Close', {
           duration: 5000,
           panelClass: ['error-snackbar']
@@ -1316,7 +1372,5 @@ export class PortfolioComponent implements OnInit {
       }
     });
   }
-
-
 }
 
