@@ -10,7 +10,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 export class BioCorrectionDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<BioCorrectionDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { original: string, corrected: string }
+    @Inject(MAT_DIALOG_DATA) public data: { original: string, corrected: string, title?: string }
   ) {}
 
   apply(): void {

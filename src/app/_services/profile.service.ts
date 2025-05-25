@@ -55,6 +55,10 @@ export class ProfileService {
     return this.http.post(`${this.apiUrl}/bio-check`, { bio }, { responseType: 'text' });
   }
 
+  generateBio(userId: number, portfolioSummary: any): Observable<string> {
+    return this.http.post(`${this.apiUrl}/${userId}/generate-bio`, portfolioSummary, { responseType: 'text' });
+  }
+
   // --- SocialLink Methods for Frontend Service ---
   getSocialLinks(userId: number): Observable<SocialLink[]> {
     return this.http.get<SocialLink[]>(this.socialLinksApiUrl(userId));

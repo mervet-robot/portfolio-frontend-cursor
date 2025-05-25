@@ -106,7 +106,15 @@
                   strokeWidth="3">
                 </mat-progress-spinner>
               </button>
-
+              <button mat-icon-button matSuffix (click)="generateBioFromPortfolioData()" [disabled]="generatingBio || editingProfile === false" matTooltip="Generate Bio from Portfolio Data">
+                <mat-icon *ngIf="!generatingBio">smart_toy</mat-icon> <!-- Or any other suitable icon like auto_awesome -->
+                <mat-progress-spinner
+                  *ngIf="generatingBio"
+                  diameter="20"
+                  mode="indeterminate"
+                  strokeWidth="3">
+                </mat-progress-spinner>
+              </button>
 
             </mat-form-field>
             <div class="form-actions">
