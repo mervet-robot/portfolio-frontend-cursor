@@ -1,4 +1,11 @@
 <div class="landing-container">
+
+  <!-- New register button in top right (absolute positioned) -->
+  <button mat-raised-button color="accent" (click)="navigateToRegister()" class="register-button">
+    <mat-icon>person_add</mat-icon>
+    Register
+  </button>
+
   <div class="section login">
     <h2>Already have an account?</h2>
     <button mat-raised-button color="primary" (click)="goTo('/login')">Login</button>

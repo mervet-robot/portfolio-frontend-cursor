@@ -185,9 +185,9 @@ export class ProfileWizardComponent  implements OnInit {
       name: ['', Validators.required],
       issuingOrganization: ['', Validators.required],
       issueDate: [''],
-      expirationDate: [''],
-      credentialId: [''],
-      credentialUrl: ['']
+      expiryDate: [''],
+      certificateUrl: [''],
+      validationLink: ['']
     });
 
     this.techSkillForm = this.fb.group({
@@ -238,6 +238,7 @@ export class ProfileWizardComponent  implements OnInit {
           diploma: profile.diploma,
           bio: profile.bio,
           address: profile.address,
+          centre: profile.centre,
           profilePicture: profile.profilePicture
         });
 
@@ -1057,9 +1058,9 @@ export class ProfileWizardComponent  implements OnInit {
       this.profileForm.valid,
       this.experiences.length > 0,
       this.formations.length > 0,
+      this.certifications.length > 0,
       this.languages.length > 0,
       this.socialLinks.length > 0,
-
       this.softSkills.length > 0,
       this.techSkills.length > 0,
       this.projects.length > 0

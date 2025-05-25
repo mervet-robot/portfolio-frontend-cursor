@@ -35,30 +35,37 @@
         <div class="social-links-contact-group">
           <div *ngFor="let link of socialLinks" class="contact-item social-link-item-header">
             <a [href]="link.url" target="_blank" [matTooltip]="link.platform + ': ' + link.url" class="social-link-anchor">
-              <mat-icon [fontSet]="link.platform.toLowerCase() === 'linkedin' ? 'fab' : 'fas'" 
-                        [fontIcon]="link.platform.toLowerCase() === 'linkedin' ? 'fa-linkedin' : 
-                                    link.platform.toLowerCase() === 'github' ? 'fa-github' : 
-                                    link.platform.toLowerCase() === 'twitter' ? 'fa-twitter' : 
-                                    'fa-link'"
-                        aria-hidden="true"></mat-icon>
-              <span class="social-link-platform-name">{{ link.platform }}</span>
+              <mat-icon
+                [fontSet]="getFontAwesomeSet(link.platform)"
+                [fontIcon]="getFontAwesomeIcon(link.platform)"
+                aria-hidden="true"
+                class="social-icon">
+              </mat-icon>
+
+              <!-- Remove or comment the platform name to show only the icon -->
+              <!-- <span class="social-link-platform-name">{{ link.platform }}</span> -->
             </a>
+
             <button mat-icon-button (click)="openSocialLinkDialog(link)" class="control-button edit-social-link-btn" matTooltip="Edit {{link.platform}} link">
               <mat-icon>edit_note</mat-icon>
             </button>
+
             <button mat-icon-button (click)="deleteSocialLink(link.id)" color="warn" class="control-button delete-social-link-btn" matTooltip="Delete {{link.platform}} link">
               <mat-icon>delete_outline</mat-icon>
             </button>
           </div>
-          <div class="contact-item add-social-link-header" *ngIf="socialLinks.length < 5"> <!-- Limit number of links or adjust UI -->
+
+          <div class="contact-item add-social-link-header" *ngIf="socialLinks.length < 5">
             <button mat-stroked-button color="primary" (click)="openSocialLinkDialog()" matTooltip="Add new social link">
               <mat-icon>add_link</mat-icon> Add Link
             </button>
           </div>
-           <p *ngIf="!socialLinks || socialLinks.length === 0" class="no-social-links-text">
+
+          <p *ngIf="!socialLinks || socialLinks.length === 0" class="no-social-links-text">
             No social links yet. Click 'Add Link' to connect.
           </p>
         </div>
+
       </div>
     </div>
   </header>
@@ -67,7 +74,7 @@
   <main class="cv-main">
     <!-- Left Column -->
     <div class="cv-left-column">
-      <!-- Profile Section -->
+      <!-- Profile Bio Section -->
       <section class="cv-section profile-section-card">
         <div class="section-header-controls">
           <h2 class="section-title">
@@ -84,9 +91,23 @@
         </div>
         <ng-template #profileEditForm>
           <form [formGroup]="profileForm" class="edit-form">
+
+
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Bio</mat-label>
               <textarea matInput formControlName="bio" rows="4"></textarea>
+
+              <button mat-icon-button matSuffix (click)="verifyBio()" [disabled]="verifyingBio" matTooltip="Check grammar">
+                <mat-icon *ngIf="!verifyingBio">spellcheck</mat-icon>
+                <mat-progress-spinner
+                  *ngIf="verifyingBio"
+                  diameter="20"
+                  mode="indeterminate"
+                  strokeWidth="3">
+                </mat-progress-spinner>
+              </button>
+
+
             </mat-form-field>
             <div class="form-actions">
               <button mat-button (click)="cancelEdit()">Cancel</button>
@@ -534,18 +555,18 @@
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>Expiration Date</mat-label>
-                <input matInput formControlName="expirationDate" type="date">
+                <input matInput formControlName="expiryDate" type="date">
               </mat-form-field>
             </div>
 
             <div class="form-row">
               <mat-form-field appearance="outline">
                 <mat-label>Credential ID</mat-label>
-                <input matInput formControlName="credentialId">
+                <input matInput formControlName="certificateUrl">
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>Credential URL</mat-label>
-                <input matInput formControlName="credentialUrl" type="url">
+                <input matInput formControlName="validationLink" type="url">
               </mat-form-field>
             </div>
 
@@ -578,14 +599,14 @@
               <div *ngIf="cert.issueDate">
                 <strong>Issued:</strong> {{cert.issueDate | date:'MMM yyyy'}}
               </div>
-              <div *ngIf="cert.expirationDate">
-                <strong>Expires:</strong> {{cert.expirationDate | date:'MMM yyyy'}}
+              <div *ngIf="cert.expiryDate">
+                <strong>Expires:</strong> {{cert.expiryDate | date:'MMM yyyy'}}
               </div>
-              <div *ngIf="cert.credentialId">
-                <strong>Credential ID:</strong> {{cert.credentialId}}
+              <div *ngIf="cert.certificateUrl">
+                <strong>Credential ID:</strong> {{cert.certificateUrl}}
               </div>
-              <div *ngIf="cert.credentialUrl">
-                <a href="{{cert.credentialUrl}}" target="_blank" rel="noopener noreferrer">
+              <div *ngIf="cert.validationLink">
+                <a href="{{cert.validationLink}}" target="_blank" rel="noopener noreferrer">
                   <mat-icon class="link-icon">open_in_new</mat-icon> View Credential
                 </a>
               </div>

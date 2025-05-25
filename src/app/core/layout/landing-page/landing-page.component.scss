@@ -1,3 +1,15 @@
+/* Add this at the top of your SCSS file */
+.register-button {
+  //position: fixed; /* Fixed position keeps it visible even when scrolling */
+  position: sticky;
+  top: 80px;      /* Same as navbar height */
+  right: 20px;
+  align-self: flex-start; /* Keeps it on the right */
+  margin-left: auto; /* Pushes it to the right */
+  z-index: 100;
+}
+
+/* Rest of your existing SCSS */
 .landing-container {
   display: flex;
   flex-direction: row;
@@ -6,6 +18,7 @@
   padding: 2rem;
   flex-wrap: wrap;
   min-height: 80vh;
+  position: relative; /* Ensures fixed button stays relative to viewport */
 
   .section {
     flex: 1 1 300px;

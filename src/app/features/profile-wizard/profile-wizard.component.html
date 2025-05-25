@@ -361,19 +361,19 @@
 
             <mat-form-field appearance="outline" class="form-field">
               <mat-label>Expiration Date</mat-label>
-              <input matInput formControlName="expirationDate" type="date">
+              <input matInput formControlName="expiryDate" type="date">
             </mat-form-field>
           </div>
 
           <div class="form-row">
             <mat-form-field appearance="outline" class="form-field">
               <mat-label>Credential ID</mat-label>
-              <input matInput formControlName="credentialId">
+              <input matInput formControlName="certificateUrl">
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="form-field">
               <mat-label>Credential URL</mat-label>
-              <input matInput formControlName="credentialUrl" type="url">
+              <input matInput formControlName="validationLink" type="url">
               <mat-hint>Include full URL (https://)</mat-hint>
             </mat-form-field>
           </div>
@@ -406,15 +406,15 @@
               <div *ngIf="cert.issueDate">
                 <strong>Issued:</strong> {{cert.issueDate | date:'mediumDate'}}
               </div>
-              <div *ngIf="cert.expirationDate">
-                <strong>Expires:</strong> {{cert.expirationDate | date:'mediumDate'}}
+              <div *ngIf="cert.expiryDate">
+                <strong>Expires:</strong> {{cert.expiryDate | date:'mediumDate'}}
               </div>
-              <div *ngIf="cert.credentialId">
-                <strong>Credential ID:</strong> {{cert.credentialId}}
+              <div *ngIf="cert.certificateUrl">
+                <strong>Credential ID:</strong> {{cert.certificateUrl}}
               </div>
-              <div *ngIf="cert.credentialUrl">
+              <div *ngIf="cert.validationLink">
                 <strong>Verify:</strong>
-                <a href="{{cert.credentialUrl}}" target="_blank" rel="noopener noreferrer">
+                <a href="{{cert.validationLink}}" target="_blank" rel="noopener noreferrer">
                   View Credential
                   <mat-icon class="link-icon">open_in_new</mat-icon>
                 </a>

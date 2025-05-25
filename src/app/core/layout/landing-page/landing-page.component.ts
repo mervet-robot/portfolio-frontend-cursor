@@ -15,4 +15,8 @@ export class LandingPageComponent {
     this.router.navigate([path]);
   }
 
+  navigateToRegister(): void {
+    this.router.navigate(['/user-register']);
+  }
+
 }

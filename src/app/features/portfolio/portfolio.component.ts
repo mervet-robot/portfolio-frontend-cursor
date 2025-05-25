@@ -27,6 +27,7 @@ import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-d
 import {SocialLinkDialogComponent, SocialLinkDialogData} from './social-link-dialog/social-link-dialog.component';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
+import {BioCorrectionDialogComponent} from '../bio-correction-dialog/bio-correction-dialog.component';
 
 @Component({
   selector: 'app-portfolio',
@@ -188,9 +189,9 @@ export class PortfolioComponent implements OnInit {
       name: ['', Validators.required],
       issuingOrganization: ['', Validators.required],
       issueDate: [''],
-      expirationDate: [''],
-      credentialId: [''],
-      credentialUrl: ['']
+      expiryDate: [''],
+      certificateUrl: [''],
+      validationLink: ['']
     });
     this.languageForm = this.fb.group({
       name: ['', Validators.required],
@@ -238,7 +239,7 @@ export class PortfolioComponent implements OnInit {
     this.loadLanguages();
     this.loadProjects();
   }
-  
+
   loadSocialLinks(): void {
     this.profileService.getSocialLinks(this.userId).subscribe({
       next: (links) => {
@@ -255,8 +256,8 @@ export class PortfolioComponent implements OnInit {
   openSocialLinkDialog(linkToEdit?: SocialLink): void {
     const dialogRef = this.dialog.open(SocialLinkDialogComponent, {
       width: '500px',
-      data: { 
-        link: linkToEdit, 
+      data: {
+        link: linkToEdit,
         availablePlatforms: this.availablePlatforms,
         userId: this.userId
       } as SocialLinkDialogData
@@ -304,7 +305,7 @@ export class PortfolioComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '450px',
-      data: { 
+      data: {
         title: 'Delete Social Link',
         message: 'Are you sure you want to delete this social link?',
         confirmText: 'Delete',
@@ -910,9 +911,9 @@ export class PortfolioComponent implements OnInit {
       name: cert.name,
       issuingOrganization: cert.issuingOrganization,
       issueDate: cert.issueDate,
-      expirationDate: cert.expirationDate,
-      credentialId: cert.credentialId,
-      credentialUrl: cert.credentialUrl
+      expiryDate: cert.expiryDate,
+      certificateUrl: cert.certificateUrl,
+      validationLink: cert.validationLink
     });
   }
 
@@ -1225,7 +1226,7 @@ export class PortfolioComponent implements OnInit {
   getProfilePictureUrl(): string {
     // Use this.profile.profilePicture if available and valid, otherwise form, then preview, then default
     let picPath = this.profile?.profilePicture;
-    
+
     if (!picPath) {
       picPath = this.profileForm.get('profilePicture')?.value;
     }
@@ -1240,7 +1241,7 @@ export class PortfolioComponent implements OnInit {
     if (this.previewUrl) {
       return this.previewUrl as string;
     }
-    
+
     return 'assets/default-avatar.png';
   }
 
@@ -1252,7 +1253,7 @@ export class PortfolioComponent implements OnInit {
       { inputs: base64Image },
       {
         headers: {
-          'Authorization': 'Bearer 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', 
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json'
         }
       }
@@ -1324,7 +1325,7 @@ export class PortfolioComponent implements OnInit {
               panelClass: ['error-snackbar']
             });
             this.previewUrl = this.profile?.profilePicture ? this.profileService.getFullImageUrl(this.profile.profilePicture) : 'assets/default-avatar.png'; // Revert to original or default if verification fails
-            event.target.value = ''; 
+            event.target.value = '';
           }
         } catch (error) {
           console.error('Verification failed:', error);
@@ -1372,5 +1373,87 @@ export class PortfolioComponent implements OnInit {
       }
     });
   }
+
+
+  //------ Add this new method for LLM verification TEXT-------------
+
+  verifyingBio = false;
+
+  verifyBio(): void {
+    const bioControl = this.profileForm.get('bio');
+    const originalBio = bioControl?.value?.trim();
+
+    if (!originalBio || originalBio.length < 5) {
+      this.snackBar.open('Please enter a longer bio before verifying.', 'Close', {
+        duration: 3000,
+        panelClass: ['warning-snackbar']
+      });
+      return;
+    }
+
+    this.verifyingBio = true;
+
+    this.profileService.checkBioCorrection(originalBio).subscribe({
+      next: (corrected: string) => {
+        this.verifyingBio = false;
+
+        const cleaned = corrected.trim();
+        if (cleaned.toUpperCase() === 'INVALID BIO') {
+          this.snackBar.open('Your bio seems invalid. Please rewrite it.', 'Close', {
+            duration: 4000,
+            panelClass: ['warning-snackbar']
+          });
+          return;
+        }
+
+        const dialogRef = this.dialog.open(BioCorrectionDialogComponent, {
+          width: '600px',
+          data: { original: originalBio, corrected: cleaned }
+        });
+
+        dialogRef.afterClosed().subscribe(apply => {
+          if (apply) {
+            bioControl?.setValue(cleaned);
+            this.snackBar.open('Bio updated successfully!', 'Close', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+          }
+        });
+      },
+      error: (err) => {
+        this.verifyingBio = false;
+        console.error('Bio verification error:', err);
+        this.snackBar.open('Could not verify bio. Try again later.', 'Close', {
+          duration: 4000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
+  }//------ END LLM verification TEXT-------------
+
+  getFontAwesomeSet(platform: string): string {
+    const brands = ['linkedin', 'github', 'twitter', 'facebook', 'instagram'];
+    return brands.includes(platform.toLowerCase()) ? 'fab' : 'fas'; // 'fas' for solid icons
+  }
+
+
+  getFontAwesomeIcon(platform: string): string {
+    const p = platform.toLowerCase();
+    switch (p) {
+      case 'linkedin': return 'fa-linkedin';
+      case 'github': return 'fa-github';
+      case 'twitter': return 'fa-twitter';
+      case 'facebook': return 'fa-facebook';
+      case 'instagram': return 'fa-instagram';
+      case 'portfolio': return 'fa-briefcase';            // generic portfolio icon
+      case 'personal website': return 'fa-globe';         // generic web icon
+      case 'other': return 'fa-link';                     // fallback generic icon
+      default: return 'fa-link';                          // default fallback
+    }
+  }
+
+
+
 }
 

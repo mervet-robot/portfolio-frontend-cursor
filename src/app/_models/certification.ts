@@ -3,9 +3,9 @@ export interface CertificationRequest {
   name: string;
   issuingOrganization: string;
   issueDate?: string;  // ISO format (YYYY-MM-DD)
-  expirationDate?: string;  // ISO format (YYYY-MM-DD)
-  credentialId?: string;
-  credentialUrl?: string;
+  expiryDate?: string;  // ISO format (YYYY-MM-DD)
+  certificateUrl?: string;
+  validationLink?: string;
 }
 
 // certification-response.model.ts
@@ -14,8 +14,8 @@ export interface CertificationResponse {
   name: string;
   issuingOrganization: string;
   issueDate?: string;
-  expirationDate?: string;
-  credentialId?: string;
-  credentialUrl?: string;
+  expiryDate?: string;  // ISO format (YYYY-MM-DD)
+  certificateUrl?: string;
+  validationLink?: string;
   profileId: number;
 }
