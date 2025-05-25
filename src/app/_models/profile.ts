@@ -1,3 +1,5 @@
+import { Centre } from './centre.enum';
+
 export interface Profile {
   id?: number;
   userId: number;
@@ -8,6 +10,8 @@ export interface Profile {
   profilePicture?: string;
   bio?: string;
   socialLinks?: string[];
+  address?: string;
+  centre?: Centre;
   completedSteps?: {
     profile?: boolean;
   };
@@ -22,4 +26,6 @@ export interface ProfileUpdateRequest {
   profilePicture?: string;
   bio?: string;
   socialLinks?: string[];
+  address?: string;
+  centre?: Centre;
 }

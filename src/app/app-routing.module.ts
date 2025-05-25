@@ -49,7 +49,7 @@ const routes: Routes = [
   { path: 'media/upload', component: ProjectMediaUploadComponentComponent },
   { path: 'media/:id', component: ProfileComponent },
   //route Portfolio
-  { path: 'portfolio', component: PortfolioComponent },
+  { path: 'portfolio', component: PortfolioComponent , canActivate: [AuthGuard] },
 
 
   //Responsable

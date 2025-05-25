@@ -74,13 +74,39 @@
           </mat-form-field>
         </div>
 
+
+<!--        <div class="form-row">-->
+<!--          <mat-form-field appearance="outline" class="form-field" >-->
+<!--            <mat-label>address</mat-label>-->
+<!--            <input matInput formControlName="address" required readonly>-->
+<!--            <mat-error *ngIf="profileForm.get('address')?.hasError('required')">-->
+<!--              address is required-->
+<!--            </mat-error>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+
+
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Phone Number</mat-label>
           <input matInput formControlName="phoneNumber" type="tel">
           <mat-icon matSuffix>phone</mat-icon>
         </mat-form-field>
 
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="address">
+          <mat-icon matSuffix>home</mat-icon>
+        </mat-form-field>
 
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Centre</mat-label>
+          <mat-select formControlName="centre">
+            <mat-option *ngFor="let centre of centres" [value]="centre">
+              {{centre | titlecase}}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>business</mat-icon>
+        </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Bio</mat-label>
@@ -102,8 +128,6 @@
             Verify & Improve Bio
           </button>
         </div>
-
-
 
       </div>
 

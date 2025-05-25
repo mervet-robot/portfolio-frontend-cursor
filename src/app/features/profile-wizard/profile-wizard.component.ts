@@ -24,6 +24,7 @@ import { MatDialog } from '@angular/material/dialog';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 import {CertificationType, LanguageRequest, LanguageResponse, ProficiencyLevel} from '../../_models/language';
 import {BioCorrectionDialogComponent} from '../bio-correction-dialog/bio-correction-dialog.component';
+import { Centre } from '../../_models/centre.enum';
 
 @Component({
   selector: 'app-profile-wizard',
@@ -44,6 +45,7 @@ export class ProfileWizardComponent  implements OnInit {
   skillLevels = Object.values(SkillLevel);
   proficiencyLevels = Object.values(ProficiencyLevel);
   certificationTypes = Object.values(CertificationType);
+  centres = Object.values(Centre);
 
 
 
@@ -149,7 +151,9 @@ export class ProfileWizardComponent  implements OnInit {
       phoneNumber: [''],
       diploma: [''],
       bio: [''],
-      profilePicture: ['']
+      profilePicture: [''],
+      address: [''],
+      centre: [null]
     });
 
     this.formationForm = this.fb.group({
@@ -216,7 +220,19 @@ export class ProfileWizardComponent  implements OnInit {
   loadExistingData(): void {
     this.profileService.getProfile(this.userId).subscribe(profile => {
       if (profile) {
-        this.profileForm.patchValue(profile);
+        this.profileForm.patchValue({
+          firstName: profile.firstName,
+          lastName: profile.lastName,
+          email: profile.email,
+          phoneNumber: profile.phoneNumber,
+          diploma: profile.diploma,
+          bio: profile.bio,
+          address: profile.address,
+          centre: profile.centre
+        });
+        if (profile.profilePicture) {
+          this.previewUrl = this.getProfilePictureUrl();
+        }
       }
     });
 
@@ -493,16 +509,19 @@ export class ProfileWizardComponent  implements OnInit {
 
   saveProfile(): void {
     if (this.profileForm.valid) {
-      const profileData: ProfileUpdateRequest = {
-        ...this.profileForm.value,
-        socialLinks: []
-      };
-
+      const profileData: ProfileUpdateRequest = this.profileForm.value;
       this.profileService.updateProfile(this.userId, profileData).subscribe({
-        next: () => {
-          this.snackBar.open('Profile saved successfully!', 'Close', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
+        next: (updatedProfile) => {
+          this.snackBar.open('Profile updated successfully!', 'Close', { duration: 3000 });
+          this.profileForm.patchValue({
+            firstName: updatedProfile.firstName,
+            lastName: updatedProfile.lastName,
+            email: updatedProfile.email,
+            phoneNumber: updatedProfile.phoneNumber,
+            diploma: updatedProfile.diploma,
+            bio: updatedProfile.bio,
+            address: updatedProfile.address,
+            centre: updatedProfile.centre
           });
         },
         error: (err) => {
@@ -937,7 +956,7 @@ export class ProfileWizardComponent  implements OnInit {
 
 
 
- //------ Add this new method for LLM verification TEXT-------------
+  //------ Add this new method for LLM verification TEXT-------------
 
   verifyingBio = false;
 
@@ -992,9 +1011,6 @@ export class ProfileWizardComponent  implements OnInit {
         });
       }
     });
-  }
-
-  //------ END LLM verification TEXT-------------
-
+  }//------ END LLM verification TEXT-------------
 
 }
