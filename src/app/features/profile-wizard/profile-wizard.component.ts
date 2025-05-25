@@ -34,7 +34,7 @@ import { Centre } from '../../_models/centre.enum';
 })
 export class ProfileWizardComponent  implements OnInit {
   currentStep = 1;
-  totalSteps = 7;
+  totalSteps = 8;
   userId: number;
 
 // Add these to your component class
@@ -228,8 +228,10 @@ export class ProfileWizardComponent  implements OnInit {
           diploma: profile.diploma,
           bio: profile.bio,
           address: profile.address,
-          centre: profile.centre
+          centre: profile.centre,
+          profilePicture: profile.profilePicture
         });
+
         if (profile.profilePicture) {
           this.previewUrl = this.getProfilePictureUrl();
         }
@@ -326,22 +328,22 @@ export class ProfileWizardComponent  implements OnInit {
 
   // This method should be added to your component
   getProfilePictureUrl(): string {
+    const profilePictureFromForm = this.profileForm.get('profilePicture')?.value;
+
+    if (profilePictureFromForm) {
+      // If the path already starts with http:// or https://, return it as is
+      if (profilePictureFromForm.startsWith('http://') || profilePictureFromForm.startsWith('https://')) {
+        return profilePictureFromForm;
+      }
+      // Otherwise, prepend the base URL from the profile service
+      return this.profileService.getFullImageUrl(profilePictureFromForm);
+    }
+
     if (this.previewUrl) {
       return this.previewUrl as string;
     }
 
-    const profilePicture = this.profileForm.get('profilePicture')?.value;
-    if (!profilePicture) {
-      return 'assets/default-avatar.png';
-    }
-
-    // If the path already starts with http:// or https://, return it as is
-    if (profilePicture.startsWith('http://') || profilePicture.startsWith('https://')) {
-      return profilePicture;
-    }
-
-    // Otherwise, prepend the base URL
-    return this.profileService.getFullImageUrl(profilePicture);
+    return 'assets/default-avatar.png';
   }
 
 

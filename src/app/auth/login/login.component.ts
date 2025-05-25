@@ -70,9 +70,9 @@ export class LoginComponent implements OnInit {
 
         const user = this.tokenService.getUser();
         if (!user || !user.id) {
-            console.error("User data or user ID is not available after login.");
-            this.router.navigate(['/login']);
-            return;
+          console.error("User data or user ID is not available after login.");
+          this.router.navigate(['/login']);
+          return;
         }
 
         setTimeout(() => {

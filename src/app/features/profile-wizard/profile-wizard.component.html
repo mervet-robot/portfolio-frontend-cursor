@@ -93,6 +93,13 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Diploma/Degree</mat-label>
+          <input matInput formControlName="diploma">
+          <mat-icon matSuffix>school</mat-icon>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" class="full-width">
           <mat-label>Address</mat-label>
           <input matInput formControlName="address">
           <mat-icon matSuffix>home</mat-icon>
@@ -108,26 +115,26 @@
           <mat-icon matSuffix>business</mat-icon>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Bio</mat-label>
-          <textarea matInput formControlName="bio" rows="4" placeholder="Tell us about yourself..."></textarea>
-          <button mat-icon-button matSuffix (click)="verifyBio()" [disabled]="verifyingBio" matTooltip="Check grammar">
-            <mat-icon *ngIf="!verifyingBio">spellcheck</mat-icon>
-            <mat-progress-spinner
-              *ngIf="verifyingBio"
-              diameter="20"
-              mode="indeterminate"
-              strokeWidth="3">
-            </mat-progress-spinner>
-          </button>
-        </mat-form-field>
+<!--        <mat-form-field appearance="outline" class="full-width">-->
+<!--          <mat-label>Bio</mat-label>-->
+<!--          <textarea matInput formControlName="bio" rows="4" placeholder="Tell us about yourself..."></textarea>-->
+<!--          <button mat-icon-button matSuffix (click)="verifyBio()" [disabled]="verifyingBio" matTooltip="Check grammar">-->
+<!--            <mat-icon *ngIf="!verifyingBio">spellcheck</mat-icon>-->
+<!--            <mat-progress-spinner-->
+<!--              *ngIf="verifyingBio"-->
+<!--              diameter="20"-->
+<!--              mode="indeterminate"-->
+<!--              strokeWidth="3">-->
+<!--            </mat-progress-spinner>-->
+<!--          </button>-->
+<!--        </mat-form-field>-->
 
-        <div class="button-row text-right">
-          <button mat-raised-button color="primary" (click)="verifyBio()" [disabled]="verifyingBio">
-            <mat-icon >auto_fix_high</mat-icon>
-            Verify & Improve Bio
-          </button>
-        </div>
+<!--        <div class="button-row text-right">-->
+<!--          <button mat-raised-button color="primary" (click)="verifyBio()" [disabled]="verifyingBio">-->
+<!--            <mat-icon >auto_fix_high</mat-icon>-->
+<!--            Verify & Improve Bio-->
+<!--          </button>-->
+<!--        </div>-->
 
       </div>
 
@@ -665,6 +672,37 @@
       </div>
 
 
+      <!-- Step 8: Bio-profile -->
+      <div *ngIf="currentStep === 8" [formGroup]="profileForm" class="step-content">
+        <h3>Bio-profile</h3>
+
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Bio</mat-label>
+          <textarea matInput formControlName="bio" rows="4" placeholder="Tell us about yourself..."></textarea>
+          <button mat-icon-button matSuffix (click)="verifyBio()" [disabled]="verifyingBio" matTooltip="Check grammar">
+            <mat-icon *ngIf="!verifyingBio">spellcheck</mat-icon>
+            <mat-progress-spinner
+              *ngIf="verifyingBio"
+              diameter="20"
+              mode="indeterminate"
+              strokeWidth="3">
+            </mat-progress-spinner>
+          </button>
+        </mat-form-field>
+
+        <div class="button-row text-right">
+          <button mat-raised-button color="primary" (click)="verifyBio()" [disabled]="verifyingBio">
+            <mat-icon >auto_fix_high</mat-icon>
+            Verify & Improve Bio
+          </button>
+        </div>
+
+
+      </div>
+
+
+
     </mat-card-content>
 
     <mat-card-actions>
@@ -705,6 +743,10 @@
       </button>
 
 
+      <button *ngIf="currentStep === 8" mat-button  (click)="prevStep()">
+        <mat-icon>arrow_back</mat-icon>
+        Back
+      </button>
 
 
 
@@ -736,6 +778,14 @@
         Next:  Language
       </button>
 
+
+      <button *ngIf="currentStep === 7" mat-raised-button color="primary" (click)="nextStep()">
+        Next:  Bio-profile
+      </button>
+
+      <button *ngIf="currentStep === 8" mat-raised-button color="primary" (click)="saveProfile()">
+        Save
+      </button>
 
 
     </mat-card-actions>
