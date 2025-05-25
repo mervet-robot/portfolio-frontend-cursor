@@ -1435,25 +1435,85 @@ export class PortfolioComponent implements OnInit {
 
     this.generatingBio = true;
 
-    // Gather data for bio generation
-    const diploma = this.profileForm.get('diploma')?.value || '';
-    const recentExperience = this.experiences.length > 0 ? this.experiences[0] : null; // Assuming sorted by date or relevance
-    const topTechSkills = this.techSkills.slice(0, 3).map(skill => skill.name); // Take top 3
-    const recentFormation = this.formations.length > 0 ? this.formations[0] : null;
+    // Define interfaces for the detail DTOs expected by the backend
+    interface ExperienceDetail {
+      title: string;
+      company: string;
+    }
+    interface FormationDetail {
+      degree: string;
+      institution: string;
+      fieldOfStudy?: string; // Optional based on your DTO
+    }
+    interface CertificationDetail {
+      name: string;
+      issuingOrganization: string;
+    }
+    interface ProjectDetail {
+      title: string;
+      description: string;
+    }
+    interface PortfolioSummary {
+      firstName?: string;
+      lastName?: string;
+      diploma?: string;
+      experiences: ExperienceDetail[];
+      latestFormation?: FormationDetail | null;
+      techSkills: string[];
+      certifications: CertificationDetail[];
+      projects: ProjectDetail[];
+    }
 
-    const portfolioSummary = {
-      diploma,
-      experienceTitle: recentExperience?.title,
-      experienceCompany: recentExperience?.company,
-      skills: topTechSkills,
-      degree: recentFormation?.degree,
-      fieldOfStudy: recentFormation?.fieldOfStudy
+    // Gather data for bio generation
+    const profileValues = this.profileForm.value;
+
+    const experiencesDetails: ExperienceDetail[] = this.experiences.map(exp => ({
+      title: exp.title,
+      company: exp.company
+    }));
+
+    let latestFormationDetail: FormationDetail | null = null;
+    if (this.formations && this.formations.length > 0) {
+      const sortedFormations = [...this.formations].sort((a, b) => {
+        const dateA = a.current ? new Date() : (a.endDate ? new Date(a.endDate) : new Date(0));
+        const dateB = b.current ? new Date() : (b.endDate ? new Date(b.endDate) : new Date(0));
+        return dateB.getTime() - dateA.getTime(); // Sort descending, latest first
+      });
+      const latest = sortedFormations[0];
+      latestFormationDetail = {
+        degree: latest.degree,
+        institution: latest.institution,
+        fieldOfStudy: latest.fieldOfStudy
+      };
+    }
+
+    const techSkillNames: string[] = this.techSkills.map(skill => skill.name);
+
+    const certificationDetails: CertificationDetail[] = this.certifications.map(cert => ({
+      name: cert.name,
+      issuingOrganization: cert.issuingOrganization
+    }));
+
+    const projectDetails: ProjectDetail[] = this.projects.map(proj => ({
+      title: proj.title,
+      description: proj.description
+    }));
+
+    const portfolioDataForBio: PortfolioSummary = {
+      firstName: profileValues.firstName,
+      lastName: profileValues.lastName,
+      diploma: profileValues.diploma,
+      experiences: experiencesDetails,
+      latestFormation: latestFormationDetail,
+      techSkills: techSkillNames,
+      certifications: certificationDetails,
+      projects: projectDetails
     };
 
-    // Filter out empty fields from summary to send a cleaner object
-    const cleanSummary = Object.fromEntries(Object.entries(portfolioSummary).filter(([_, v]) => v != null && v !== '' && (!Array.isArray(v) || v.length > 0)));
+    // No need for cleanSummary anymore as the backend DTO expects these potentially empty lists or nulls
+    // const cleanSummary = Object.fromEntries(Object.entries(portfolioDataForBio).filter(([_, v]) => v != null && v !== '' && (!Array.isArray(v) || v.length > 0) && (typeof v !== 'object' || Object.keys(v).length > 0) ));
 
-    this.profileService.generateBio(this.userId, cleanSummary).subscribe({
+    this.profileService.generateBio(this.userId, portfolioDataForBio).subscribe({
       next: (generatedBio: string) => {
         this.generatingBio = false;
         if (!generatedBio || generatedBio.trim().toUpperCase() === 'COULD NOT GENERATE BIO' || generatedBio.trim().length === 0) {

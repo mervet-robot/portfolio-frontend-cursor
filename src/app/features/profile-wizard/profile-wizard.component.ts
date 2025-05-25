@@ -375,6 +375,9 @@ export class ProfileWizardComponent  implements OnInit {
   verificationMessage: string = '';
   isHumanVerified: boolean = false;
   isVerifying: boolean = false;
+  verifyingBio = false;
+  generatingBio = false;
+
   //------ Add this new method for LLM verification PICTURE-----
   async verifyWithLLM(file: File): Promise<void> {
     this.verificationMessage = 'Verifying image...';
@@ -1073,7 +1076,6 @@ export class ProfileWizardComponent  implements OnInit {
 
   //------ Add this new method for LLM verification TEXT-------------
 
-  verifyingBio = false;
 
   verifyBio(): void {
     const bioControl = this.profileForm.get('bio');
@@ -1104,7 +1106,7 @@ export class ProfileWizardComponent  implements OnInit {
 
         const dialogRef = this.dialog.open(BioCorrectionDialogComponent, {
           width: '600px',
-          data: { original: originalBio, corrected: cleaned }
+          data: { original: originalBio, corrected: cleaned, title: 'Suggested Bio Correction' }
         });
 
         dialogRef.afterClosed().subscribe(apply => {
@@ -1127,5 +1129,69 @@ export class ProfileWizardComponent  implements OnInit {
       }
     });
   }//------ END LLM verification TEXT-------------
+
+
+
+//------  LLM Generate-Bio TEXT-------------
+  generateBioFromPortfolioData(): void {
+    const bioControl = this.profileForm.get('bio');
+    const currentBio = bioControl?.value || '';
+
+    this.generatingBio = true;
+
+    // Gather data for bio generation
+    const diploma = this.profileForm.get('diploma')?.value || '';
+    const recentExperience = this.experiences.length > 0 ? this.experiences[0] : null; // Assuming sorted by date or relevance
+    const topTechSkills = this.techSkills.slice(0, 3).map(skill => skill.name); // Take top 3
+    const recentFormation = this.formations.length > 0 ? this.formations[0] : null;
+
+    const portfolioSummary = {
+      diploma,
+      experienceTitle: recentExperience?.title,
+      experienceCompany: recentExperience?.company,
+      skills: topTechSkills,
+      degree: recentFormation?.degree,
+      fieldOfStudy: recentFormation?.fieldOfStudy
+    };
+
+    // Filter out empty fields from summary to send a cleaner object
+    const cleanSummary = Object.fromEntries(Object.entries(portfolioSummary).filter(([_, v]) => v != null && v !== '' && (!Array.isArray(v) || v.length > 0)));
+
+    this.profileService.generateBio(this.userId, cleanSummary).subscribe({
+      next: (generatedBio: string) => {
+        this.generatingBio = false;
+        if (!generatedBio || generatedBio.trim().toUpperCase() === 'COULD NOT GENERATE BIO' || generatedBio.trim().length === 0) {
+          this.snackBar.open('Could not generate a bio based on the current data. Please add more details to your profile.', 'Close', {
+            duration: 5000,
+            panelClass: ['warning-snackbar']
+          });
+          return;
+        }
+
+        const dialogRef = this.dialog.open(BioCorrectionDialogComponent, {
+          width: '600px',
+          data: { original: currentBio, corrected: generatedBio.trim(), title: 'Suggested Bio (Generated)' }
+        });
+
+        dialogRef.afterClosed().subscribe(apply => {
+          if (apply) {
+            bioControl?.setValue(generatedBio.trim());
+            this.snackBar.open('Bio updated with generated version!', 'Close', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+          }
+        });
+      },
+      error: (err: any) => {
+        this.generatingBio = false;
+        console.error('Bio generation error:', err);
+        this.snackBar.open('Could not generate bio. Service might be unavailable or an error occurred.', 'Close', {
+          duration: 5000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
+  }
 
 }
