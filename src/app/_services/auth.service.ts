@@ -32,7 +32,10 @@ export class AuthService {
       password: user.password,
       firstName: user.firstName,
       lastName: user.lastName,
-      phoneNumber: user.phoneNumber
+      phoneNumber: user.phoneNumber,
+      sexe: user.sexe,
+      centre: user.centre,
+      address: user.address
     }, httpOptions);
   }
 
@@ -43,7 +46,11 @@ export class AuthService {
       password: user.password,
       firstName: user.firstName,
       lastName: user.lastName,
-      phoneNumber: user.phoneNumber
+      phoneNumber: user.phoneNumber,
+
+      sexe: user.sexe,
+      centre: user.centre,
+      address: user.address
 
     }, httpOptions);
   }
@@ -55,7 +62,11 @@ export class AuthService {
       password: user.password,
       firstName: user.firstName,
       lastName: user.lastName,
-      phoneNumber: user.phoneNumber
+      phoneNumber: user.phoneNumber,
+
+      sexe: user.sexe,
+      centre: user.centre,
+      address: user.address
     }, httpOptions);
   }
 
@@ -67,7 +78,11 @@ export class AuthService {
       firstName: user.firstName,
       lastName: user.lastName,
       phoneNumber: user.phoneNumber,
-      company: user.company
+      company: user.company,
+
+      sexe: user.sexe,
+      centre: user.centre,
+      address: user.address
     }, httpOptions);
   }
 }

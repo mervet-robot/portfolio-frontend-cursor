@@ -11,6 +11,9 @@ export interface RegisterRequest {
   firstName?: string;
   lastName?: string;
   phoneNumber: string;
+  sexe: string;
+  centre: string;
+  address: string;
 
 }
 
@@ -35,6 +38,10 @@ export interface DirecteurRequest {
   firstName: string;
   lastName: string;
   phoneNumber: string;
+
+  sexe: string;
+  centre: string;
+  address: string;
 }
 
 export interface RecruteurRequest {
@@ -45,5 +52,9 @@ export interface RecruteurRequest {
   lastName: string;
   phoneNumber: string;
   company: string;
+
+  sexe: string;
+  centre: string;
+  address: string;
 
 }

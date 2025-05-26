@@ -1,39 +1,114 @@
-<div class="landing-container">
-
-  <!-- New register button in top right (absolute positioned) -->
-  <button mat-raised-button color="accent" (click)="navigateToRegister()" class="register-button">
-    <mat-icon>person_add</mat-icon>
-    Register
-  </button>
-
-  <div class="section login">
-    <h2>Already have an account?</h2>
-    <button mat-raised-button color="primary" (click)="goTo('/login')">Login</button>
+<div class="landing-page">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Unlock Your Professional Potential</h1>
+        <p class="subtitle">Join WEB4JOBS to connect with opportunities that match your skills and ambitions</p>
+        <div class="hero-buttons">
+          <button mat-raised-button color="primary" class="cta-button" (click)="goTo('/login')">
+            <mat-icon>login</mat-icon>
+            Login
+          </button>
+          <button mat-stroked-button color="primary" class="secondary-button" (click)="navigateToRegister()">
+            <mat-icon>person_add</mat-icon>
+            Register
+          </button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="/assets/images/landing-hero.png" alt="Professional networking">
+      </div>
+    </div>
   </div>
 
-  <div class="section register">
-    <h2>Register as</h2>
-    <div class="roles">
-      <button mat-stroked-button color="accent" (click)="goTo('/register')">
-        🎓 LAURÉAT APPRENANT
-      </button>
-      <button mat-stroked-button color="accent" (click)="goTo('/register/recruteur')">
-        🧑‍💼 RECRUTEUR
-      </button>
+  <!-- Role Selection Section -->
+  <div class="role-section">
+    <h2>Start Your Journey As</h2>
+    <div class="role-cards">
+      <!-- Laureat/Apprenant Card -->
+      <mat-card class="role-card" (click)="goTo('/register')">
+        <div class="card-icon laureat">
+          <mat-icon>school</mat-icon>
+        </div>
+        <h3>LAURÉAT APPRENANT</h3>
+        <p>Join our learning community and build your professional portfolio</p>
+        <button mat-stroked-button color="primary">Get Started</button>
+      </mat-card>
 
-      <!-- Directeur with expandable submenu -->
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            🏫 DIRECTEUR
-          </mat-panel-title>
-        </mat-expansion-panel-header>
+      <!-- Recruteur Card -->
+      <mat-card class="role-card" (click)="goTo('/register/recruteur')">
+        <div class="card-icon recruteur">
+          <mat-icon>work</mat-icon>
+        </div>
+        <h3>RECRUTEUR</h3>
+        <p>Find talented professionals for your organization</p>
+        <button mat-stroked-button color="primary">Join as Recruiter</button>
+      </mat-card>
 
-        <mat-action-list>
-          <button mat-list-item (click)="goTo('/register/directeur')">➕ Register Directeur</button>
-          <button mat-list-item (click)="goTo('/admin/helps')">❓ Helps</button>
-        </mat-action-list>
-      </mat-expansion-panel>
+      <!-- Directeur Card with Expansion -->
+      <mat-card class="role-card directeur">
+        <div class="card-icon directeur">
+          <mat-icon>business</mat-icon>
+        </div>
+        <h3>DIRECTEUR</h3>
+        <p>Manage your institution's presence and opportunities</p>
+
+        <mat-expansion-panel class="directeur-expansion">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Options
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-action-list>
+            <button mat-list-item (click)="goTo('/register/directeur')">
+              <mat-icon>person_add</mat-icon>
+              Register Directeur
+            </button>
+            <button mat-list-item (click)="goTo('/admin/helps')">
+              <mat-icon>help</mat-icon>
+              Help Center
+            </button>
+          </mat-action-list>
+        </mat-expansion-panel>
+      </mat-card>
     </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="features-section">
+    <h2>Why Choose WEB4JOBS</h2>
+    <div class="features-grid">
+      <div class="feature">
+        <mat-icon>verified</mat-icon>
+        <h3>Verified Profiles</h3>
+        <p>Trustworthy network of professionals and institutions</p>
+      </div>
+      <div class="feature">
+        <mat-icon>trending_up</mat-icon>
+        <h3>Career Growth</h3>
+        <p>Tools and resources to advance your career</p>
+      </div>
+      <div class="feature">
+        <mat-icon>connect_without_contact</mat-icon>
+        <h3>Networking</h3>
+        <p>Connect with industry professionals</p>
+      </div>
+      <div class="feature">
+        <mat-icon>assignment</mat-icon>
+        <h3>Portfolio Builder</h3>
+        <p>Showcase your projects and skills</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="cta-section">
+    <h2>Ready to Begin?</h2>
+    <p>Join thousands of professionals who have already transformed their careers</p>
+    <button mat-raised-button color="primary" class="cta-button" (click)="navigateToRegister()">
+      <mat-icon>person_add</mat-icon>
+      Register Now
+    </button>
   </div>
 </div>

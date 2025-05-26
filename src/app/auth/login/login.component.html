@@ -1,58 +1,90 @@
-<div class="login-container">
+<div class="login-page">
+  <div class="login-background">
+    <div class="background-overlay"></div>
+  </div>
 
-  <button mat-button color="primary" (click)="goBack()" style="margin-bottom: 16px;">
-    <mat-icon>arrow_back</mat-icon>
-    Back to Landing-page
-  </button>
+  <div class="login-wrapper">
+    <button mat-button class="back-button" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Home
+    </button>
 
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username" required>
-            <mat-error *ngIf="loginForm.get('username')?.errors?.['required']">
-              Username is required
-            </mat-error>
-          </mat-form-field>
-        </div>
-
-        <div class="form-group">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Password</mat-label>
-            <input matInput type="password" formControlName="password" required>
-            <mat-error *ngIf="loginForm.get('password')?.errors?.['required']">
-              Password is required
-            </mat-error>
-          </mat-form-field>
-        </div>
-
-        <div class="alert alert-danger" *ngIf="isLoginFailed">
-          {{ errorMessage || unauthorizedRoleMessage }}
-          <div *ngIf="isNotRegistered">
-            <a routerLink="/register" class="register-link">Click here to register</a>
-          </div>
-        </div>
-
-        <div class="alert alert-success" *ngIf="showRoleMessage && !isLoginFailed"
-             [ngClass]="{'alert-info': roles[0] === 'APPRENANT'}">
-          {{ successMessage }}
-        </div>
-
-        <div class="form-group">
-          <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
-            Login
-          </button>
-        </div>
-      </form>
-
-      <div class="register-link">
-        <p>Don't have an account? <a routerLink="/register">Sign Up</a></p>
+    <mat-card class="login-card">
+      <div class="card-header">
+        <img src="assets/images/logo.png" alt="WEB4JOBS" class="logo">
+        <h1>Welcome Back</h1>
+        <p>Sign in to access your account</p>
       </div>
-    </mat-card-content>
-  </mat-card>
+
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Username or Email</mat-label>
+              <input matInput formControlName="username" required>
+              <mat-icon matPrefix>person</mat-icon>
+              <mat-error *ngIf="loginForm.get('username')?.errors?.['required']">
+                Username is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="password" required>
+              <mat-icon matPrefix>lock</mat-icon>
+              <mat-error *ngIf="loginForm.get('password')?.errors?.['required']">
+                Password is required
+              </mat-error>
+            </mat-form-field>
+            <a class="forgot-password" routerLink="/forgot-password">Forgot password?</a>
+          </div>
+
+          <div class="alert-container">
+            <div class="alert alert-danger" *ngIf="isLoginFailed">
+              <mat-icon>error</mat-icon>
+              <div class="alert-content">
+                {{ errorMessage || unauthorizedRoleMessage }}
+                <div *ngIf="isNotRegistered" class="register-link">
+                  <a routerLink="/register">Click here to register</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="alert alert-success" *ngIf="showRoleMessage && !isLoginFailed"
+                 [ngClass]="{'alert-info': roles[0] === 'APPRENANT'}">
+              <mat-icon>check_circle</mat-icon>
+              <div class="alert-content">
+                {{ successMessage }}
+              </div>
+            </div>
+          </div>
+
+          <button mat-raised-button color="primary" class="login-button" type="submit" [disabled]="loginForm.invalid">
+            Login
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+
+<!--          <div class="social-login">-->
+<!--            <p>Or sign in with</p>-->
+<!--            <div class="social-buttons">-->
+<!--              <button mat-stroked-button type="button">-->
+<!--                <img src="assets/images/google-icon.png" alt="Google">-->
+<!--                Google-->
+<!--              </button>-->
+<!--              <button mat-stroked-button type="button">-->
+<!--                <img src="assets/images/linkedin-icon.png" alt="LinkedIn">-->
+<!--                LinkedIn-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </div>-->
+
+          <div class="register-prompt">
+            Don't have an account? <a routerLink="/register">Create account</a>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

@@ -1,142 +1,189 @@
-<!-- Basic structure, similar to a simplified version of the existing register.component.html -->
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h4>Register New User</h4>
-        </div>
-        <div class="card-body">
-          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-              <label for="username" class="form-label">Username</label>
-              <input type="text" id="username" class="form-control" formControlName="username"
-                     [ngClass]="{ 'is-invalid': registerForm.get('username')?.touched && registerForm.get('username')?.errors }">
-              <div *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.errors?.['required']"
-                   class="invalid-feedback">
-                Username is required.
-              </div>
-              <div *ngIf="registerForm.get('username')?.errors?.['minlength']" class="invalid-feedback">
-                Username must be at least 3 characters.
-              </div>
-              <div *ngIf="registerForm.get('username')?.errors?.['maxlength']" class="invalid-feedback">
-                Username cannot exceed 20 characters.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" id="email" class="form-control" formControlName="email"
-                     [ngClass]="{ 'is-invalid': registerForm.get('email')?.touched && registerForm.get('email')?.errors }">
-              <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']"
-                   class="invalid-feedback">
-                Email is required.
-              </div>
-              <div *ngIf="registerForm.get('email')?.errors?.['email']" class="invalid-feedback">
-                Please enter a valid email.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" id="password" class="form-control" formControlName="password"
-                     [ngClass]="{ 'is-invalid': registerForm.get('password')?.touched && registerForm.get('password')?.errors }">
-              <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']"
-                   class="invalid-feedback">
-                Password is required.
-              </div>
-              <div *ngIf="registerForm.get('password')?.errors?.['minlength']" class="invalid-feedback">
-                Password must be at least 6 characters.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="firstName" class="form-label">First Name</label>
-              <input type="text" id="firstName" class="form-control" formControlName="firstName"
-                     [ngClass]="{ 'is-invalid': registerForm.get('firstName')?.touched && registerForm.get('firstName')?.errors }">
-              <div *ngIf="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.errors?.['required']"
-                   class="invalid-feedback">
-                First Name is required.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="lastName" class="form-label">Last Name</label>
-              <input type="text" id="lastName" class="form-control" formControlName="lastName"
-                     [ngClass]="{ 'is-invalid': registerForm.get('lastName')?.touched && registerForm.get('lastName')?.errors }">
-              <div *ngIf="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.errors?.['required']"
-                   class="invalid-feedback">
-                Last Name is required.
-              </div>
-            </div>
-
-
-
-            <div class="mb-3">
-              <label for="phoneNumber" class="form-label">Phone Number</label>
-              <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber"
-                     [ngClass]="{ 'is-invalid': registerForm.get('phoneNumber')?.touched && registerForm.get('phoneNumber')?.errors }">
-              <div *ngIf="registerForm.get('phoneNumber')?.touched && registerForm.get('phoneNumber')?.errors?.['required']"
-                   class="invalid-feedback">
-                Phone number is required.
-              </div>
-            </div>
-
-
-            <div class="mb-3">
-              <label class="form-label">Sexe</label>
-              <div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" id="male" value="Male" formControlName="sexe">
-                  <label class="form-check-label" for="male">Male</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" id="female" value="Female" formControlName="sexe">
-                  <label class="form-check-label" for="female">Female</label>
-                </div>
-              </div>
-              <div *ngIf="registerForm.get('sexe')?.touched && registerForm.get('sexe')?.errors?.['required']"
-                   class="text-danger small">
-                Sexe is required.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="address" class="form-label">Address</label>
-              <input type="text" id="address" class="form-control" formControlName="address"
-                     [ngClass]="{ 'is-invalid': registerForm.get('address')?.touched && registerForm.get('address')?.errors }">
-              <div *ngIf="registerForm.get('address')?.touched && registerForm.get('address')?.errors?.['required']"
-                   class="invalid-feedback">
-                Address is required.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="centre" class="form-label">Centre</label>
-              <select id="centre" class="form-select" formControlName="centre"
-                      [ngClass]="{ 'is-invalid': registerForm.get('centre')?.touched && registerForm.get('centre')?.errors }">
-                <option value="" disabled>Select a Centre</option>
-                <option *ngFor="let centre of centres" [value]="centre">{{centre}}</option>
-              </select>
-              <div *ngIf="registerForm.get('centre')?.touched && registerForm.get('centre')?.errors?.['required']"
-                   class="invalid-feedback">
-                Centre is required.
-              </div>
-            </div>
-
-            <div class="d-grid gap-2">
-              <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Register</button>
-            </div>
-
-            <div *ngIf="isSignUpFailed" class="alert alert-danger mt-3">
-              Registration failed: {{ errorMessage }}
-            </div>
-            <div *ngIf="isSuccessful" class="alert alert-success mt-3">
-              {{ message }}
-            </div>
-          </form>
-        </div>
-      </div>
+<div class="registration-page">
+  <div class="registration-container">
+    <div class="registration-header">
+      <img src="assets/images/logo.png" alt="Company Logo" class="logo">
+      <h1>Create Your Account</h1>
+      <p class="subtitle">Join our platform to access exclusive features and opportunities</p>
     </div>
+
+    <mat-card class="registration-card mat-elevation-z8">
+      <mat-card-content>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="form-grid">
+            <!-- Column 1 -->
+            <div class="form-column">
+              <div class="form-group">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Username</mat-label>
+                  <input matInput formControlName="username" required>
+                  <mat-icon matPrefix>person_outline</mat-icon>
+                  <mat-error *ngIf="registerForm.get('username')?.errors?.['required']">
+                    Required field
+                  </mat-error>
+                  <mat-error *ngIf="registerForm.get('username')?.errors?.['minlength']">
+                    Minimum 3 characters
+                  </mat-error>
+                  <mat-error *ngIf="registerForm.get('username')?.errors?.['maxlength']">
+                    Maximum 20 characters
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Email</mat-label>
+                  <input matInput type="email" formControlName="email" required>
+                  <mat-icon matPrefix>email</mat-icon>
+                  <mat-error *ngIf="registerForm.get('email')?.errors?.['required']">
+                    Required field
+                  </mat-error>
+                  <mat-error *ngIf="registerForm.get('email')?.errors?.['email']">
+                    Invalid email format
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+
+              <div class="form-group gender-group">
+                <label>Gender</label>
+                <mat-radio-group formControlName="sexe" class="radio-group" required>
+                  <mat-radio-button value="Male" class="radio-button">
+                    <div class="radio-content">
+                      <mat-icon>male</mat-icon>
+                      <span>Male</span>
+                    </div>
+                  </mat-radio-button>
+                  <mat-radio-button value="Female" class="radio-button">
+                    <div class="radio-content">
+                      <mat-icon>female</mat-icon>
+                      <span>Female</span>
+                    </div>
+                  </mat-radio-button>
+                </mat-radio-group>
+                <mat-error *ngIf="registerForm.get('sexe')?.touched && registerForm.get('sexe')?.errors?.['required']">
+                  Please select your gender
+                </mat-error>
+              </div>
+
+
+
+            </div>
+
+            <!-- Column 2 -->
+            <div class="form-column">
+              <div class="form-group">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>First Name</mat-label>
+                  <input matInput formControlName="firstName" required>
+                  <mat-icon matPrefix>badge</mat-icon>
+                  <mat-error *ngIf="registerForm.get('firstName')?.errors?.['required']">
+                    Required field
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Last Name</mat-label>
+                  <input matInput formControlName="lastName" required>
+                  <mat-icon matPrefix>badge</mat-icon>
+                  <mat-error *ngIf="registerForm.get('lastName')?.errors?.['required']">
+                    Required field
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Phone Number</mat-label>
+                  <input matInput formControlName="phoneNumber" required>
+                  <mat-icon matPrefix>phone</mat-icon>
+                  <mat-error *ngIf="registerForm.get('phoneNumber')?.errors?.['required']">
+                    Required field
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Row -->
+          <div class="form-row">
+
+
+            <div class="form-group">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Address</mat-label>
+                <input matInput formControlName="address" required>
+                <mat-icon matPrefix>location_on</mat-icon>
+                <mat-error *ngIf="registerForm.get('address')?.errors?.['required']">
+                  Required field
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Centre</mat-label>
+                <mat-select formControlName="centre" required>
+                  <mat-option *ngFor="let centre of centres" [value]="centre">
+                    {{centre}}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matPrefix>school</mat-icon>
+                <mat-error *ngIf="registerForm.get('centre')?.errors?.['required']">
+                  Required field
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+
+
+
+            <div class="form-group">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password" required>
+                <mat-icon matPrefix>lock</mat-icon>
+                <mat-error *ngIf="registerForm.get('password')?.errors?.['required']">
+                  Required field
+                </mat-error>
+                <mat-error *ngIf="registerForm.get('password')?.errors?.['minlength']">
+                  Minimum 6 characters
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+
+
+          </div>
+
+          <div class="form-actions">
+            <div class="alert-container">
+              <div class="alert alert-danger" *ngIf="isSignUpFailed">
+                <mat-icon>error</mat-icon>
+                <div class="alert-content">
+                  Registration failed: {{ errorMessage }}
+                </div>
+              </div>
+              <div class="alert alert-success" *ngIf="isSuccessful">
+                <mat-icon>check_circle</mat-icon>
+                <div class="alert-content">
+                  {{ message }}
+                </div>
+              </div>
+            </div>
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid" class="submit-button">
+              <mat-icon>how_to_reg</mat-icon>
+              Complete Registration
+            </button>
+
+            <div class="login-prompt">
+              Already have an account? <a routerLink="/login">Sign In</a>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>
