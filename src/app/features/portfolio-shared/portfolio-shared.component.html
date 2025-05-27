@@ -1,0 +1,255 @@
+<div class="cv-container">
+  <!-- Header Section -->
+  <header class="cv-header">
+    <div class="profile-photo-container">
+      <img [src]="getProfilePictureUrl() || 'assets/default-avatar.png'"
+           alt="Profile Photo" class="profile-photo">
+    </div>
+
+    <div class="header-content">
+      <h1>{{profile?.firstName || 'First'}} {{profile?.lastName || 'Last'}}</h1>
+      <p class="title">{{profile?.diploma || 'Your Profession'}}</p>
+
+      <div class="contact-info">
+        <span *ngIf="profile?.email" class="contact-item">
+          <mat-icon>email</mat-icon> {{ profile?.email }}
+        </span>
+        <span *ngIf="profile?.phoneNumber" class="contact-item">
+          <mat-icon>phone</mat-icon> {{ profile?.phoneNumber }}
+        </span>
+        <span *ngIf="profile?.address" class="contact-item">
+          <mat-icon>home</mat-icon> {{ profile?.address }}
+        </span>
+
+        <!-- Social Links Display -->
+        <div class="social-links-contact-group">
+          <div *ngFor="let link of socialLinks" class="contact-item social-link-item-header">
+            <a [href]="link.url" target="_blank" [matTooltip]="link.platform + ': ' + link.url" class="social-link-anchor">
+              <mat-icon
+                [fontSet]="getFontAwesomeSet(link.platform)"
+                [fontIcon]="getFontAwesomeIcon(link.platform)"
+                aria-hidden="true"
+                class="social-icon">
+              </mat-icon>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="cv-main">
+    <!-- Left Column -->
+    <div class="cv-left-column">
+      <!-- Profile Bio Section -->
+      <section class="cv-section profile-section-card">
+        <h2 class="section-title">
+          <mat-icon>person</mat-icon> Profile
+        </h2>
+        <p class="bio">{{profile?.bio || 'No bio available'}}</p>
+      </section>
+
+      <!-- Experience Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>work</mat-icon> Experience
+        </h2>
+
+        <!-- Experience List -->
+        <div class="experience-list">
+          <div *ngFor="let experience of experiences" class="experience-item">
+            <div class="experience-header">
+              <h3>{{experience.title}}</h3>
+            </div>
+            <p class="company">{{experience.company}}</p>
+            <p class="dates">
+              {{experience.startDate | date:'MMM yyyy'}} -
+              {{experience.current ? 'Present' : (experience.endDate | date:'MMM yyyy')}}
+              <span *ngIf="experience.location"> • {{experience.location}}</span>
+            </p>
+            <p *ngIf="experience.description" class="description">{{experience.description}}</p>
+          </div>
+
+          <div *ngIf="experiences.length === 0" class="empty-state">
+            <p>No work experience available</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Education Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>school</mat-icon> Education
+        </h2>
+
+        <!-- Education List -->
+        <div class="education-list">
+          <div *ngFor="let formation of formations" class="education-item">
+            <div class="education-header">
+              <h3>{{formation.degree}}</h3>
+            </div>
+            <p class="institution">{{formation.institution}}</p>
+            <p class="dates">
+              {{formation.startDate | date:'MMM yyyy'}} -
+              {{formation.current ? 'Present' : (formation.endDate | date:'MMM yyyy')}}
+            </p>
+            <p *ngIf="formation.fieldOfStudy" class="field">{{formation.fieldOfStudy}}</p>
+          </div>
+
+          <div *ngIf="formations.length === 0" class="empty-state">
+            <p>No education information available</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>folder</mat-icon> Projects
+        </h2>
+
+        <!-- Project List -->
+        <div class="project-list">
+          <div *ngFor="let project of projects" class="project-item">
+            <div class="project-header">
+              <h3>{{project.title}}</h3>
+              <span class="project-status">{{project.status | titlecase}}</span>
+            </div>
+            <p class="project-dates" *ngIf="project.startDate || project.endDate">
+              {{project.startDate | date:'MMM yyyy'}} -
+              {{project.endDate ? (project.endDate | date:'MMM yyyy') : 'Present'}}
+            </p>
+            <p class="project-description">{{project.description}}</p>
+
+            <div *ngIf="project.skills?.length" class="project-technologies">
+              <mat-chip-listbox>
+                <mat-chip-option *ngFor="let tech of project.skills">
+                  {{tech}}
+                </mat-chip-option>
+              </mat-chip-listbox>
+            </div>
+          </div>
+
+          <div *ngIf="projects.length === 0" class="empty-state">
+            <p>No projects available</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Right Column -->
+    <div class="cv-right-column">
+      <!-- Skills Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>code</mat-icon> Skills
+        </h2>
+
+        <!-- Technical Skills -->
+        <div class="skills-subsection">
+          <h3>Technical Skills</h3>
+          <div class="skills-grid">
+            <div *ngFor="let skill of techSkills" class="skill-item">
+              <div class="skill-header">
+                <span class="skill-name">{{skill.name}}</span>
+              </div>
+              <div class="skill-details">
+                <span class="skill-level">{{skill.level | titlecase}}</span>
+                <span class="skill-experience">{{skill.yearsOfExperience}} year(s)</span>
+                <span class="skill-category">{{skill.category}}</span>
+              </div>
+            </div>
+
+            <div *ngIf="techSkills.length === 0" class="empty-state">
+              <p>No technical skills available</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Soft Skills -->
+        <div class="skills-subsection">
+          <h3>Soft Skills</h3>
+          <div class="skills-list">
+            <div *ngFor="let skill of softSkills" class="skill-item">
+              <span class="skill-name">{{skill.name}}</span>
+            </div>
+
+            <div *ngIf="softSkills.length === 0" class="empty-state">
+              <p>No soft skills available</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Certifications Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>verified</mat-icon> Certifications
+        </h2>
+
+        <!-- Certification List -->
+        <div class="certification-list">
+          <div *ngFor="let cert of certifications" class="certification-item">
+            <div class="certification-header">
+              <h3>{{cert.name}}</h3>
+            </div>
+            <p class="organization">{{cert.issuingOrganization}}</p>
+            <div class="certification-details">
+              <div *ngIf="cert.issueDate">
+                <strong>Issued:</strong> {{cert.issueDate | date:'MMM yyyy'}}
+              </div>
+              <div *ngIf="cert.expiryDate">
+                <strong>Expires:</strong> {{cert.expiryDate | date:'MMM yyyy'}}
+              </div>
+              <div *ngIf="cert.certificateUrl">
+                <strong>Credential ID:</strong> {{cert.certificateUrl}}
+              </div>
+              <div *ngIf="cert.validationLink">
+                <a href="{{cert.validationLink}}" target="_blank" rel="noopener noreferrer">
+                  <mat-icon class="link-icon">open_in_new</mat-icon> View Credential
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="certifications.length === 0" class="empty-state">
+            <p>No certifications available</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Languages Section -->
+      <section class="cv-section">
+        <h2 class="section-title">
+          <mat-icon>language</mat-icon> Languages
+        </h2>
+
+        <!-- Language List -->
+        <div class="language-list">
+          <div *ngFor="let language of languages" class="language-item">
+            <div class="language-header">
+              <h3>{{language.name}}</h3>
+              <span class="proficiency">{{language.proficiency | titlecase}}</span>
+              <span *ngIf="language.nativeLanguage" class="native-tag">(Native)</span>
+            </div>
+            <div *ngIf="language.certification || language.certificateUrl" class="language-details">
+              <div *ngIf="language.certification">
+                <strong>Certification:</strong> {{language.certification}}
+              </div>
+              <div *ngIf="language.certificateUrl">
+                <a [href]="language.certificateUrl" target="_blank" rel="noopener noreferrer">
+                  <mat-icon class="link-icon">open_in_new</mat-icon> View Certificate
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="languages.length === 0" class="empty-state">
+            <p>No languages available</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>

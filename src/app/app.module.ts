@@ -59,6 +59,7 @@ import { LandingPageComponent } from './core/layout/landing-page/landing-page.co
 import {MatExpansionModule} from '@angular/material/expansion';
 import { UserRegisterComponent } from './auth/user-register/user-register.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { PortfolioSharedComponent } from './features/portfolio-shared/portfolio-shared.component';
 
 
 
@@ -92,6 +93,7 @@ import { MatRadioModule } from '@angular/material/radio';
     ResponsableListComponent,
     ResponsableFormComponent,
     LandingPageComponent,
+    PortfolioSharedComponent,
 
 
   ],

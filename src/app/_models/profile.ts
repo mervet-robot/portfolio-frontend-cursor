@@ -5,6 +5,7 @@ export interface Profile {
   userId: number;
   firstName: string;
   lastName: string;
+  email?:string;
   phoneNumber?: string;
   diploma?: string;
   profilePicture?: string;

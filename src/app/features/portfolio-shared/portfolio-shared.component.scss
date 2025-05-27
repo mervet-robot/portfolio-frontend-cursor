@@ -1,0 +1,201 @@
+.cv-container {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff;
+  color: #2c2c2c;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.cv-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.profile-photo-container {
+  flex-shrink: 0;
+}
+
+.profile-photo {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #4a277a;
+  box-shadow: 0 0 0 4px #f5f3f9;
+}
+
+.header-content {
+  margin-left: 2rem;
+  flex: 1;
+}
+
+.header-content h1 {
+  margin: 0;
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: #4a277a;
+}
+
+.title {
+  font-size: 1.2rem;
+  color: #6c6c6c;
+  margin: 0.3rem 0 1rem;
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.contact-item mat-icon {
+  vertical-align: middle;
+  margin-right: 6px;
+  color: #4a277a;
+}
+
+.social-links-contact-group {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.social-icon {
+  font-size: 20px;
+  color: #4a277a;
+}
+
+.cv-main {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 2rem;
+}
+
+.cv-section {
+  background-color: #fafafa;
+  border-left: 4px solid #4a277a;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #4a277a;
+}
+
+.section-title mat-icon {
+  margin-right: 8px;
+}
+
+.bio {
+  line-height: 1.6;
+  font-size: 0.98rem;
+  color: #444;
+}
+
+/* Experience, Education, Projects, Certifications, Languages */
+.experience-item,
+.education-item,
+.project-item,
+.certification-item,
+.language-item {
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.dates, .company, .institution, .organization, .project-status {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.project-status, .proficiency {
+  display: inline-block;
+  background: #4a277a;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  margin-top: 0.3rem;
+}
+
+.empty-state {
+  font-style: italic;
+  color: #aaa;
+}
+
+.project-technologies mat-chip-option {
+  background-color: #e0d7ee;
+  color: #4a277a;
+  font-weight: 500;
+}
+
+/* Skills */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.skill-name {
+  font-weight: 500;
+  color: #222;
+}
+
+.skill-details {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Languages */
+.language-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.native-tag {
+  font-style: italic;
+  color: #555;
+  margin-left: 6px;
+}
+
+/* Links and icons */
+a {
+  color: #4a277a;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.link-icon {
+  vertical-align: middle;
+  margin-left: 4px;
+}

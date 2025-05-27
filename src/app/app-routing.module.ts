@@ -22,6 +22,7 @@ import { ResponsableViewComponent } from './features/directeur/responsable-view/
 import { AuthGuard } from './_guards/auth.guard';
 import {LandingPageComponent} from './core/layout/landing-page/landing-page.component';
 import { UserRegisterComponent } from './auth/user-register/user-register.component';
+import {PortfolioSharedComponent} from './features/portfolio-shared/portfolio-shared.component';
 
 const routes: Routes = [
 
@@ -50,6 +51,8 @@ const routes: Routes = [
   { path: 'media/:id', component: ProfileComponent },
   //route Portfolio
   { path: 'portfolio', component: PortfolioComponent , canActivate: [AuthGuard] },
+  { path: 'portfolio-shared', component: PortfolioSharedComponent  },
+
 
 
   //Responsable
