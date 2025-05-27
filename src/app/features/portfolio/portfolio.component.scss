@@ -1,339 +1,605 @@
-/* CV Portfolio Styles */
+
+/* LinkedIn-inspired color scheme */
+$linkedin-blue: rgba(74, 39, 122, 0.87);
+$linkedin-dark-blue: #004182;
+$linkedin-light-blue: #eef3f8;
+$linkedin-gray: #e6e6e6;
+$linkedin-dark-gray: #666666;
+$linkedin-text: #000000e6;
+$linkedin-text-light: #00000099;
+$linkedin-white: #ffffff;
+
+
+
+/* LinkedIn-inspired styling */
 .cv-container {
-  max-width: 900px;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  color: $linkedin-text;
+  max-width: 1128px;
   margin: 0 auto;
-  background: white;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  font-family: 'Roboto', sans-serif;
-  color: #333;
-  line-height: 1.6;
+  padding: 20px;
+  background-color: rgba(74, 39, 122, 0.21);
 }
 
-/* Header Styles */
+/* Header Section - LinkedIn Style */
 .cv-header {
-  display: flex;
-  align-items: center;
-  padding: 30px;
-  background: #f5f5f5;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.profile-photo-container {
+  background-color: $linkedin-white;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+  padding: 24px;
+  margin-bottom: 16px;
   position: relative;
-  margin-right: 30px;
-}
-
-.profile-photo {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid white;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-}
-
-.upload-btn {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background: #3f51b5;
-  color: white;
-}
-
-.header-content {
-  flex: 1;
-}
-
-.header-content h1 {
-  margin: 0;
-  font-size: 2.2rem;
-  color: #2c3e50;
-}
-
-.header-content .title {
-  margin: 5px 0;
-  font-size: 1.2rem;
-  color: #7f8c8d;
-}
-
-.contact-info {
   display: flex;
-  gap: 15px;
-  margin-top: 10px;
-  color: #555;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  .profile-photo-container {
+    position: relative;
+    margin-bottom: 16px;
+
+    .profile-photo {
+      width: 156px;
+      height: 156px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid $linkedin-white;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+    }
+
+    .upload-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background-color: $linkedin-blue;
+      color: white;
+      border-radius: 50%;
+
+      &:hover {
+        background-color: $linkedin-dark-blue;
+      }
+    }
+
+    .verification-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      margin-top: 8px;
+      padding: 4px 8px;
+      border-radius: 16px;
+      //background-color: $linkedin-gray;
+
+      &.verified {
+        background-color: #e1faf1;
+        color: #0a6647;
+      }
+
+      &.not-verified {
+        background-color: #fce8e8;
+        color: #a61d24;
+      }
+
+      &.verifying {
+        background-color: #e6f3ff;
+        color: $linkedin-blue;
+      }
+
+      mat-icon {
+        font-size: 16px;
+        height: 16px;
+        width: 16px;
+        margin-right: 4px;
+      }
+    }
+  }
+
+  .header-content {
+    width: 100%;
+
+    h1 {
+      font-size: 32px;
+      font-weight: 600;
+      margin: 0 0 4px 0;
+      color: $linkedin-text;
+    }
+
+    .title {
+      font-size: 20px;
+      color: $linkedin-text-light;
+      margin: 0 0 16px 0;
+      font-weight: 400;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 16px;
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        color: $linkedin-text-light;
+
+        mat-icon {
+          font-size: 18px;
+          margin-right: 4px;
+          color: $linkedin-blue;
+        }
+      }
+
+      .social-links-contact-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        margin-top: 8px;
+
+        .social-link-item-header {
+          display: flex;
+          align-items: center;
+          background-color: $linkedin-light-blue;
+          border-radius: 16px;
+          padding: 4px 12px;
+
+          .social-link-anchor {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: $linkedin-blue;
+
+            .social-icon {
+              font-size: 18px;
+              margin-right: 4px;
+            }
+          }
+
+          .control-button {
+            width: 30px;
+            height: 30px;
+            line-height: 24px;
+
+            mat-icon {
+              font-size: 17px;
+            }
+          }
+        }
+
+        .add-social-link-header {
+          button {
+            border-radius: 16px;
+            font-weight: 600;
+            text-transform: none;
+            padding: 0 16px;
+          }
+        }
+
+        .no-social-links-text {
+          color: $linkedin-text-light;
+          font-size: 14px;
+          width: 100%;
+          text-align: center;
+          margin: 8px 0;
+        }
+      }
+    }
+  }
 }
 
-.contact-info mat-icon {
-  font-size: 18px;
-  vertical-align: middle;
-  margin-right: 5px;
-}
-
-/* Main Content Styles */
+/* Main Content Layout */
 .cv-main {
   display: flex;
-  padding: 30px;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: 992px) {
+    flex-direction: row;
+  }
 }
 
 .cv-left-column {
   flex: 2;
-  padding-right: 30px;
-  border-right: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .cv-right-column {
   flex: 1;
-  padding-left: 30px;
-}
-
-/* Section Styles */
-.cv-section {
-  margin-bottom: 30px;
-}
-
-.section-title {
   display: flex;
-  align-items: center;
-  color: #2c3e50;
-  border-bottom: 2px solid #3f51b5;
-  padding-bottom: 5px;
-  margin-bottom: 15px;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: 992px) {
+    min-width: 300px;
+  }
 }
 
-.section-title mat-icon {
-  margin-right: 10px;
-  color: #3f51b5;
-}
+/* Common Section Styling */
+.cv-section {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  padding: 24px;
 
-.edit-btn, .add-btn {
-  margin-left: auto;
-  color: #3f51b5;
-}
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 16px;
+    display: flex;
+    align-items: center;
 
-.delete-btn {
-  color: #e74c3c;
+    mat-icon {
+      color: rgba(74, 39, 122, 0.96);
+      margin-right: 8px;
+    }
+
+    .add-btn {
+      margin-left: auto;
+      color: rgba(74, 39, 122, 0.96);
+    }
+  }
+
+  .section-header-controls {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    .edit-btn {
+      margin-left: auto;
+      color: #666;
+    }
+  }
 }
 
 /* Profile Section */
-.bio {
-  white-space: pre-line;
-  line-height: 1.8;
+.profile-section-card {
+  .bio {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #191919;
+    white-space: pre-line;
+  }
 }
 
-/* Experience Section */
-.experience-list {
-  margin-top: 20px;
+/* Experience, Education, Project Sections */
+.experience-item,
+.education-item,
+.project-item,
+.certification-item,
+.language-item,
+.skill-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #e0e0e0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 4px;
+  }
+
+  .company,
+  .institution {
+    font-size: 16px;
+    font-weight: 500;
+    color: #191919;
+    margin: 0 0 4px;
+  }
+
+  .dates,
+  .project-dates {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 8px;
+  }
+
+  .description,
+  .project-description {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #191919;
+    white-space: pre-line;
+  }
+
+  .experience-header,
+  .education-header,
+  .project-header,
+  .certification-header,
+  .language-header,
+  .skill-header {
+    display: flex;
+    align-items: center;
+
+    .spacer {
+      flex: 1;
+    }
+
+    .project-status {
+      font-size: 14px;
+      color: #666;
+      margin-right: 8px;
+    }
+
+    .proficiency {
+      font-size: 14px;
+      color: #666;
+      margin-right: 8px;
+    }
+
+    .native-tag {
+      font-size: 14px;
+      color: #666;
+      margin-right: 8px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+      width: 32px;
+      height: 32px;
+
+      mat-icon {
+        font-size: 18px;
+      }
+    }
+
+    .edit-btn {
+      color: #666;
+    }
+
+    .delete-btn {
+      color: #d11124;
+    }
+  }
 }
 
-.experience-item {
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
+.project-technologies {
+  margin-top: 12px;
+
+  mat-chip-listbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    mat-chip-option {
+      font-size: 12px;
+      padding: 4px 10px;
+      background: #eef3f8;
+      color: #0a66c2;
+      border-radius: 16px;
+    }
+  }
 }
 
-.experience-item:last-child {
-  border-bottom: none;
+.certification-details,
+.language-details {
+  font-size: 14px;
+  color: #666;
+  margin-top: 8px;
+
+  a {
+    color: #0a66c2;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    .link-icon {
+      font-size: 16px;
+      margin-right: 4px;
+    }
+  }
 }
 
-.experience-header {
+.skill-details {
   display: flex;
-  align-items: center;
-}
+  gap: 8px;
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
 
-.experience-header h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: #2c3e50;
-}
-
-.company {
-  margin: 5px 0;
-  font-weight: 500;
-  color: #3f51b5;
-}
-
-.dates {
-  margin: 5px 0;
-  color: #7f8c8d;
-  font-size: 0.9rem;
-}
-
-.description {
-  margin-top: 10px;
-}
-
-/* Education Section */
-.education-list {
-  margin-top: 20px;
-}
-
-.education-item {
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
-}
-
-.education-item:last-child {
-  border-bottom: none;
-}
-
-.education-header {
-  display: flex;
-  align-items: center;
-}
-
-.education-header h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: #2c3e50;
-}
-
-.institution {
-  margin: 5px 0;
-  font-weight: 500;
-  color: #3f51b5;
-}
-
-.field {
-  margin: 5px 0;
-  font-style: italic;
-}
-
-/* Skills Section */
-.skills-subsection {
-  margin-bottom: 20px;
-}
-
-.skills-subsection h3 {
-  display: flex;
-  align-items: center;
-  color: #2c3e50;
-  margin-bottom: 10px;
+  span {
+    display: inline-block;
+  }
 }
 
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
-}
-
-.skill-item {
-  padding: 10px;
-  border: 1px solid #eee;
-  border-radius: 4px;
-}
-
-.skill-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-.skill-name {
-  font-weight: 500;
-}
-
-.verified-icon {
-  font-size: 18px;
-}
-
-.skill-details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.skill-level, .skill-experience, .skill-category {
-  display: flex;
-  align-items: center;
-}
-
-.skill-level::before {
-  content: "•";
-  margin-right: 5px;
+  gap: 16px;
 }
 
 .skills-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-}
-
-.skills-list .skill-item {
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  background: #f5f5f5;
-  border-radius: 20px;
-}
-
-/* Certification Section */
-.certification-list {
-  margin-top: 20px;
-}
-
-/*Contact Info */
-.contact-info {
-  display: flex;
-  flex-direction: column;
   gap: 8px;
-  font-size: 16px;
+
+  .skill-item {
+    display: flex;
+    align-items: center;
+    background: #eef3f8;
+    border-radius: 16px;
+    padding: 6px 12px;
+
+    .skill-name {
+      font-size: 14px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+      width: 24px;
+      height: 24px;
+
+      mat-icon {
+        font-size: 16px;
+      }
+    }
+  }
 }
 
-.contact-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-
-// ----------------------- -Verification-----------
-.verification-status {
-  //margin-top: 8px;
-  //padding: 4px;
-  //border-radius: 4px;
-  //display: flex;
-  //align-items: center;
-  //gap: 8px;
-  width: 100%;
+.empty-state {
+  font-size: 14px;
+  color: #666;
+  padding: 16px 0;
   text-align: center;
-  padding: 8px 12px;
-  border-radius: 16px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  max-width: 200px;
-  box-sizing: border-box;
+}
 
-  mat-icon, mat-spinner {
-    flex-shrink: 0;
+/* Form Styles - LinkedIn-like Dialogs */
+.edit-form,
+.experience-form,
+.education-form,
+.project-form,
+.skill-form,
+.certification-form,
+.language-form {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  margin-bottom: 24px;
+
+  .form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+
+    mat-form-field {
+      flex: 1;
+    }
   }
 
-  &.verifying {
-    background-color: rgba(33, 150, 243, 0.1); // Light blue
-    color: #2196F3;
+  .full-width {
+    width: 100%;
+    margin-bottom: 16px;
   }
 
-  &.verified {
-    background-color: rgba(76, 175, 80, 0.1); // Light green
-    color: #4CAF50;
+  mat-form-field {
+    width: 100%;
+
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
   }
 
-  &.not-verified {
-    background-color: rgba(255, 152, 0, 0.1); // Light orange
-    color: #FF9800;
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+
+    button {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 14px;
+      padding: 6px 12px;
+
+      &[color="primary"] {
+        background-color: rgba(31, 16, 61, 0.65);
+        color: white;
+      }
+    }
   }
 }
 
-.social-icon {
-  font-size: 24px;
-  margin-right: 8px;
-  color: #333;
+/* LinkedIn-like input styling */
+.mat-mdc-text-field-wrapper {
+  background-color: white !important;
+  border-radius: 4px !important;
+}
+
+.mat-mdc-form-field-focus-overlay {
+  background-color: white !important;
+}
+
+.mat-mdc-outlined-input:not(.mdc-text-field--disabled) .mdc-notched-outline__leading,
+.mat-mdc-outlined-input:not(.mdc-text-field--disabled) .mdc-notched-outline__notch,
+.mat-mdc-outlined-input:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
+  border-color: rgba(0,0,0,0.12) !important;
+}
+
+.mat-mdc-outlined-input.mat-mdc-focused .mdc-notched-outline__leading,
+.mat-mdc-outlined-input.mat-mdc-focused .mdc-notched-outline__notch,
+.mat-mdc-outlined-input.mat-mdc-focused .mdc-notched-outline__trailing {
+  border-color: #0a66c2 !important;
+  border-width: 1px !important;
+}
+
+/* Checkbox styling */
+.mat-mdc-checkbox .mdc-checkbox__background {
+  border-color: rgba(0,0,0,0.54) !important;
+}
+
+.mat-mdc-checkbox.mat-accent {
+  --mdc-checkbox-selected-checkmark-color: #fff;
+  --mdc-checkbox-selected-focus-icon-color: #0a66c2;
+  --mdc-checkbox-selected-hover-icon-color: #0a66c2;
+  --mdc-checkbox-selected-icon-color: #0a66c2;
+  --mdc-checkbox-selected-pressed-icon-color: #0a66c2;
+  --mdc-checkbox-unselected-focus-icon-color: #212121;
+  --mdc-checkbox-unselected-hover-icon-color: #212121;
+  --mdc-checkbox-disabled-selected-icon-color: rgba(0,0,0,0.38);
+  --mdc-checkbox-disabled-unselected-icon-color: rgba(0,0,0,0.38);
+  --mdc-checkbox-unselected-icon-color: rgba(0,0,0,0.54);
+  --mdc-checkbox-unselected-pressed-icon-color: rgba(0,0,0,0.54);
+}
+
+/* Chip styling */
+.mat-mdc-chip {
+  background-color: #eef3f8 !important;
+  color: #0a66c2 !important;
+  font-size: 12px !important;
+  height: 24px !important;
+
+  .mat-mdc-chip-remove {
+    color: #0a66c2 !important;
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .cv-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-photo-container {
+    margin-right: 0;
+    margin-bottom: 16px;
+  }
+
+  .header-content {
+    text-align: center;
+  }
+
+  .contact-info {
+    justify-content: center;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 16px !important;
+  }
+}
+
+
+
+
+.mat-mdc-button:not(:disabled) {
+  color: rgba(31, 16, 61, 0.65);
 }
