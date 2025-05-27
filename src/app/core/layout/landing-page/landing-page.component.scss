@@ -94,6 +94,7 @@
       max-width: 600px;
       border-radius: 8px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      background-color: rgba(213, 222, 232, 0.32);
     }
 
     @media (max-width: 900px) {
@@ -316,6 +317,7 @@
 .cta-button, .secondary-button {
   transition: all 0.3s ease !important;
 
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
@@ -324,6 +326,11 @@
   &:active {
     transform: translateY(0);
   }
+}
+
+.secondary-button {
+  background: linear-gradient(135deg, rgb(119, 80, 175) 0%, #3a1f62 100%);
+  color: #cfcccc;
 }
 
 @media (max-width: 768px) {

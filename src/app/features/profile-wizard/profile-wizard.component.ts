@@ -552,6 +552,9 @@ export class ProfileWizardComponent  implements OnInit {
             address: updatedProfile.address,
             centre: updatedProfile.centre
           });
+          if (this.currentStep === 1) {
+            this.steps[0].completed = true; // Mark step 1 as completed
+          }
         },
         error: (err) => {
           console.error('Failed to save profile:', err);
@@ -590,6 +593,9 @@ export class ProfileWizardComponent  implements OnInit {
         next: (newFormation) => {
           this.formations.push(newFormation);
           this.formationForm.reset();
+          if (this.currentStep === 2) { // Assuming Formations is step 2
+            this.steps[1].completed = true;
+          }
         },
         error: (err) => console.error('Failed to add formation:', err)
       });
@@ -602,6 +608,9 @@ export class ProfileWizardComponent  implements OnInit {
         next: (newExperience) => {
           this.experiences.push(newExperience);
           this.experienceForm.reset();
+          if (this.currentStep === 3) { // Assuming Experience is step 3
+            this.steps[2].completed = true;
+          }
         },
         error: (err) => console.error('Failed to add experience:', err)
       });
@@ -615,6 +624,9 @@ export class ProfileWizardComponent  implements OnInit {
         next: (newCert) => {
           this.certifications.push(newCert);
           this.certificationForm.reset();
+          if (this.currentStep === 4) { // Assuming Certifications is step 4
+            this.steps[3].completed = true;
+          }
         },
         error: (err) => console.error('Failed to add certification:', err)
       });
@@ -636,6 +648,9 @@ export class ProfileWizardComponent  implements OnInit {
             duration: 3000,
             panelClass: ['success-snackbar']
           });
+          if (this.currentStep === 5) { // Assuming Tech Skills is step 5
+            this.steps[4].completed = true;
+          }
         },
         error: (err) => {
           console.error('Failed to add tech skill:', err);
@@ -665,6 +680,9 @@ export class ProfileWizardComponent  implements OnInit {
             duration: 3000,
             panelClass: ['success-snackbar']
           });
+          if (this.currentStep === 6) { // Assuming Soft Skills is step 6
+            this.steps[5].completed = true;
+          }
         },
         error: (err) => {
           snackbarRef.dismiss();
@@ -698,6 +716,9 @@ export class ProfileWizardComponent  implements OnInit {
             duration: 3000,
             panelClass: ['success-snackbar']
           });
+          if (this.currentStep === 7) { // Assuming Languages is step 7
+            this.steps[6].completed = true;
+          }
         },
         error: (err) => {
           snackbarRef.dismiss();
@@ -739,6 +760,9 @@ export class ProfileWizardComponent  implements OnInit {
           }
           this.cancelEditSocialLink();
           this.snackBar.open('Social link updated!', 'Close', { duration: 3000, panelClass: ['success-snackbar'] });
+          if (this.currentStep === 8) { // Assuming Social Links is step 8
+            this.steps[7].completed = true;
+          }
         },
         error: (err) => {
           console.error('Failed to update social link:', err);
@@ -751,6 +775,9 @@ export class ProfileWizardComponent  implements OnInit {
           this.socialLinks.push(newLink);
           this.socialLinkForm.reset();
           this.snackBar.open('Social link added!', 'Close', { duration: 3000, panelClass: ['success-snackbar'] });
+          if (this.currentStep === 8) { // Assuming Social Links is step 8
+            this.steps[7].completed = true;
+          }
         },
         error: (err) => {
           console.error('Failed to add social link:', err);
@@ -762,8 +789,8 @@ export class ProfileWizardComponent  implements OnInit {
 
   editSocialLink(linkToEdit: SocialLink): void {
     if (linkToEdit.id === undefined) {
-        console.error("Cannot edit a social link without an ID");
-        return;
+      console.error("Cannot edit a social link without an ID");
+      return;
     }
     this.editingSocialLinkId = linkToEdit.id;
     this.socialLinkForm.patchValue({
@@ -774,9 +801,9 @@ export class ProfileWizardComponent  implements OnInit {
 
   deleteSocialLink(linkId: number | undefined): void {
     if (linkId === undefined) {
-        console.error("Cannot delete social link: ID is undefined.");
-        this.snackBar.open('Error: Could not delete link, ID missing.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
-        return;
+      console.error("Cannot delete social link: ID is undefined.");
+      this.snackBar.open('Error: Could not delete link, ID missing.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
+      return;
     }
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '450px',
@@ -1028,15 +1055,33 @@ export class ProfileWizardComponent  implements OnInit {
 
 
   nextStep(): void {
+    if (!this.isStepValid(this.currentStep)) {
+      this.snackBar.open(`Please ensure all fields in Step ${this.currentStep} are correctly filled out.`, 'Close', {
+        duration: 4000,
+        panelClass: ['warning-snackbar']
+      });
+      // Manually trigger validation visibility for the current step's form
+      this.markStepFormAsTouched(this.currentStep);
+      return;
+    }
+
+    // Mark current step as completed
+    this.steps[this.currentStep - 1].completed = true;
+
     if (this.currentStep < this.totalSteps) {
       this.currentStep++;
+    } else if (this.currentStep === this.totalSteps) {
+      // This is the last step, try to complete the profile
+      this.completeProfile();
     }
   }
-  prevStep(): void {
+
+  previousStep(): void {
     if (this.currentStep > 1) {
       this.currentStep--;
     }
   }
+
   skipWizard(): void {
     this.router.navigate(['/portfolio']);
   }
@@ -1192,6 +1237,99 @@ export class ProfileWizardComponent  implements OnInit {
         });
       }
     });
+  }
+
+
+  // Add this to your component class
+  steps = [
+    { label: 'Personal Info', completed: false },
+    { label: 'Formations', completed: false },
+    { label: 'Experience', completed: false },
+    { label: 'Certifications', completed: false },
+    { label: 'Tech Skills', completed: false },
+    { label: 'Soft Skills', completed: false },
+    { label: 'Languages', completed: false },
+    { label: 'Social Links', completed: false },
+    { label: 'Bio & Summary', completed: false }
+  ];
+
+  isStepCompleted(stepNumber: number): boolean {
+    if (stepNumber > 0 && stepNumber <= this.steps.length) {
+      return this.steps[stepNumber - 1].completed;
+    }
+    return false;
+  }
+
+  isStepValid(stepNumber: number): boolean {
+    // Implement validation for each step
+    if (stepNumber === 1) {
+      return this.profileForm.valid;
+    }
+    if (stepNumber === 2) {
+      // Valid if the form is valid (for adding new) or if there's already data
+      return this.formationForm.valid || this.formations.length > 0;
+    }
+    if (stepNumber === 3) {
+      return this.experienceForm.valid || this.experiences.length > 0;
+    }
+    if (stepNumber === 4) {
+      return this.certificationForm.valid || this.certifications.length > 0;
+    }
+    if (stepNumber === 5) {
+      return this.techSkillForm.valid || this.techSkills.length > 0;
+    }
+    if (stepNumber === 6) {
+      return this.softSkillForm.valid || this.softSkills.length > 0;
+    }
+    if (stepNumber === 7) {
+      return this.languageForm.valid || this.languages.length > 0;
+    }
+    if (stepNumber === 8) {
+      return this.socialLinkForm.valid || this.socialLinks.length > 0;
+    }
+    if (stepNumber === 9) { // For the Bio & Summary step
+      // Bio field is part of profileForm. It's valid if the bio control itself is valid.
+      // The profileForm.valid check on completeProfile will be the final gate.
+      return this.profileForm.get('bio')?.valid ?? false;
+    }
+    // Fallback for any step not explicitly defined, though all 9 should be.
+    return true; // Default to true to allow navigation if not specified, review if this is too permissive.
+  }
+
+  goToStep(stepNumber: number): void {
+    // Allow navigating to step 1 always
+    if (stepNumber === 1) {
+      this.currentStep = 1;
+      return;
+    }
+
+    // Allow navigating to step N if step N-1 is completed.
+    if (stepNumber > 0 && stepNumber <= this.totalSteps) {
+      if (this.isStepCompleted(stepNumber - 1)) {
+        this.currentStep = stepNumber;
+      } else {
+        // Optional: Inform user they need to complete previous steps
+        this.snackBar.open('Please complete the previous steps first to navigate here.', 'Close', {
+          duration: 3000,
+          panelClass: ['warning-snackbar']
+        });
+      }
+    }
+  }
+
+  // Helper to mark forms as touched for validation messages
+  private markStepFormAsTouched(stepNumber: number): void {
+    switch (stepNumber) {
+      case 1: this.profileForm.markAllAsTouched(); break;
+      case 2: this.formationForm.markAllAsTouched(); break;
+      case 3: this.experienceForm.markAllAsTouched(); break;
+      case 4: this.certificationForm.markAllAsTouched(); break;
+      case 5: this.techSkillForm.markAllAsTouched(); break;
+      case 6: this.softSkillForm.markAllAsTouched(); break;
+      case 7: this.languageForm.markAllAsTouched(); break;
+      case 8: this.socialLinkForm.markAllAsTouched(); break;
+      case 9: this.profileForm.get('bio')?.markAsTouched(); break; // Bio is part of profileForm
+    }
   }
 
 }
