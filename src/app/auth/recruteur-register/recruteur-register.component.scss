@@ -1,1 +1,137 @@
-/* Add your styles here, perhaps similar to directeur-register.component.scss */ 
+.register-page {
+  background: #fff;
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+
+  .register-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem;
+  }
+
+  .register-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    .logo {
+      max-height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      color: #4a277a;
+    }
+
+    .subtitle {
+      color: #777;
+      font-size: 1rem;
+    }
+  }
+
+  .register-card {
+    padding: 2rem;
+
+    mat-card-content {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .form-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-group {
+    width: 100%;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  .gender-group {
+    display: flex;
+    flex-direction: column;
+    label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .radio-group {
+      display: flex;
+      gap: 1rem;
+    }
+    mat-radio-button {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+  }
+
+  .form-actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    .alert-container {
+      width: 100%;
+      .alert {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #d32f2f;
+        font-weight: 500;
+      }
+    }
+
+    .submit-button {
+      background-color: #4a277a;
+      color: white;
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: #3a1f63;
+      }
+    }
+
+    .login-prompt {
+      font-size: 0.9rem;
+      a {
+        color: #4a277a;
+        font-weight: 500;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .success-message {
+    text-align: center;
+    .success-icon {
+      font-size: 48px;
+      color: green;
+    }
+    h3 {
+      margin-top: 0.5rem;
+      color: #4caf50;
+    }
+  }
+}

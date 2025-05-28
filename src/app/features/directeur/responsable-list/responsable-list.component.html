@@ -1,49 +1,171 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Manage Responsables</h2>
-    <button class="btn btn-primary" (click)="createNewResponsable()">Add New Responsable</button>
+<div class="management-container">
+  <!-- Header Section -->
+  <div class="management-header">
+    <div class="header-content">
+      <h2 class="management-title">
+        <mat-icon class="title-icon">supervisor_account</mat-icon>
+        Responsables Management
+      </h2>
+      <p class="management-subtitle">Manage all department responsables in your organization</p>
+    </div>
+    <button mat-raised-button color="primary" class="add-button" (click)="createNewResponsable()">
+      <mat-icon>person_add</mat-icon>
+      Add New Responsable
+    </button>
   </div>
 
-  <div class="alert alert-success" *ngIf="successMessage">{{ successMessage }}</div>
-  <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <!-- Alert Messages -->
+  <div class="alert-container">
+    <div class="alert alert-success" *ngIf="successMessage">
+      <mat-icon>check_circle</mat-icon>
+      <span>{{ successMessage }}</span>
+      <button mat-icon-button class="close-button" (click)="successMessage = ''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="alert alert-error" *ngIf="errorMessage">
+      <mat-icon>error</mat-icon>
+      <span>{{ errorMessage }}</span>
+      <button mat-icon-button class="close-button" (click)="errorMessage = ''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
 
-  <div class="table-responsive">
-    <table class="table table-striped table-hover">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Username</th>
-          <th scope="col">Email</th>
-          <th scope="col">Name</th>
-          <th scope="col">Department</th>
-          <th scope="col">Sexe</th>
-          <th scope="col">Address</th>
-          <th scope="col">Centre</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let responsable of responsables">
-          <td>{{ responsable.id }}</td>
-          <td>{{ responsable.username }}</td>
-          <td>{{ responsable.email }}</td>
-          <td>{{ responsable.profile?.firstName }} {{ responsable.profile?.lastName }}</td>
-          <td>{{ responsable.profile?.department || 'Not specified' }}</td>
-          <td>{{ responsable.profile?.sexe || 'N/A' }}</td>
-          <td>{{ responsable.profile?.address || 'N/A' }}</td>
-          <td>{{ responsable.profile?.centre || 'N/A' }}</td>
-          <td>
-            <div class="btn-group" role="group" aria-label="Responsable actions">
-              <button class="btn btn-info btn-sm me-1" (click)="viewResponsable(responsable.id!)">View</button>
-              <button class="btn btn-warning btn-sm me-1" (click)="editResponsable(responsable.id!)">Edit</button>
-              <button class="btn btn-danger btn-sm" (click)="deleteResponsable(responsable.id!)">Delete</button>
-            </div>
-          </td>
-        </tr>
-        <tr *ngIf="responsables.length === 0">
-          <td colspan="9" class="text-center">No responsables found.</td>
-        </tr>
-      </tbody>
+  <!-- Search Filter -->
+  <div class="filter-container">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Filter responsables">
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="gender-select">
+      <mat-label>Filter by Gender</mat-label>
+      <mat-select (selectionChange)="onGenderFilterChange($event.value)">
+        <mat-option value="">All</mat-option>
+        <mat-option value="Male">Male</mat-option>
+        <mat-option value="Female">Female</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="department-select">
+      <mat-label>Filter by Department</mat-label>
+      <mat-select (selectionChange)="onDepartmentFilterChange($event.value)">
+        <mat-option value="">All</mat-option>
+        <mat-option value="hr">Resp-Pedag</mat-option>
+        <mat-option value="finance">Resp-dir</mat-option>
+        <mat-option value="it">resp-It</mat-option>
+        <!-- Add any other departments as needed -->
+      </mat-select>
+    </mat-form-field>
+
+
+  </div>
+
+
+  <!-- Data Table -->
+  <div class="table-container mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
+
+      <!-- Username Column -->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef>Username</th>
+        <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.profile?.firstName }} {{ element.profile?.lastName }}
+        </td>
+      </ng-container>
+
+      <!-- Department Column -->
+      <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef>Department</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="department-badge" [ngClass]="{'no-department': !element.profile?.department}">
+            {{ element.profile?.department || 'Not specified' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Gender Column -->
+      <ng-container matColumnDef="gender">
+        <th mat-header-cell *matHeaderCellDef>Gender</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="gender-display">
+            <mat-icon>{{ element.profile?.sexe === 'Male' ? 'male' : 'female' }}</mat-icon>
+            {{ element.profile?.sexe || 'N/A' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Address Column -->
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef>Address</th>
+        <td mat-cell *matCellDef="let element">
+  <span class="address-display" [title]="element.profile?.address || 'N/A'">
+    {{ truncateText(element.profile?.address) }}
+  </span>
+        </td>
+      </ng-container>
+
+      <!-- Centre Column -->
+      <ng-container matColumnDef="centre">
+        <th mat-header-cell *matHeaderCellDef>Centre</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.profile?.centre || 'N/A' }}
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="actions-header">Actions</th>
+        <td mat-cell *matCellDef="let element" class="actions-cell">
+          <div class="action-buttons">
+            <button mat-icon-button color="primary" matTooltip="View details"
+                    (click)="viewResponsable(element.id!)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" matTooltip="Edit responsable"
+                    (click)="editResponsable(element.id!)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" matTooltip="Delete responsable"
+                    (click)="deleteResponsable(element.id!)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
+    <div class="no-data" *ngIf="dataSource.data.length === 0">
+      <mat-icon class="no-data-icon">info</mat-icon>
+      <p>No responsables found</p>
+      <button mat-raised-button color="primary" (click)="createNewResponsable()">
+        <mat-icon>person_add</mat-icon>
+        Create First Responsable
+      </button>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
-</div> 
+</div>

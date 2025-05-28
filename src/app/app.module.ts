@@ -60,6 +60,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { UserRegisterComponent } from './auth/user-register/user-register.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { PortfolioSharedComponent } from './features/portfolio-shared/portfolio-shared.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 
 
@@ -97,62 +98,63 @@ import { PortfolioSharedComponent } from './features/portfolio-shared/portfolio-
 
 
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
 
 
-    CommonModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatToolbarModule,
-    MatIconModule,
+        CommonModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatToolbarModule,
+        MatIconModule,
 
-    MatMenuModule,
-    MatTableModule,
+        MatMenuModule,
+        MatTableModule,
 
-    MatDialogModule,
+        MatDialogModule,
 
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatTabsModule,
-    MatDividerModule,
-    MatListModule,
-    MatProgressSpinnerModule,
-    MatSnackBarModule,
-    MatProgressBar,
-    MatChipListbox,
-    MatChip,
-    MatCheckbox,
-    MatAutocompleteTrigger,
-    MatAutocomplete,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatTabsModule,
+        MatDividerModule,
+        MatListModule,
+        MatProgressSpinnerModule,
+        MatSnackBarModule,
+        MatProgressBar,
+        MatChipListbox,
+        MatChip,
+        MatCheckbox,
+        MatAutocompleteTrigger,
+        MatAutocomplete,
 
-    MatChipsModule,
-    MatAutocompleteModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatChipsModule,
-    MatAutocompleteModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatInputModule,
+        MatChipsModule,
+        MatAutocompleteModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatChipsModule,
+        MatAutocompleteModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatInputModule,
 
-    MatTooltipModule,
+        MatTooltipModule,
 
-    MatButtonToggleModule,
-    NgOptimizedImage,
+        MatButtonToggleModule,
+        NgOptimizedImage,
 
-    MatExpansionModule
+        MatExpansionModule,
+        MatPaginator
 
-  ],
+    ],
   providers: [
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),

@@ -1,7 +1,7 @@
 export interface ResponsableRequest {
   username: string;
   email: string;
-  password: string;
+  password?: string;
   firstName: string;
   lastName: string;
   department?: string;
@@ -27,4 +27,4 @@ export interface Responsable {
     address?: string;
     centre?: string;
   };
-} 
+}

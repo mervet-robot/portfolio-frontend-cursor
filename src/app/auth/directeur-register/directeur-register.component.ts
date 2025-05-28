@@ -19,6 +19,10 @@ export class DirecteurRegisterComponent implements OnInit {
   isSuccessful = false;
   centres = ['LAYOUN_CENTRE', 'DAKHLA_CENTRE', 'CASA_CENTRE'];
 
+  // Add to your component class
+  hidePassword = true;
+
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,

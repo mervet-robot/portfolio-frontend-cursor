@@ -1,157 +1,144 @@
-<div class="container mt-4">
-  <h2>{{ isAddMode ? 'Add' : 'Edit' }} Responsable</h2>
-  
-  <div class="alert alert-success" *ngIf="successMessage">{{ successMessage }}</div>
-  <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
-  
-  <form [formGroup]="responsableForm" (ngSubmit)="onSubmit()" class="card p-4 shadow">
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <label for="username" class="form-label">Username *</label>
-        <input 
-          type="text" 
-          formControlName="username" 
-          class="form-control" 
-          [ngClass]="{ 'is-invalid': submitted && f['username'].errors }"
-          id="username"
-        />
-        <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
-          <div *ngIf="f['username'].errors['required']">Username is required</div>
-          <div *ngIf="f['username'].errors['minlength']">Username must be at least 3 characters</div>
-          <div *ngIf="f['username'].errors['maxlength']">Username must not exceed 20 characters</div>
-        </div>
-      </div>
-      
-      <div class="col-md-6">
-        <label for="email" class="form-label">Email *</label>
-        <input 
-          type="email" 
-          formControlName="email" 
-          class="form-control" 
-          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
-          id="email"
-        />
-        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-          <div *ngIf="f['email'].errors['required']">Email is required</div>
-          <div *ngIf="f['email'].errors['email']">Email must be a valid email address</div>
-          <div *ngIf="f['email'].errors['maxlength']">Email must not exceed 50 characters</div>
-        </div>
-      </div>
+<div class="directeur-form-container">
+  <div class="form-header">
+    <h1 class="form-title">
+      <mat-icon>{{ isAddMode ? 'person_add' : 'edit' }}</mat-icon>
+      {{ isAddMode ? 'Create New Recruteur' : 'Edit Recruteur' }}
+    </h1>
+    <p class="form-subtitle">Fill in the details below to {{ isAddMode ? 'add a new' : 'update this' }} recruteur</p>
+  </div>
+
+  <!-- Alert Messages -->
+  <div class="alert-container">
+    <div class="alert alert-success" *ngIf="successMessage">
+      <mat-icon>check_circle</mat-icon>
+      <span>{{ successMessage }}</span>
+      <button mat-icon-button class="close-button" (click)="successMessage = ''">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
-    
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <label for="firstName" class="form-label">First Name *</label>
-        <input 
-          type="text" 
-          formControlName="firstName" 
-          class="form-control" 
-          [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }"
-          id="firstName"
-        />
-        <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
-          <div *ngIf="f['firstName'].errors['required']">First name is required</div>
-        </div>
-      </div>
-      
-      <div class="col-md-6">
-        <label for="lastName" class="form-label">Last Name *</label>
-        <input 
-          type="text" 
-          formControlName="lastName" 
-          class="form-control" 
-          [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }"
-          id="lastName"
-        />
-        <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
-          <div *ngIf="f['lastName'].errors['required']">Last name is required</div>
-        </div>
-      </div>
+    <div class="alert alert-error" *ngIf="errorMessage">
+      <mat-icon>error</mat-icon>
+      <span>{{ errorMessage }}</span>
+      <button mat-icon-button class="close-button" (click)="errorMessage = ''">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
-    
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <label for="department" class="form-label">Department</label>
-        <input 
-          type="text" 
-          formControlName="department" 
-          class="form-control" 
-          id="department"
-        />
+  </div>
+
+  <form [formGroup]="responsableForm" (ngSubmit)="onSubmit()" class="form-card mat-elevation-z8">
+    <div class="form-row">
+      <!-- Left Column -->
+      <div class="form-column">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Username *</mat-label>
+          <input matInput formControlName="username" required>
+          <mat-icon matPrefix>person_outline</mat-icon>
+          <mat-error *ngIf="f['username'].errors?.['required']">Username is required</mat-error>
+          <mat-error *ngIf="f['username'].errors?.['minlength']">Minimum 3 characters</mat-error>
+          <mat-error *ngIf="f['username'].errors?.['maxlength']">Maximum 20 characters</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Email *</mat-label>
+          <input matInput formControlName="email" type="email" required>
+          <mat-icon matPrefix>email</mat-icon>
+          <mat-error *ngIf="f['email'].errors?.['required']">Email is required</mat-error>
+          <mat-error *ngIf="f['email'].errors?.['email']">Invalid email format</mat-error>
+          <mat-error *ngIf="f['email'].errors?.['maxlength']">Maximum 50 characters</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>First Name *</mat-label>
+          <input matInput formControlName="firstName" required>
+          <mat-icon matPrefix>badge</mat-icon>
+          <mat-error *ngIf="f['firstName'].errors?.['required']">First name is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Last Name *</mat-label>
+          <input matInput formControlName="lastName" required>
+          <mat-icon matPrefix>badge</mat-icon>
+          <mat-error *ngIf="f['lastName'].errors?.['required']">Last name is required</mat-error>
+        </mat-form-field>
       </div>
-      
-      <div class="col-md-6">
-        <label for="phoneNumber" class="form-label">Phone Number</label>
-        <input 
-          type="text" 
-          formControlName="phoneNumber" 
-          class="form-control" 
-          id="phoneNumber"
-        />
-      </div>
-    </div>
-    
-    <div class="row mb-3">
-      <div class="col-md-4">
-        <label class="form-label">Sexe *</label>
-        <div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" id="male" value="Male" formControlName="sexe" [ngClass]="{ 'is-invalid': submitted && f['sexe'].errors }">
-            <label class="form-check-label" for="male">Male</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" id="female" value="Female" formControlName="sexe" [ngClass]="{ 'is-invalid': submitted && f['sexe'].errors }">
-            <label class="form-check-label" for="female">Female</label>
-          </div>
+
+      <!-- Right Column -->
+      <div class="form-column">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Department</mat-label>
+          <input matInput formControlName="department">
+          <mat-icon matPrefix>business</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="phoneNumber">
+          <mat-icon matPrefix>phone</mat-icon>
+        </mat-form-field>
+
+        <div class="gender-selection">
+          <label>Gender *</label>
+          <mat-radio-group formControlName="sexe" class="radio-group" required>
+            <mat-radio-button value="Male" class="radio-button">
+              <div class="radio-content">
+                <mat-icon>male</mat-icon>
+                <span>Male</span>
+              </div>
+            </mat-radio-button>
+            <mat-radio-button value="Female" class="radio-button">
+              <div class="radio-content">
+                <mat-icon>female</mat-icon>
+                <span>Female</span>
+              </div>
+            </mat-radio-button>
+          </mat-radio-group>
+          <mat-error *ngIf="f['sexe'].errors?.['required'] && (submitted || f['sexe'].touched)">
+            Gender is required
+          </mat-error>
         </div>
-        <div *ngIf="submitted && f['sexe'].errors" class="invalid-feedback d-block">
-          <div *ngIf="f['sexe'].errors['required']">Sexe is required</div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <label for="centre" class="form-label">Centre *</label>
-        <select id="centre" class="form-select" formControlName="centre" [ngClass]="{ 'is-invalid': submitted && f['centre'].errors }">
-          <option value="" disabled>Select a Centre</option>
-          <option *ngFor="let c of centres" [value]="c">{{c}}</option>
-        </select>
-        <div *ngIf="submitted && f['centre'].errors" class="invalid-feedback">
-          <div *ngIf="f['centre'].errors['required']">Centre is required</div>
-        </div>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Centre *</mat-label>
+          <mat-select formControlName="centre" required>
+            <mat-option disabled value="">Select a Centre</mat-option>
+            <mat-option *ngFor="let c of centres" [value]="c">{{c}}</mat-option>
+          </mat-select>
+          <mat-icon matPrefix>location_city</mat-icon>
+          <mat-error *ngIf="f['centre'].errors?.['required']">Centre is required</mat-error>
+        </mat-form-field>
       </div>
     </div>
 
-    <div class="mb-3">
-      <label for="address" class="form-label">Address *</label>
-      <input type="text" formControlName="address" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['address'].errors }" id="address"/>
-      <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
-        <div *ngIf="f['address'].errors['required']">Address is required</div>
-      </div>
-    </div>
-    
-    <div class="mb-3">
-      <label for="password" class="form-label">
-        {{ isAddMode ? 'Password *' : 'Password (leave blank to keep current password)' }}
-      </label>
-      <input 
-        type="password" 
-        formControlName="password" 
-        class="form-control" 
-        [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
-        id="password"
-      />
-      <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-        <div *ngIf="f['password'].errors['required']">Password is required</div>
-        <div *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters</div>
-        <div *ngIf="f['password'].errors['maxlength']">Password must not exceed 40 characters</div>
-      </div>
-    </div>
-    
-    <div class="d-flex justify-content-between mt-4">
-      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-      <button type="submit" class="btn btn-primary" [disabled]="loading">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
-        {{ isAddMode ? 'Create' : 'Update' }}
+    <mat-form-field appearance="outline" class="form-field full-width">
+      <mat-label>Address *</mat-label>
+      <input matInput formControlName="address" required>
+      <mat-icon matPrefix>location_on</mat-icon>
+      <mat-error *ngIf="f['address'].errors?.['required']">Address is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field full-width">
+      <mat-label>{{ isAddMode ? 'Password *' : 'Password (leave blank to keep current)' }}</mat-label>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" [required]="isAddMode">
+      <mat-icon matPrefix>lock</mat-icon>
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-hint *ngIf="!isAddMode">Leave blank to keep current password</mat-hint>
+      <mat-error *ngIf="f['password'].errors?.['required'] && isAddMode">Password is required</mat-error>
+      <mat-error *ngIf="f['password'].errors?.['minlength']">Minimum 6 characters</mat-error>
+      <mat-error *ngIf="f['password'].errors?.['maxlength']">Maximum 40 characters</mat-error>
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button mat-stroked-button type="button" (click)="onCancel()" class="cancel-button">
+        <mat-icon>cancel</mat-icon>
+        Cancel
+      </button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="submit-button">
+        <mat-icon *ngIf="!loading">{{ isAddMode ? 'person_add' : 'save' }}</mat-icon>
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+        {{ isAddMode ? 'Create Recruteur' : 'Update Recruteur' }}
       </button>
     </div>
   </form>
-</div> 
+</div>

@@ -23,6 +23,8 @@ export class ResponsableFormComponent implements OnInit {
   submitted = false;
   centres = ['LAYOUN_CENTRE', 'DAKHLA_CENTRE', 'CASA_CENTRE'];
 
+  hidePassword = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -79,6 +81,7 @@ export class ResponsableFormComponent implements OnInit {
   }
 
   // convenience getter for easy access to form fields
+
   get f() { return this.responsableForm.controls; }
 
   onSubmit(): void {
@@ -127,9 +130,9 @@ export class ResponsableFormComponent implements OnInit {
 
   private updateResponsable(responsableData: ResponsableRequest): void {
     // If password is empty, remove it from the request
-    // if (!responsableData.password) {
-    //   delete responsableData.password;
-    // }
+    if (!responsableData.password) {
+      delete responsableData.password;
+    }
 
     this.directeurService.updateResponsable(this.id!, responsableData).subscribe(
       (response) => {

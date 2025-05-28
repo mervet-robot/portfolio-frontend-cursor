@@ -1,60 +1,132 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-md-8 mx-auto">
-      <div class="card shadow">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-          <h3 class="mb-0">Responsable Details</h3>
-          <div>
-            <button class="btn btn-sm btn-light me-2" (click)="editResponsable()">Edit</button>
-            <button class="btn btn-sm btn-light" (click)="goBack()">Back to List</button>
+<div class="recruteur-view-container">
+  <div class="header-actions">
+    <button mat-stroked-button (click)="goBack()" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+      Back to List
+    </button>
+    <button mat-raised-button color="primary" (click)="editResponsable()" class="edit-button">
+      <mat-icon>edit</mat-icon>
+      Edit Recruteur
+    </button>
+  </div>
+
+  <mat-card class="profile-card mat-elevation-z8">
+    <mat-card-header class="profile-header">
+      <mat-card-title class="profile-title">
+        <mat-icon class="title-icon">badge</mat-icon>
+        Recruteur Profile
+      </mat-card-title>
+      <mat-card-subtitle class="profile-subtitle">
+        Detailed information about this recruteur
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-content>
+      <!-- Error Message -->
+      <div class="error-message" *ngIf="errorMessage">
+        <mat-icon>error</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Loading State -->
+      <div class="loading-state" *ngIf="!responsable && !errorMessage">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Loading recruteur details...</p>
+      </div>
+
+      <!-- Profile Content -->
+      <div class="profile-content" *ngIf="responsable">
+        <div class="profile-section">
+          <div class="avatar-section">
+            <div class="avatar-container">
+              <mat-icon class="avatar-icon">account_circle</mat-icon>
+            </div>
+            <div class="status-badge" [ngClass]="responsable.active ? 'active' : 'inactive'">
+              {{ responsable.active ? 'ACTIVE' : 'INACTIVE' }}
+            </div>
+          </div>
+
+          <div class="profile-details">
+            <h2 class="profile-name">{{ responsable.profile?.firstName }} {{ responsable.profile?.lastName }}</h2>
+            <p class="profile-username">{{ responsable.username }}</p>
+            <div class="role-badge">
+              <mat-icon>verified_user</mat-icon>
+              <span>{{ responsable.role | uppercase }}</span>
+            </div>
           </div>
         </div>
 
-        <div class="card-body" *ngIf="responsable">
-          <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+        <mat-divider></mat-divider>
 
-          <div class="row mb-4">
-
-
-            <div class="col-md-4">
-              <div class="profile-image-container">
-                <div class="profile-placeholder d-flex justify-content-center align-items-center">
-                  <i class="bi bi-person-circle fs-1"></i>
-                </div>
+        <div class="details-grid">
+          <!-- Contact Information -->
+          <div class="details-section">
+            <h3 class="section-title">
+              <mat-icon>contact_mail</mat-icon>
+              Contact Information
+            </h3>
+            <div class="detail-item">
+              <mat-icon>email</mat-icon>
+              <div>
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">{{ responsable.email }}</span>
               </div>
             </div>
-
-            <div class="col-md-8">
-              <h4>{{ responsable.profile?.firstName }} {{ responsable.profile?.lastName }}</h4>
-              <p class="text-muted mb-2">{{ responsable.username }}</p>
-              <p class="badge bg-info text-white">Role: {{ responsable.role }}</p>
-
-              <div class="mt-3">
-                <p><strong>Email:</strong> {{ responsable.email }}</p>
-                <p *ngIf="responsable.profile?.department"><strong>Department:</strong> {{ responsable.profile?.department }}</p>
-                <p *ngIf="responsable.profile?.phoneNumber"><strong>Phone:</strong> {{ responsable.profile?.phoneNumber }}</p>
-                <p *ngIf="responsable.profile?.sexe"><strong>Sexe:</strong> {{ responsable.profile?.sexe }}</p>
-                <p *ngIf="responsable.profile?.address"><strong>Address:</strong> {{ responsable.profile?.address }}</p>
-                <p *ngIf="responsable.profile?.centre"><strong>Centre:</strong> {{ responsable.profile?.centre }}</p>
-                <p><strong>Status:</strong>
-                  <span class="badge" [ngClass]="responsable.active ? 'bg-success' : 'bg-danger'">
-                    {{ responsable.active ? 'Active' : 'Inactive' }}
-                  </span>
-                </p>
+            <div class="detail-item" *ngIf="responsable.profile?.phoneNumber">
+              <mat-icon>phone</mat-icon>
+              <div>
+                <span class="detail-label">Phone:</span>
+                <span class="detail-value">{{ responsable.profile?.phoneNumber }}</span>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="card-body" *ngIf="!responsable && !errorMessage">
-          <div class="text-center py-5">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
+          <!-- Personal Information -->
+          <div class="details-section">
+            <h3 class="section-title">
+              <mat-icon>person</mat-icon>
+              Personal Information
+            </h3>
+            <div class="detail-item" *ngIf="responsable.profile?.sexe">
+              <mat-icon>{{ responsable.profile?.sexe === 'Male' ? 'male' : 'female' }}</mat-icon>
+              <div>
+                <span class="detail-label">Gender:</span>
+                <span class="detail-value">{{ responsable.profile?.sexe }}</span>
+              </div>
             </div>
-            <p class="mt-2">Loading responsable details...</p>
+            <div class="detail-item" *ngIf="responsable.profile?.department">
+              <mat-icon>business</mat-icon>
+              <div>
+                <span class="detail-label">Department:</span>
+                <span class="detail-value">{{ responsable.profile?.department }}</span>
+              </div>
+            </div>
+            <div class="detail-item" *ngIf="responsable.profile?.centre">
+              <mat-icon>location_city</mat-icon>
+              <div>
+                <span class="detail-label">Centre:</span>
+                <span class="detail-value">{{ responsable.profile?.centre }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Address Information -->
+          <div class="details-section" *ngIf="responsable.profile?.address">
+            <h3 class="section-title">
+              <mat-icon>location_on</mat-icon>
+              Address
+            </h3>
+            <div class="detail-item">
+              <mat-icon>home</mat-icon>
+              <div>
+                <span class="detail-value address-text">{{ responsable.profile?.address }}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </mat-card-content>
+  </mat-card>
 </div>
