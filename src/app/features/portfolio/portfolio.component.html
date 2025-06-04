@@ -1,6 +1,11 @@
 <div class="cv-container">
   <!-- Header Section -->
   <header class="cv-header">
+
+    <button mat-icon-button routerLink="/portfolio-shared" class="view-btn" matTooltip="View profile">
+      <mat-icon>visibility</mat-icon>
+    </button>
+
     <div class="profile-photo-container">
       <img [src]="getProfilePictureUrl() || 'assets/default-avatar.png'"
            alt="Profile Photo" class="profile-photo">
@@ -14,6 +19,7 @@
       <button mat-icon-button (click)="fileInput.click()" class="upload-btn">
         <mat-icon>photo_camera</mat-icon>
       </button>
+
     </div>
 
     <div class="header-content">
