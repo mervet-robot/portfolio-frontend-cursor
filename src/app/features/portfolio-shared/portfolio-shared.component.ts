@@ -18,6 +18,8 @@ import { CertificationResponse } from '../../_models/certification';
 import { ProjectResponse } from '../../_models/project';
 import { SocialLink } from '../../_models/social-link';
 import {forkJoin} from 'rxjs';
+import html2canvas from 'html2canvas';
+import jspdf from 'jspdf';
 
 @Component({
   selector: 'app-portfolio-shared',
@@ -92,6 +94,39 @@ export class PortfolioSharedComponent implements OnInit {
         console.error('Failed to load portfolio data:', err);
       }
     });
+  }
+
+  exportToPdf(): void {
+    const data = document.querySelector<HTMLElement>('.cv-container');
+    if (data) {
+      // Temporarily hide the button before taking the screenshot
+      const button = document.querySelector('.export-pdf-button') as HTMLElement;
+      if (button) {
+        button.style.display = 'none';
+      }
+
+      html2canvas(data, { scale: 2, useCORS: true } as any).then((canvas: HTMLCanvasElement) => {
+        // Show the button again after taking the screenshot
+        if (button) {
+          button.style.display = 'block';
+        }
+
+        const contentDataURL = canvas.toDataURL('image/png');
+        const pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+        const width = pdf.internal.pageSize.getWidth();
+        const height = canvas.height * width / canvas.width;
+        pdf.addImage(contentDataURL, 'PNG', 0, 0, width, height);
+
+        const fileName = `${this.profile?.firstName || 'user'}-${this.profile?.lastName || 'portfolio'}-CV.pdf`.toLowerCase();
+        pdf.save(fileName);
+      }).catch((error: any) => {
+        console.error('Error generating PDF:', error);
+        // Ensure the button is visible even if an error occurs
+        if (button) {
+          button.style.display = 'block';
+        }
+      });
+    }
   }
 
   getProfilePictureUrl(): string {
