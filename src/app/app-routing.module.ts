@@ -5,16 +5,11 @@ import {RegisterComponent} from './auth/register/register.component';
 import { DirecteurRegisterComponent } from './auth/directeur-register/directeur-register.component';
 import { RecruteurRegisterComponent } from './auth/recruteur-register/recruteur-register.component';
 import {ProfileComponent} from './features/profile/profile.component';
-import {CertificationsComponent} from './features/certifications/certifications.component';
-import {DashboardComponent} from './features/dashboard/dashboard.component';
 import {ProfileWizardComponent} from './features/profile-wizard/profile-wizard.component';
 import {ProjectsComponent} from './features/projects/projects.component';
 import {ProjectMediaComponent} from './features/project-media/project-media.component';
-import {UserMediaService} from './_services/user-media.service';
 import {UserMediaComponent} from './features/user-media/user-media.component';
-import {
-  ProjectMediaUploadComponentComponent
-} from './features/project-media-upload-component/project-media-upload-component.component';
+
 import {PortfolioComponent} from './features/portfolio/portfolio.component';
 import { ResponsableListComponent } from './features/directeur/responsable-list/responsable-list.component';
 import { ResponsableFormComponent } from './features/directeur/responsable-form/responsable-form.component';
@@ -23,6 +18,10 @@ import { AuthGuard } from './_guards/auth.guard';
 import {LandingPageComponent} from './core/layout/landing-page/landing-page.component';
 import { UserRegisterComponent } from './auth/user-register/user-register.component';
 import {PortfolioSharedComponent} from './features/portfolio-shared/portfolio-shared.component';
+import {DashboardComponent} from './features/responsable/dashboard/dashboard.component';
+import {CertificationsComponent} from './features/responsable/certifications/certifications.component';
+import {RespProjectsComponent} from './features/responsable/resp-projects/resp-projects.component';
+import {RespProjectMediaComponent} from './features/responsable/resp-project-media/resp-project-media.component';
 
 const routes: Routes = [
 
@@ -45,10 +44,11 @@ const routes: Routes = [
   { path: 'projects', component: ProjectsComponent },
   { path: 'projects/:projectId/media', component: ProjectMediaComponent },
   { path: 'projects/media', component: ProjectMediaComponent },
+
   //route Test Media
   { path: 'media', component: UserMediaComponent },
-  { path: 'media/upload', component: ProjectMediaUploadComponentComponent },
   { path: 'media/:id', component: ProfileComponent },
+
   //route Portfolio
   { path: 'portfolio', component: PortfolioComponent , canActivate: [AuthGuard] },
   { path: 'portfolio-shared', component: PortfolioSharedComponent, canActivate: [AuthGuard] },
@@ -58,6 +58,8 @@ const routes: Routes = [
   //Responsable
   { path: 'dashboard', component: DashboardComponent },
   { path: 'certifications', component: CertificationsComponent },
+  { path: 'responsable/projects', component: RespProjectsComponent },
+  { path: 'responsable/projects/:projectId/media', component: RespProjectMediaComponent },
 
 
 

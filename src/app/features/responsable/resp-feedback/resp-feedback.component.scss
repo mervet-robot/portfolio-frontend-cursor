@@ -1,0 +1,48 @@
+.feedback-list {
+  margin-bottom: 2rem;
+}
+
+.no-feedback {
+  text-align: center;
+  padding: 1rem;
+  color: #666;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.feedback-card {
+  margin-bottom: 1rem;
+  mat-card-header {
+    .spacer {
+      flex: 1 1 auto;
+    }
+  }
+}
+
+.scores {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.feedback-form-container {
+  margin-top: 2rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-field {
+  flex: 1;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-divider {
+  margin: 2rem 0;
+} 

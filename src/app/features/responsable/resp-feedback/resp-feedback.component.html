@@ -1,0 +1,78 @@
+<h2 mat-dialog-title>Project Feedback</h2>
+
+<mat-dialog-content>
+  <!-- Existing Feedbacks -->
+  <div class="feedback-list">
+    <h3>Existing Feedback</h3>
+    <div *ngIf="feedbacks.length === 0" class="no-feedback">
+      <p>No feedback submitted yet for this project.</p>
+    </div>
+    <mat-card *ngFor="let feedback of feedbacks" class="feedback-card">
+      <mat-card-header>
+        <mat-card-title>Reviewer ID: {{ feedback.reviewerId }}</mat-card-title>
+        <mat-card-subtitle>Submitted on: {{ feedback.createdAt | date:'short' }}</mat-card-subtitle>
+        <span class="spacer"></span>
+        <button mat-icon-button (click)="startEdit(feedback)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteFeedback(feedback.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ feedback.comment }}</p>
+        <div class="scores">
+          <span><strong>Technical Score:</strong> {{ feedback.technicalScore }}/5</span>
+          <span><strong>Attitude Score:</strong> {{ feedback.attitudeScore }}/5</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- New Feedback Form -->
+  <div class="feedback-form-container">
+    <h3>Submit Your Feedback</h3>
+    <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Comment</mat-label>
+        <textarea matInput formControlName="comment" rows="4" required></textarea>
+        <mat-error *ngIf="feedbackForm.get('comment')?.hasError('required')">
+          Comment is required.
+        </mat-error>
+      </mat-form-field>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Technical Score (1-5)</mat-label>
+          <input matInput type="number" formControlName="technicalScore" required min="1" max="5">
+          <mat-error *ngIf="feedbackForm.get('technicalScore')?.hasError('required')">
+            Technical score is required.
+          </mat-error>
+          <mat-error *ngIf="feedbackForm.get('technicalScore')?.hasError('min') || feedbackForm.get('technicalScore')?.hasError('max')">
+            Score must be between 1 and 5.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Attitude Score (1-5)</mat-label>
+          <input matInput type="number" formControlName="attitudeScore" required min="1" max="5">
+          <mat-error *ngIf="feedbackForm.get('attitudeScore')?.hasError('required')">
+            Attitude score is required.
+          </mat-error>
+           <mat-error *ngIf="feedbackForm.get('attitudeScore')?.hasError('min') || feedbackForm.get('attitudeScore')?.hasError('max')">
+            Score must be between 1 and 5.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="submitFeedback()" [disabled]="!feedbackForm.valid">
+    {{ isEditing ? 'Update Feedback' : 'Submit Feedback' }}
+  </button>
+</mat-dialog-actions> 

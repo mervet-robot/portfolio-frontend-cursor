@@ -1,0 +1,263 @@
+/* Resp Projects Component SCSS */
+.wizard-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  mat-card {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+
+    mat-card-header {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-bottom: 1px solid #e9ecef;
+
+      mat-card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      mat-card-subtitle {
+        color: #6c757d;
+        font-size: 0.95rem;
+      }
+    }
+
+    mat-card-content {
+      padding: 2rem;
+    }
+  }
+}
+
+.step-content {
+  margin-bottom: 2.5rem;
+
+  h3 {
+    color: #2c3e50;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e9ecef;
+  }
+}
+
+.project-form {
+  .form-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+
+  .form-field, .full-width {
+    flex: 1;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  mat-form-field {
+    margin-bottom: 1rem;
+
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
+
+    .mat-form-field-outline {
+      background-color: #fff;
+      border-radius: 6px;
+    }
+  }
+
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+
+  .skill-item {
+    background: #e9f5ff;
+    color: #2c3e50;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    button {
+      margin-left: 0.5rem;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+
+      mat-icon {
+        font-size: 16px;
+        color: #6c757d;
+        transition: color 0.2s;
+
+        &:hover {
+          color: #dc3545;
+        }
+      }
+    }
+  }
+}
+
+.button-row {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+
+  button[mat-raised-button] {
+    padding: 0 1.5rem;
+    height: 44px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+.section-header {
+  margin: 2.5rem 0 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e9ecef;
+
+  h4 {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
+.no-projects {
+  text-align: center;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  color: #6c757d;
+  border: 1px dashed #dee2e6;
+}
+
+.projects-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.project-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  }
+
+  mat-card-header {
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    align-items: center;
+
+    mat-card-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    mat-card-subtitle {
+      color: #6c757d;
+      font-size: 0.85rem;
+
+      span {
+        margin-left: 0.5rem;
+      }
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    button {
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  mat-card-content {
+    padding: 1.25rem;
+
+    p {
+      color: #495057;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .skills-section {
+      margin-top: 1rem;
+
+      p {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+      }
+
+      .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .skill-badge {
+        background: #e9f5ff;
+        color: #2c3e50;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .wizard-container {
+    padding: 0 0.5rem;
+
+    mat-card-content {
+      padding: 1.5rem;
+    }
+  }
+
+  .project-form {
+    .form-row {
+      flex-direction: column;
+    }
+  }
+} 

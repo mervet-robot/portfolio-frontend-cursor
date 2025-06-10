@@ -9,7 +9,6 @@ import { HeaderComponent } from './core/layout/header/header.component';
 import { FooterComponent } from './core/layout/footer/footer.component';
 import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
 import { ProfileComponent } from './features/profile/profile.component';
-import { CertificationsComponent } from './features/certifications/certifications.component';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
@@ -28,7 +27,6 @@ import {MatListModule} from '@angular/material/list';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {HttpClientModule, provideHttpClient, withFetch} from '@angular/common/http';
-import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { ProfileWizardComponent } from './features/profile-wizard/profile-wizard.component';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import { PortfolioComponent } from './features/portfolio/portfolio.component';
@@ -61,6 +59,11 @@ import { UserRegisterComponent } from './auth/user-register/user-register.compon
 import { MatRadioModule } from '@angular/material/radio';
 import { PortfolioSharedComponent } from './features/portfolio-shared/portfolio-shared.component';
 import { MatPaginator } from '@angular/material/paginator';
+import {DashboardComponent} from './features/responsable/dashboard/dashboard.component';
+import {CertificationsComponent} from './features/responsable/certifications/certifications.component';
+import {RespProjectsComponent} from "./features/responsable/resp-projects/resp-projects.component";
+import {RespProjectMediaComponent} from "./features/responsable/resp-project-media/resp-project-media.component";
+import {RespFeedbackComponent} from "./features/responsable/resp-feedback/resp-feedback.component";
 
 
 
@@ -95,66 +98,69 @@ import { MatPaginator } from '@angular/material/paginator';
     ResponsableFormComponent,
     LandingPageComponent,
     PortfolioSharedComponent,
+    RespProjectsComponent,
+    RespProjectMediaComponent,
+    RespFeedbackComponent,
 
 
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule,
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
 
 
-        CommonModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        ReactiveFormsModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatToolbarModule,
-        MatIconModule,
+    CommonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatToolbarModule,
+    MatIconModule,
 
-        MatMenuModule,
-        MatTableModule,
+    MatMenuModule,
+    MatTableModule,
 
-        MatDialogModule,
+    MatDialogModule,
 
-        HttpClientModule,
-        BrowserAnimationsModule,
-        MatTabsModule,
-        MatDividerModule,
-        MatListModule,
-        MatProgressSpinnerModule,
-        MatSnackBarModule,
-        MatProgressBar,
-        MatChipListbox,
-        MatChip,
-        MatCheckbox,
-        MatAutocompleteTrigger,
-        MatAutocomplete,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatTabsModule,
+    MatDividerModule,
+    MatListModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatProgressBar,
+    MatChipListbox,
+    MatChip,
+    MatCheckbox,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
 
-        MatChipsModule,
-        MatAutocompleteModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatChipsModule,
-        MatAutocompleteModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatSelectModule,
-        MatOptionModule,
-        MatInputModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatInputModule,
 
-        MatTooltipModule,
+    MatTooltipModule,
 
-        MatButtonToggleModule,
-        NgOptimizedImage,
+    MatButtonToggleModule,
+    NgOptimizedImage,
 
-        MatExpansionModule,
-        MatPaginator
+    MatExpansionModule,
+    MatPaginator
 
-    ],
+  ],
   providers: [
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),

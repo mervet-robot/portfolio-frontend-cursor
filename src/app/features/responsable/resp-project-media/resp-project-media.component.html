@@ -1,0 +1,81 @@
+<!-- resp-project-media.component.html -->
+<div class="media-management-container">
+
+  <button mat-button color="primary" (click)="goBack()" style="margin-bottom: 16px;">
+    <mat-icon>arrow_back</mat-icon>
+    Back to Projects
+  </button>
+
+  <h2>Manage Project Media</h2>
+
+  <div class="upload-section">
+    <h3>Upload New Media</h3>
+
+    <div class="upload-controls">
+      <mat-form-field appearance="outline">
+        <mat-label>Media Type</mat-label>
+        <mat-select [(ngModel)]="selectedMediaType">
+          <mat-option *ngFor="let type of mediaTypes" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <input type="file" #fileInput multiple (change)="onFileSelected($event)" style="display: none">
+      <button mat-stroked-button (click)="fileInput.click()">
+        <mat-icon>attach_file</mat-icon>
+        Select Files
+      </button>
+
+      <button mat-raised-button color="primary"
+              (click)="uploadMedia()"
+              [disabled]="!selectedFiles.length || isUploading">
+        <mat-icon>cloud_upload</mat-icon>
+        Upload
+      </button>
+    </div>
+
+    <div *ngIf="selectedFiles.length" class="selected-files">
+      <p>Selected files:</p>
+      <ul>
+        <li *ngFor="let file of selectedFiles">{{ file.name }} ({{ file.size | fileSize }})</li>
+      </ul>
+    </div>
+
+    <div *ngIf="isUploading" class="upload-progress">
+      <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+      <span>{{ uploadProgress }}%</span>
+    </div>
+  </div>
+
+  <div class="media-list-section">
+    <h3>Existing Media</h3>
+
+    <div *ngIf="mediaList.length === 0" class="no-media">
+      <p>No media files uploaded yet.</p>
+    </div>
+
+    <mat-card *ngFor="let media of mediaList" class="media-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>{{ getMediaIcon(media.mediaType) }}</mat-icon>
+          {{ media.fileName }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{ media.mediaType }} • {{ media.fileSize | fileSize }} • Uploaded: {{ media.uploadDate | date }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-actions align="end">
+        <button mat-button (click)="downloadMedia(media)">
+          <mat-icon>download</mat-icon>
+          Download
+        </button>
+        <button mat-button color="warn" (click)="deleteMedia(media.id)">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div> 
