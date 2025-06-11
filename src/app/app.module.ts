@@ -64,6 +64,7 @@ import {CertificationsComponent} from './features/responsable/certifications/cer
 import {RespProjectsComponent} from "./features/responsable/resp-projects/resp-projects.component";
 import {RespProjectMediaComponent} from "./features/responsable/resp-project-media/resp-project-media.component";
 import {RespFeedbackComponent} from "./features/responsable/resp-feedback/resp-feedback.component";
+import {UserListComponent} from './features/recruteur/user-list/user-list.component';
 
 
 
@@ -101,7 +102,7 @@ import {RespFeedbackComponent} from "./features/responsable/resp-feedback/resp-f
     RespProjectsComponent,
     RespProjectMediaComponent,
     RespFeedbackComponent,
-
+    UserListComponent
 
   ],
   imports: [

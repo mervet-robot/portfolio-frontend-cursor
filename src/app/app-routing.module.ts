@@ -22,6 +22,7 @@ import {DashboardComponent} from './features/responsable/dashboard/dashboard.com
 import {CertificationsComponent} from './features/responsable/certifications/certifications.component';
 import {RespProjectsComponent} from './features/responsable/resp-projects/resp-projects.component';
 import {RespProjectMediaComponent} from './features/responsable/resp-project-media/resp-project-media.component';
+import {UserListComponent} from './features/recruteur/user-list/user-list.component';
 
 const routes: Routes = [
 
@@ -60,6 +61,12 @@ const routes: Routes = [
   { path: 'certifications', component: CertificationsComponent },
   { path: 'responsable/projects', component: RespProjectsComponent },
   { path: 'responsable/projects/:projectId/media', component: RespProjectMediaComponent },
+
+
+
+//Recruteur
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'user-list', component: UserListComponent },
 
 
 

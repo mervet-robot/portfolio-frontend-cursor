@@ -11,11 +11,11 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getPublicContent(): Observable<any> {
-    return this.http.get(API_URL + 'all', { responseType: 'text' });
+    return this.http.get(API_URL + 'all');
   }
 
-  getApprenantBoard(): Observable<any> {
-    return this.http.get(API_URL + 'apprenant', { responseType: 'text' });
+  getAllApprenant(): Observable<any> {
+    return this.http.get(API_URL + 'apprenant');
   }
 
   getResponsableBoard(): Observable<any> {
