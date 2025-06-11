@@ -114,7 +114,7 @@
           <div *ngFor="let project of projects" class="project-item">
             <div class="project-header">
               <h3>{{project.title}}</h3>
-              <span class="project-status">{{project.status | titlecase}}</span>
+<!--              <span class="project-status">{{project.status | titlecase}}</span>-->
             </div>
             <p class="project-dates" *ngIf="project.startDate || project.endDate">
               {{project.startDate | date:'MMM yyyy'}} -
@@ -199,9 +199,9 @@
               <div *ngIf="cert.issueDate">
                 <strong>Issued:</strong> {{cert.issueDate | date:'MMM yyyy'}}
               </div>
-              <div *ngIf="cert.expiryDate">
-                <strong>Expires:</strong> {{cert.expiryDate | date:'MMM yyyy'}}
-              </div>
+<!--              <div *ngIf="cert.expiryDate">-->
+<!--                <strong>Expires:</strong> {{cert.expiryDate | date:'MMM yyyy'}}-->
+<!--              </div>-->
               <div *ngIf="cert.certificateUrl">
                 <strong>Credential ID:</strong> {{cert.certificateUrl}}
               </div>

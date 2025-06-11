@@ -65,10 +65,15 @@
       <!-- Right Column -->
       <div class="form-column">
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Department</mat-label>
-          <input matInput formControlName="department">
+          <mat-label>Grade *</mat-label>
+          <mat-select formControlName="department">
+            <mat-option disabled value="">Select a Grade</mat-option>
+            <mat-option *ngFor="let g of grades" [value]="g">{{g}}</mat-option>
+          </mat-select>
           <mat-icon matPrefix>business</mat-icon>
         </mat-form-field>
+
+
 
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Phone Number</mat-label>

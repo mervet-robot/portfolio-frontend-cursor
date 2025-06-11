@@ -22,6 +22,7 @@ export class ResponsableFormComponent implements OnInit {
   loading = false;
   submitted = false;
   centres = ['LAYOUN_CENTRE', 'DAKHLA_CENTRE', 'CASA_CENTRE'];
+  grades = ['Resp-Centre', 'Resp-Pedagogique'];
 
   hidePassword = true;
 

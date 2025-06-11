@@ -50,12 +50,11 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="department-select">
-      <mat-label>Filter by Department</mat-label>
+      <mat-label>Filter by Grade</mat-label>
       <mat-select (selectionChange)="onDepartmentFilterChange($event.value)">
         <mat-option value="">All</mat-option>
-        <mat-option value="hr">Resp-Pedag</mat-option>
-        <mat-option value="finance">Resp-dir</mat-option>
-        <mat-option value="it">resp-It</mat-option>
+        <mat-option value="Resp-Pedagogique">Resp-Pedagogique</mat-option>
+        <mat-option value="Resp-Centre">Resp-Centre</mat-option>
         <!-- Add any other departments as needed -->
       </mat-select>
     </mat-form-field>
