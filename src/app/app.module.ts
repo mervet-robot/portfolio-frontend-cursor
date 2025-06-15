@@ -65,6 +65,7 @@ import {RespProjectsComponent} from "./features/responsable/resp-projects/resp-p
 import {RespProjectMediaComponent} from "./features/responsable/resp-project-media/resp-project-media.component";
 import {RespFeedbackComponent} from "./features/responsable/resp-feedback/resp-feedback.component";
 import {UserListComponent} from './features/recruteur/user-list/user-list.component';
+import { ReviewProjectsComponent } from './features/review-projects/review-projects.component';
 
 
 
@@ -102,7 +103,8 @@ import {UserListComponent} from './features/recruteur/user-list/user-list.compon
     RespProjectsComponent,
     RespProjectMediaComponent,
     RespFeedbackComponent,
-    UserListComponent
+    UserListComponent,
+    ReviewProjectsComponent
 
   ],
   imports: [
@@ -159,7 +161,8 @@ import {UserListComponent} from './features/recruteur/user-list/user-list.compon
     NgOptimizedImage,
 
     MatExpansionModule,
-    MatPaginator
+    MatPaginator,
+
 
   ],
   providers: [

@@ -1,0 +1,53 @@
+<div class="review-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Review Submitted Projects</mat-card-title>
+            <mat-card-subtitle>Validate or reject projects submitted by apprenants</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <div *ngIf="isLoading" class="loading-spinner">
+                <mat-spinner></mat-spinner>
+            </div>
+
+            <div *ngIf="!isLoading && submittedProjects.length === 0" class="no-projects">
+                <p>No projects are currently pending review.</p>
+            </div>
+
+            <div class="projects-list" *ngIf="!isLoading && submittedProjects.length > 0">
+                <mat-card *ngFor="let project of submittedProjects" class="project-card">
+                    <mat-card-header>
+                        <mat-card-title>{{ project.title }}</mat-card-title>
+                        <mat-card-subtitle>
+                            Submitted by Apprenant #{{ project.apprenantId }}
+                            <span *ngIf="project.startDate"> • Started: {{ project.startDate | date }}</span>
+                            <span *ngIf="project.endDate"> • Ended: {{ project.endDate | date }}</span>
+                        </mat-card-subtitle>
+                    </mat-card-header>
+
+                    <mat-card-content>
+                        <p>{{ project.description }}</p>
+
+                        <div *ngIf="project.skills?.length" class="skills-section">
+                            <p><strong>Skills Used:</strong></p>
+                            <div class="skills-container">
+                                <span class="skill-badge" *ngFor="let skill of project.skills">{{ skill }}</span>
+                            </div>
+                        </div>
+                    </mat-card-content>
+
+                    <mat-card-actions>
+                        <button mat-raised-button color="primary" (click)="reviewProject(project.id, getSubmitStatus().VALIDATED)">
+                            <mat-icon>check_circle</mat-icon>
+                            Validate
+                        </button>
+                        <button mat-raised-button color="warn" (click)="reviewProject(project.id, getSubmitStatus().REJECTED)">
+                            <mat-icon>cancel</mat-icon>
+                            Reject
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div> 

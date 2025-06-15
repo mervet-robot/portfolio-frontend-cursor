@@ -32,6 +32,7 @@
       <ng-container *ngIf="role === 'RESPONSABLE' || role === 'RECRUTEUR'">
         <button mat-button class="w4j-btn" routerLink="/dashboard" routerLinkActive="active">Dashboard</button>
         <button mat-button class="w4j-btn" *ngIf="role === 'RESPONSABLE'" routerLink="/certifications" routerLinkActive="active">Certifications</button>
+        <button mat-button class="w4j-btn" *ngIf="role === 'RESPONSABLE'" routerLink="/review-projects" routerLinkActive="active">Review Projects</button>
 
         <button mat-button class="w4j-btn" *ngIf="role === 'RESPONSABLE'" routerLink="/responsable/projects" routerLinkActive="active">resp-project</button>
 <!--        <button mat-button class="w4j-btn" *ngIf="role === 'RESPONSABLE'" routerLink="/resp-media" routerLinkActive="active">resp-Item</button>-->

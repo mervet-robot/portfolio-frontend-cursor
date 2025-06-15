@@ -23,6 +23,7 @@ import {CertificationsComponent} from './features/responsable/certifications/cer
 import {RespProjectsComponent} from './features/responsable/resp-projects/resp-projects.component';
 import {RespProjectMediaComponent} from './features/responsable/resp-project-media/resp-project-media.component';
 import {UserListComponent} from './features/recruteur/user-list/user-list.component';
+import {ReviewProjectsComponent} from './features/review-projects/review-projects.component';
 
 const routes: Routes = [
 
@@ -62,6 +63,7 @@ const routes: Routes = [
   { path: 'responsable/projects', component: RespProjectsComponent },
   { path: 'responsable/projects/:projectId/media', component: RespProjectMediaComponent },
 
+  { path: 'review-projects', component: ReviewProjectsComponent },
 
 
 //Recruteur

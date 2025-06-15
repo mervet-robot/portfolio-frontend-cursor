@@ -7,6 +7,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 import {Router} from "@angular/router";
+import { ProjectSubmitService } from '../../_services/project-submit.service';
+import { ProjectSubmitRequest } from '../../_models/project-submit';
 
 @Component({
   selector: 'app-projects',
@@ -26,6 +28,7 @@ export class ProjectsComponent implements OnInit {
   constructor(
       private fb: FormBuilder,
       private projectService: ProjectService,
+      private projectSubmitService: ProjectSubmitService,
       private snackBar: MatSnackBar,
       private dialog: MatDialog,
       private router: Router
@@ -54,19 +57,27 @@ export class ProjectsComponent implements OnInit {
 
   addProject(): void {
     if (this.projectForm.valid) {
-      const request: ProjectRequest = this.projectForm.value;
-      const operation = this.isEditing
-          ? this.projectService.updateProject(this.currentProjectId!, request)
-          : this.projectService.createProject(1, request); // Replace with profile ID
-
-      operation.subscribe({
-        next: (project) => {
-          this.isEditing ? this.updateProjectInList(project) : this.projects.push(project);
-          this.resetForm();
-          this.showSuccess(`Project ${this.isEditing ? 'updated' : 'added'} successfully`);
-        },
-        error: (err) => this.showError(`Failed to ${this.isEditing ? 'update' : 'add'} project`, err)
-      });
+      if (this.isEditing) {
+        const request: ProjectRequest = this.projectForm.value;
+        this.projectService.updateProject(this.currentProjectId!, request).subscribe({
+          next: (project) => {
+            this.updateProjectInList(project);
+            this.resetForm();
+            this.showSuccess('Project updated successfully');
+          },
+          error: (err) => this.showError('Failed to update project', err)
+        });
+      } else {
+        const request: ProjectSubmitRequest = this.projectForm.value;
+        const apprenantId = 1;
+        this.projectSubmitService.submitProject(apprenantId, request).subscribe({
+          next: () => {
+            this.resetForm();
+            this.showSuccess('Project submitted successfully for review');
+          },
+          error: (err) => this.showError('Failed to submit project', err)
+        });
+      }
     }
   }
 
@@ -159,9 +170,6 @@ export class ProjectsComponent implements OnInit {
     });
   }
 
-
-
-  // Add this method
   navigateToMediaManagement(projectId: number): void {
     this.router.navigate(['/projects', projectId, 'media']);
   }
