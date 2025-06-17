@@ -1,20 +1,21 @@
 import { ProjectSubmitStatus } from "./project-submit-status.enum";
 
 export interface ProjectSubmitRequest {
-    title: string;
-    description: string;
-    startDate?: Date;
-    endDate?: Date;
-    skills?: string[];
+  title: string;
+  description: string;
+  startDate?: Date;
+  endDate?: Date;
+  skills?: string[];
 }
 
 export interface ProjectSubmitResponse {
-    id: number;
-    title: string;
-    description: string;
-    startDate: Date;
-    endDate: Date;
-    status: ProjectSubmitStatus;
-    skills: string[];
-    apprenantId: number;
-} 
+  id: number;
+  title: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  status: ProjectSubmitStatus;
+  skills: string[];
+  apprenantId: number;
+  projectId?: number;
+}

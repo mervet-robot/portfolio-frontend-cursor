@@ -23,10 +23,22 @@ export class ProjectSubmitService {
     return this.http.get<ProjectSubmitResponse[]>(`${this.apiUrl}/submitted`);
   }
 
+  getProjectSubmits(userId: number): Observable<ProjectSubmitResponse[]> {
+    return this.http.get<ProjectSubmitResponse[]>(`${this.apiUrl}/user/${userId}`);
+  }
+
+  getProjectSubmit(id: number): Observable<ProjectSubmitResponse> {
+    return this.http.get<ProjectSubmitResponse>(`${this.apiUrl}/${id}`);
+  }
+
   reviewProject(projectId: number, status: ProjectSubmitStatus): Observable<ProjectSubmitResponse> {
     return this.http.patch<ProjectSubmitResponse>(
       `${this.apiUrl}/${projectId}/review`,
       { status }
     );
   }
-} 
+
+  deleteProjectSubmit(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+}

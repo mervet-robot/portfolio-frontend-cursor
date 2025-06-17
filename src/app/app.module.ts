@@ -66,6 +66,7 @@ import {RespProjectMediaComponent} from "./features/responsable/resp-project-med
 import {RespFeedbackComponent} from "./features/responsable/resp-feedback/resp-feedback.component";
 import {UserListComponent} from './features/recruteur/user-list/user-list.component';
 import { ReviewProjectsComponent } from './features/review-projects/review-projects.component';
+import { ProjectFeedbackComponent } from './features/project-feedback/project-feedback.component';
 
 
 
@@ -104,7 +105,8 @@ import { ReviewProjectsComponent } from './features/review-projects/review-proje
     RespProjectMediaComponent,
     RespFeedbackComponent,
     UserListComponent,
-    ReviewProjectsComponent
+    ReviewProjectsComponent,
+    ProjectFeedbackComponent
 
   ],
   imports: [

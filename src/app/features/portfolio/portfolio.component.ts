@@ -278,8 +278,8 @@ export class PortfolioComponent implements OnInit {
               this.snackBar.open('Social link updated!', 'Close', { duration: 3000, panelClass: ['success-snackbar'] });
             },
             error: (err) => {
-                console.error('Failed to update social link:', err);
-                this.snackBar.open('Error updating social link.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
+              console.error('Failed to update social link:', err);
+              this.snackBar.open('Error updating social link.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
             }
           });
         } else {
@@ -290,8 +290,8 @@ export class PortfolioComponent implements OnInit {
               this.snackBar.open('Social link added!', 'Close', { duration: 3000, panelClass: ['success-snackbar'] });
             },
             error: (err) => {
-                console.error('Failed to add social link:', err);
-                this.snackBar.open('Error adding social link.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
+              console.error('Failed to add social link:', err);
+              this.snackBar.open('Error adding social link.', 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
             }
           });
         }
@@ -416,9 +416,9 @@ export class PortfolioComponent implements OnInit {
     this.editingProfile = false;
     // Re-patch form with original profile data if changes are cancelled
     if (this.profile) {
-        this.profileForm.patchValue(this.profile);
+      this.profileForm.patchValue(this.profile);
     } else {
-        this.loadInitialData(); // Or reload if profile is null for some reason
+      this.loadInitialData(); // Or reload if profile is null for some reason
     }
   }
 
@@ -1337,7 +1337,7 @@ export class PortfolioComponent implements OnInit {
             duration: 5000,
             panelClass: ['error-snackbar']
           });
-           this.previewUrl = this.profile?.profilePicture ? this.profileService.getFullImageUrl(this.profile.profilePicture) : 'assets/default-avatar.png'; // Revert on error
+          this.previewUrl = this.profile?.profilePicture ? this.profileService.getFullImageUrl(this.profile.profilePicture) : 'assets/default-avatar.png'; // Revert on error
         } finally {
           this.isVerifying = false;
         }
@@ -1570,4 +1570,3 @@ export class PortfolioComponent implements OnInit {
     }
   }
 }
-

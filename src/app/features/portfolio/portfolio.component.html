@@ -451,7 +451,7 @@
                 </mat-form-field>
               </div>
 
-<!--              <mat-checkbox formControlName="verified">Verified Skill</mat-checkbox>-->
+              <!--              <mat-checkbox formControlName="verified">Verified Skill</mat-checkbox>-->
 
               <div class="form-actions">
                 <button mat-button (click)="showTechSkillForm = false">Cancel</button>
@@ -469,7 +469,7 @@
               <div class="skill-header">
                 <span class="skill-name">{{skill.name}}</span>
                 <span class="spacer"></span>
-<!--                <mat-icon *ngIf="skill.verified" color="primary" class="verified-icon">verified</mat-icon>-->
+                <!--                <mat-icon *ngIf="skill.verified" color="primary" class="verified-icon">verified</mat-icon>-->
                 <button mat-icon-button (click)="editTechSkill(skill)" class="edit-btn">
                   <mat-icon>edit</mat-icon>
                 </button>
@@ -665,23 +665,23 @@
               </mat-form-field>
             </div>
 
-<!--            <div class="form-row">-->
-<!--              <mat-form-field appearance="outline">-->
-<!--                <mat-label>Certification</mat-label>-->
-<!--                <mat-select formControlName="certification">-->
-<!--                  <mat-option *ngFor="let cert of certificationTypes" [value]="cert">-->
-<!--                    {{cert}}-->
-<!--                  </mat-option>-->
-<!--                </mat-select>-->
-<!--              </mat-form-field>-->
+            <!--            <div class="form-row">-->
+            <!--              <mat-form-field appearance="outline">-->
+            <!--                <mat-label>Certification</mat-label>-->
+            <!--                <mat-select formControlName="certification">-->
+            <!--                  <mat-option *ngFor="let cert of certificationTypes" [value]="cert">-->
+            <!--                    {{cert}}-->
+            <!--                  </mat-option>-->
+            <!--                </mat-select>-->
+            <!--              </mat-form-field>-->
 
-<!--              <mat-form-field *ngIf="languageForm.get('certification')?.value &&-->
-<!--                                    languageForm.get('certification')?.value !== 'None'"-->
-<!--                              appearance="outline">-->
-<!--                <mat-label>Certificate URL</mat-label>-->
-<!--                <input matInput formControlName="certificateUrl" type="url">-->
-<!--              </mat-form-field>-->
-<!--            </div>-->
+            <!--              <mat-form-field *ngIf="languageForm.get('certification')?.value &&-->
+            <!--                                    languageForm.get('certification')?.value !== 'None'"-->
+            <!--                              appearance="outline">-->
+            <!--                <mat-label>Certificate URL</mat-label>-->
+            <!--                <input matInput formControlName="certificateUrl" type="url">-->
+            <!--              </mat-form-field>-->
+            <!--            </div>-->
 
 
             <div class="form-row">
@@ -692,7 +692,7 @@
             </div>
 
 
-<!--            <mat-checkbox formControlName="nativeLanguage">Native Language</mat-checkbox>-->
+            <!--            <mat-checkbox formControlName="nativeLanguage">Native Language</mat-checkbox>-->
 
             <div class="form-actions">
               <button mat-button (click)="showLanguageForm = false">Cancel</button>

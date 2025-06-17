@@ -1,0 +1,27 @@
+<div class="feedback-container">
+  <h2 mat-dialog-title>Add Feedback for Project</h2>
+
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()" class="feedback-form">
+      <mat-form-field appearance="fill">
+        <mat-label>Comment</mat-label>
+        <textarea matInput formControlName="comment" rows="4" required></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Technical Score (0-10)</mat-label>
+        <input matInput type="number" formControlName="technicalScore" min="0" max="10" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Attitude Score (0-10)</mat-label>
+        <input matInput type="number" formControlName="attitudeScore" min="0" max="10" required>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submitFeedback()" [disabled]="!feedbackForm.valid">Submit Feedback</button>
+  </mat-dialog-actions>
+</div>
