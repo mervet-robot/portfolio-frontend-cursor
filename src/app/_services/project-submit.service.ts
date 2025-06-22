@@ -12,9 +12,9 @@ export class ProjectSubmitService {
 
   constructor(private http: HttpClient) { }
 
-  submitProject(apprenantId: number, request: ProjectSubmitRequest): Observable<ProjectSubmitResponse> {
+  submitProject(profileId: number, request: ProjectSubmitRequest): Observable<ProjectSubmitResponse> {
     return this.http.post<ProjectSubmitResponse>(
-      `${this.apiUrl}/apprenant/${apprenantId}`,
+      `${this.apiUrl}/apprenant/${profileId}`,
       request
     );
   }

@@ -16,6 +16,6 @@ export interface ProjectSubmitResponse {
   endDate: Date;
   status: ProjectSubmitStatus;
   skills: string[];
-  apprenantId: number;
+  profileId: number;
   projectId?: number;
 }
