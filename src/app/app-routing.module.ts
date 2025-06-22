@@ -24,6 +24,12 @@ import {RespProjectsComponent} from './features/responsable/resp-projects/resp-p
 import {RespProjectMediaComponent} from './features/responsable/resp-project-media/resp-project-media.component';
 import {UserListComponent} from './features/recruteur/user-list/user-list.component';
 import {ReviewProjectsComponent} from './features/review-projects/review-projects.component';
+import {
+  ValidatedProjectsHistoryComponent
+} from './features/validated-projects-history/validated-projects-history.component';
+import {
+  SubmittedProjectsHistoryComponent
+} from './features/submitted-projects-history/submitted-projects-history.component';
 
 const routes: Routes = [
 
@@ -47,6 +53,9 @@ const routes: Routes = [
   { path: 'projects/:projectId/media', component: ProjectMediaComponent },
   { path: 'projects/media', component: ProjectMediaComponent },
 
+  { path: 'apprenant/submitted-projects', component: SubmittedProjectsHistoryComponent },
+
+
   //route Test Media
   { path: 'media', component: UserMediaComponent },
   { path: 'media/:id', component: ProfileComponent },
@@ -64,6 +73,7 @@ const routes: Routes = [
   { path: 'responsable/projects/:projectId/media', component: RespProjectMediaComponent },
 
   { path: 'review-projects', component: ReviewProjectsComponent },
+  { path: 'responsable/validated', component: ValidatedProjectsHistoryComponent },
 
 
 //Recruteur

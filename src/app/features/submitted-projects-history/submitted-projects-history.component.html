@@ -1,12 +1,16 @@
-<div class="review-container">
+<div class="submitted-projects-container">
+
+
+  <button mat-button color="primary" (click)="goBack()" style="margin-bottom: 16px;">
+    <mat-icon>arrow_back</mat-icon>
+    Back to Projects
+  </button>
+
+
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Review Submitted Projects</mat-card-title>
-      <mat-card-subtitle>Validate or reject projects submitted by apprenants</mat-card-subtitle>
-      <span class="spacer"></span>
-      <button mat-flat-button color="accent" routerLink="/responsable/validated">
-        <mat-icon>history</mat-icon> Validated Projects History
-      </button>
+      <mat-card-title>Your Submitted Projects</mat-card-title>
+      <mat-card-subtitle>Track the status of your project submissions</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
@@ -15,7 +19,7 @@
       </div>
 
       <div *ngIf="!isLoading && submittedProjects.length === 0" class="no-projects">
-        <p>No projects are currently pending review.</p>
+        <p>You haven't submitted any projects yet.</p>
       </div>
 
       <div class="projects-list" *ngIf="!isLoading && submittedProjects.length > 0">
@@ -23,7 +27,7 @@
           <mat-card-header>
             <mat-card-title>{{ project.title }}</mat-card-title>
             <mat-card-subtitle>
-              Submitted by Apprenant #{{ project.profileId }}
+              Status: {{ project.status | titlecase }}
               <span *ngIf="project.startDate"> • Started: {{ project.startDate | date }}</span>
               <span *ngIf="project.endDate"> • Ended: {{ project.endDate | date }}</span>
             </mat-card-subtitle>
@@ -39,20 +43,11 @@
               </div>
             </div>
           </mat-card-content>
-
-          <mat-card-actions>
-            <button mat-raised-button color="primary" (click)="reviewProject(project.id, getSubmitStatus().VALIDATED)">
-              <mat-icon>check_circle</mat-icon>
-              Validate
-            </button>
-            <button mat-raised-button color="warn" (click)="reviewProject(project.id, getSubmitStatus().REJECTED)">
-              <mat-icon>cancel</mat-icon>
-              Reject
-            </button>
-            <button mat-icon-button color="accent" (click)="openFeedbackDialog(project.id)" matTooltip="Give Feedback">
-              <mat-icon>feedback</mat-icon>
-            </button>
-          </mat-card-actions>
+<!--          <mat-card-actions *ngIf="project.feedback">-->
+<!--            <button mat-button color="accent" [matTooltip]="project.feedback">-->
+<!--              <mat-icon>comment</mat-icon> View Feedback-->
+<!--            </button>-->
+<!--          </mat-card-actions>-->
         </mat-card>
       </div>
     </mat-card-content>

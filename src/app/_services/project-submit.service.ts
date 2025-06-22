@@ -41,4 +41,16 @@ export class ProjectSubmitService {
   deleteProjectSubmit(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  getSubmittedProjectsByProfileId(profileId: number): Observable<ProjectSubmitResponse[]> {
+    return this.http.get<ProjectSubmitResponse[]>(`${this.apiUrl}/profile/${profileId}`);
+  }
+
+  getValidatedProjects(): Observable<ProjectSubmitResponse[]> {
+    return this.http.get<ProjectSubmitResponse[]>(`${this.apiUrl}/validated`);
+  }
+
+  getReviewedProjects(): Observable<ProjectSubmitResponse[]> {
+    return this.http.get<ProjectSubmitResponse[]>(`${this.apiUrl}/reviewed`);
+  }
 }

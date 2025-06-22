@@ -3,6 +3,10 @@
     <mat-card-header>
       <mat-card-title>Projects</mat-card-title>
       <mat-card-subtitle>Manage your professional projects</mat-card-subtitle>
+      <span class="spacer"></span>
+      <button mat-flat-button color="accent" routerLink="/apprenant/submitted-projects">
+        <mat-icon>history</mat-icon> Submitted Projects History
+      </button>
     </mat-card-header>
 
     <mat-card-content>
@@ -75,7 +79,7 @@
           <div class="button-row">
             <button mat-raised-button color="primary" (click)="addProject()" [disabled]="!projectForm.valid">
               <mat-icon>{{ isEditing ? 'save' : 'add' }}</mat-icon>
-              {{ isEditing ? 'Update' : 'Add' }} Project
+              {{ isEditing ? 'Update' : 'Submit' }} Project
             </button>
             <button mat-button *ngIf="isEditing" (click)="resetForm()">Cancel</button>
           </div>

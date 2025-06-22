@@ -67,6 +67,12 @@ import {RespFeedbackComponent} from "./features/responsable/resp-feedback/resp-f
 import {UserListComponent} from './features/recruteur/user-list/user-list.component';
 import { ReviewProjectsComponent } from './features/review-projects/review-projects.component';
 import { ProjectFeedbackComponent } from './features/project-feedback/project-feedback.component';
+import {
+  ValidatedProjectsHistoryComponent
+} from './features/validated-projects-history/validated-projects-history.component';
+import {
+  SubmittedProjectsHistoryComponent
+} from './features/submitted-projects-history/submitted-projects-history.component';
 
 
 
@@ -106,7 +112,10 @@ import { ProjectFeedbackComponent } from './features/project-feedback/project-fe
     RespFeedbackComponent,
     UserListComponent,
     ReviewProjectsComponent,
-    ProjectFeedbackComponent
+    ProjectFeedbackComponent,
+
+    ValidatedProjectsHistoryComponent,
+    SubmittedProjectsHistoryComponent
 
   ],
   imports: [

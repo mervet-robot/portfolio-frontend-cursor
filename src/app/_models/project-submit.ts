@@ -18,4 +18,5 @@ export interface ProjectSubmitResponse {
   skills: string[];
   profileId: number;
   projectId?: number;
+  feedback?: string;
 }
