@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
 import {FeedbackService} from '../../_services/feedback.service';
 import {ProjectFeedbackComponent} from '../project-feedback/project-feedback.component';
+import { ProfileService } from '../../_services/profile.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-review-projects',
@@ -21,7 +23,8 @@ export class ReviewProjectsComponent implements OnInit {
     private projectSubmitService: ProjectSubmitService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private feedbackService: FeedbackService
+    private feedbackService: FeedbackService,
+    private profileService: ProfileService
   ) { }
 
   ngOnInit(): void {
@@ -33,7 +36,29 @@ export class ReviewProjectsComponent implements OnInit {
     this.projectSubmitService.getSubmittedProjects().subscribe({
       next: (projects) => {
         this.submittedProjects = projects;
-        this.isLoading = false;
+        if (this.submittedProjects.length > 0) {
+          const profileRequests = this.submittedProjects.map(project =>
+            this.profileService.getProfile(project.profileId)
+          );
+
+          forkJoin(profileRequests).subscribe({
+            next: (profiles) => {
+              this.submittedProjects.forEach((project, index) => {
+                const profile = profiles[index];
+                if (profile) {
+                  project.apprenantName = `${profile.firstName} ${profile.lastName}`.trim();
+                }
+              });
+              this.isLoading = false;
+            },
+            error: (profileErr) => {
+              this.showError('Failed to load apprenant profiles', profileErr);
+              this.isLoading = false;
+            }
+          });
+        } else {
+          this.isLoading = false;
+        }
       },
       error: (err) => {
         this.showError('Failed to load submitted projects', err);

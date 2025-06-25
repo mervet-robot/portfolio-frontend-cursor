@@ -17,6 +17,7 @@ export interface ProjectSubmitResponse {
   status: ProjectSubmitStatus;
   skills: string[];
   profileId: number;
+  apprenantName?: string;
   projectId?: number;
   feedback?: string;
 }

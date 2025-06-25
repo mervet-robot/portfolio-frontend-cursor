@@ -23,7 +23,7 @@
           <mat-card-header>
             <mat-card-title>{{ project.title }}</mat-card-title>
             <mat-card-subtitle>
-              Submitted by Apprenant #{{ project.profileId }}
+              {{ project.apprenantName || 'Submitted by Apprenant #' + project.profileId }}
               <span *ngIf="project.startDate"> • Started: {{ project.startDate | date }}</span>
               <span *ngIf="project.endDate"> • Ended: {{ project.endDate | date }}</span>
             </mat-card-subtitle>

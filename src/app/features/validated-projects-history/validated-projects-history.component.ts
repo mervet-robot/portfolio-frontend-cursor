@@ -6,6 +6,8 @@ import { ProjectSubmitStatus } from '../../_models/project-submit-status.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectFeedbackComponent } from '../project-feedback/project-feedback.component';
 import {Router} from '@angular/router';
+import { ProfileService } from '../../_services/profile.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-validated-projects-history',
@@ -21,7 +23,8 @@ export class ValidatedProjectsHistoryComponent implements OnInit {
     private projectSubmitService: ProjectSubmitService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private profileService: ProfileService
   ) { }
 
   ngOnInit(): void {
@@ -40,7 +43,30 @@ export class ValidatedProjectsHistoryComponent implements OnInit {
     this.projectSubmitService.getReviewedProjects().subscribe({
       next: (projects) => {
         this.reviewedProjects = projects;
-        this.isLoading = false;
+
+        if (this.reviewedProjects.length > 0) {
+          const profileRequests = this.reviewedProjects.map(project =>
+            this.profileService.getProfile(project.profileId)
+          );
+
+          forkJoin(profileRequests).subscribe({
+            next: (profiles) => {
+              this.reviewedProjects.forEach((project, index) => {
+                const profile = profiles[index];
+                if (profile) {
+                  project.apprenantName = `${profile.firstName} ${profile.lastName}`.trim();
+                }
+              });
+              this.isLoading = false;
+            },
+            error: (profileErr) => {
+              this.showError('Failed to load apprenant profiles', profileErr);
+              this.isLoading = false;
+            }
+          });
+        } else {
+          this.isLoading = false;
+        }
       },
       error: (err) => {
         this.showError('Failed to load reviewed projects', err);

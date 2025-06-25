@@ -1,19 +1,20 @@
 <div class="submitted-projects-container">
 
-
-  <button mat-button color="primary" (click)="goBack()" style="margin-bottom: 16px;">
-    <mat-icon>arrow_back</mat-icon>
-    Back to Projects
-  </button>
-
-
-  <mat-card>
+  <mat-card class="page-card">
     <mat-card-header>
       <mat-card-title>Your Submitted Projects</mat-card-title>
       <mat-card-subtitle>Track the status of your project submissions</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
+
+      <div class="actions-container">
+        <button mat-stroked-button color="primary" (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+          Back to Projects
+        </button>
+      </div>
+
       <div *ngIf="isLoading" class="loading-spinner">
         <mat-spinner></mat-spinner>
       </div>
@@ -27,10 +28,15 @@
           <mat-card-header>
             <mat-card-title>{{ project.title }}</mat-card-title>
             <mat-card-subtitle>
-              Status: {{ project.status | titlecase }}
+
+              <span class="status-label" [ngClass]="project.status.toLowerCase()">
+                Status: {{ project.status | titlecase }}
+              </span>
+
               <span *ngIf="project.startDate"> • Started: {{ project.startDate | date }}</span>
               <span *ngIf="project.endDate"> • Ended: {{ project.endDate | date }}</span>
             </mat-card-subtitle>
+
           </mat-card-header>
 
           <mat-card-content>
@@ -43,13 +49,10 @@
               </div>
             </div>
           </mat-card-content>
-<!--          <mat-card-actions *ngIf="project.feedback">-->
-<!--            <button mat-button color="accent" [matTooltip]="project.feedback">-->
-<!--              <mat-icon>comment</mat-icon> View Feedback-->
-<!--            </button>-->
-<!--          </mat-card-actions>-->
         </mat-card>
       </div>
+
     </mat-card-content>
   </mat-card>
+
 </div>

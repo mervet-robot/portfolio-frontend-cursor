@@ -1,11 +1,5 @@
 <div class="validated-projects-container">
 
-  <button mat-button color="primary" (click)="goBack()" style="margin-bottom: 16px;">
-    <mat-icon>arrow_back</mat-icon>
-    Back to Review-projects
-  </button>
-
-
   <mat-card>
     <mat-card-header>
       <mat-card-title>Reviewed Projects History</mat-card-title>
@@ -13,6 +7,14 @@
     </mat-card-header>
 
     <mat-card-content>
+
+      <div class="actions-container">
+        <button mat-stroked-button color="primary" (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+          Back to Review-projects
+        </button>
+      </div>
+
       <div *ngIf="isLoading" class="loading-spinner">
         <mat-spinner></mat-spinner>
       </div>
@@ -26,9 +28,15 @@
           <mat-card-header>
             <mat-card-title>{{ project.title }}</mat-card-title>
             <mat-card-subtitle>
-              Status: {{ project.status | titlecase }} • Submitted by Apprenant #{{ project.profileId }}
-              <span *ngIf="project.startDate"> • Started: {{ project.startDate | date }}</span>
-              <span *ngIf="project.endDate"> • Ended: {{ project.endDate | date }}</span>
+
+              <span class="status-label" [ngClass]="project.status.toLowerCase()">
+                {{ project.status | titlecase }}
+              </span>
+
+              • {{ project.apprenantName || 'Apprenant #' + project.profileId }}
+
+              <span *ngIf="project.startDate"> • {{ project.startDate | date }}</span>
+              <span *ngIf="project.endDate"> • {{ project.endDate | date }}</span>
             </mat-card-subtitle>
           </mat-card-header>
 
@@ -42,13 +50,16 @@
               </div>
             </div>
           </mat-card-content>
+
           <mat-card-actions *ngIf="project.feedback">
-            <button mat-raised-button color="accent" (click)="openFeedbackDialog(project.id, project.feedback)">
+            <button mat-stroked-button color="accent" (click)="openFeedbackDialog(project.id, project.feedback)">
               <mat-icon>remove_red_eye</mat-icon> View Feedback
             </button>
           </mat-card-actions>
         </mat-card>
       </div>
+
     </mat-card-content>
   </mat-card>
+
 </div>
