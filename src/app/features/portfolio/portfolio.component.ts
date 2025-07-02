@@ -1255,7 +1255,7 @@ export class PortfolioComponent implements OnInit {
       { inputs: base64Image },
       {
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer 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',
           'Content-Type': 'application/json'
         }
       }

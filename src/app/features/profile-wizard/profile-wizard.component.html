@@ -746,8 +746,13 @@
         </p>
       </div>
 
-      <!-- Step 9: Bio-profile -->
-      <div *ngIf="currentStep === 9" class="step-content animated-step" [formGroup]="profileForm">
+      <!-- Step 9: User Media -->
+      <div *ngIf="currentStep === 9" class="step-content animated-step">
+        <app-user-media></app-user-media>
+      </div>
+
+      <!-- Step 10: Bio-profile -->
+      <div *ngIf="currentStep === 10" class="step-content animated-step" [formGroup]="profileForm">
         <div class="section-header">
           <h3 class="section-title">
             <mat-icon class="section-icon">article</mat-icon>
@@ -829,9 +834,12 @@
         Next: Social Links <mat-icon>chevron_right</mat-icon>
       </button>
       <button *ngIf="currentStep === 8" mat-raised-button color="primary" class="next-button" (click)="nextStep()" [disabled]="!isStepValid(8)">
+        Next: User Media <mat-icon>chevron_right</mat-icon>
+      </button>
+      <button *ngIf="currentStep === 9" mat-raised-button color="primary" class="next-button" (click)="nextStep()" [disabled]="!isStepValid(9)">
         Next: Bio & Summary <mat-icon>chevron_right</mat-icon>
       </button>
-      <button *ngIf="currentStep === 9" mat-raised-button color="primary" class="next-button" (click)="completeProfile()" [disabled]="!isStepValid(9) || profileForm.invalid">
+      <button *ngIf="currentStep === 10" mat-raised-button color="primary" class="next-button" (click)="completeProfile()" [disabled]="!isStepValid(10) || profileForm.invalid">
         Save & Complete <mat-icon>check</mat-icon>
       </button>
     </mat-card-actions>

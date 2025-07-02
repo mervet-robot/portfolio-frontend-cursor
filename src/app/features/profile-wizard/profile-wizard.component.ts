@@ -26,6 +26,8 @@ import {CertificationType, LanguageRequest, LanguageResponse, ProficiencyLevel} 
 import {BioCorrectionDialogComponent} from '../bio-correction-dialog/bio-correction-dialog.component';
 import { Centre } from '../../_models/centre.enum';
 import { SocialLink, SocialLinkRequest } from '../../_models/social-link';
+import { UserMediaService } from '../../_services/user-media.service';
+import { UserMedia } from '../../_models/user-media';
 
 @Component({
   selector: 'app-profile-wizard',
@@ -35,7 +37,7 @@ import { SocialLink, SocialLinkRequest } from '../../_models/social-link';
 })
 export class ProfileWizardComponent  implements OnInit {
   currentStep = 1;
-  totalSteps = 9;
+  totalSteps = 11;
   userId: number;
 
 // Add these to your component class
@@ -118,6 +120,7 @@ export class ProfileWizardComponent  implements OnInit {
   techSkills: TechSkillResponse[] = [];
   certifications: CertificationResponse[] = [];
   projects: ProjectResponse[] = [];
+  mediaList: UserMedia[] = [];
 
   // Status options
   projectStatuses = Object.values(ProjectStatus);
@@ -137,7 +140,7 @@ export class ProfileWizardComponent  implements OnInit {
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private http: HttpClient,
-
+    private userMediaService: UserMediaService,
   ) {
     this.userId = this.tokenService.getUser().id;
   }
@@ -256,6 +259,7 @@ export class ProfileWizardComponent  implements OnInit {
     this.loadCertifications();
     this.loadProjects();
     this.loadSocialLinks();
+    this.loadMedia();
   }
 
   loadFormations(): void {
@@ -348,6 +352,19 @@ export class ProfileWizardComponent  implements OnInit {
     });
   }
 
+  loadMedia(): void {
+    this.userMediaService.getProjectMediaP(this.userId).subscribe({
+      next: (media) => this.mediaList = media,
+      error: (err) => {
+        console.error('Failed to load user media:', err);
+        this.snackBar.open('Failed to load user media', 'Close', {
+          duration: 5000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
+  }
+
   // -----------------Upload Image + Save Profile
 
   // This method should be added to your component
@@ -391,7 +408,7 @@ export class ProfileWizardComponent  implements OnInit {
       { inputs: base64Image },
       {
         headers: {
-          'Authorization': 'Bearer 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', // Get free key from Hugging Face
+          'Authorization': 'Bearer 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', // Get free key from Hugging Face
           'Content-Type': 'application/json'
         }
       }
@@ -1111,7 +1128,8 @@ export class ProfileWizardComponent  implements OnInit {
       this.socialLinks.length > 0,
       this.softSkills.length > 0,
       this.techSkills.length > 0,
-      this.projects.length > 0
+      this.projects.length > 0,
+      this.mediaList.length > 0
     ].filter(Boolean).length;
 
     return (completed / this.totalSteps) * 100;
@@ -1250,6 +1268,7 @@ export class ProfileWizardComponent  implements OnInit {
     { label: 'Soft Skills', completed: false },
     { label: 'Languages', completed: false },
     { label: 'Social Links', completed: false },
+    { label: 'User Media', completed: false },
     { label: 'Bio & Summary', completed: false }
   ];
 
@@ -1287,7 +1306,12 @@ export class ProfileWizardComponent  implements OnInit {
     if (stepNumber === 8) {
       return this.socialLinkForm.valid || this.socialLinks.length > 0;
     }
-    if (stepNumber === 9) { // For the Bio & Summary step
+    if (stepNumber === 9) { // New User Media step
+      // Assuming User Media is valid if there's at least one media uploaded.
+      // You might want to add form validation here if user media had its own form.
+      return this.mediaList.length > 0;
+    }
+    if (stepNumber === 10) { // For the Bio & Summary step (now step 10)
       // Bio field is part of profileForm. It's valid if the bio control itself is valid.
       // The profileForm.valid check on completeProfile will be the final gate.
       return this.profileForm.get('bio')?.valid ?? false;
@@ -1328,7 +1352,8 @@ export class ProfileWizardComponent  implements OnInit {
       case 6: this.softSkillForm.markAllAsTouched(); break;
       case 7: this.languageForm.markAllAsTouched(); break;
       case 8: this.socialLinkForm.markAllAsTouched(); break;
-      case 9: this.profileForm.get('bio')?.markAsTouched(); break; // Bio is part of profileForm
+      case 9: /* User Media does not have a form in this component, validation depends on mediaList */ break;
+      case 10: this.profileForm.get('bio')?.markAsTouched(); break; // Bio is part of profileForm
     }
   }
 

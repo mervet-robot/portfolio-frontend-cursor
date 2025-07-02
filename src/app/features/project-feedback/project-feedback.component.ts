@@ -29,8 +29,8 @@ export class ProjectFeedbackComponent  implements OnInit {
     this.projectId = data.projectId;
     this.feedbackForm = this.fb.group({
       comment: ['', Validators.required],
-      technicalScore: [null, [Validators.required, Validators.min(0), Validators.max(10)]],
-      attitudeScore: [null, [Validators.required, Validators.min(0), Validators.max(10)]]
+      technicalScore: [null, [Validators.required, Validators.min(1), Validators.max(5)]],
+      attitudeScore: [null, [Validators.required, Validators.min(1), Validators.max(5)]]
     });
   }
 

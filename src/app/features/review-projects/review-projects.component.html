@@ -1,10 +1,10 @@
 <div class="review-container">
-  <mat-card>
+  <mat-card class="main-review-card">
     <mat-card-header>
-      <mat-card-title>Review Submitted Projects</mat-card-title>
-      <mat-card-subtitle>Validate or reject projects submitted by apprenants</mat-card-subtitle>
+      <mat-card-title class="main-title">Review Submitted Projects</mat-card-title>
+      <mat-card-subtitle class="main-subtitle">Validate or reject projects submitted by apprenants</mat-card-subtitle>
       <span class="spacer"></span>
-      <button mat-flat-button color="accent" routerLink="/responsable/validated">
+      <button mat-flat-button color="accent" routerLink="/responsable/validated" class="history-button">
         <mat-icon>history</mat-icon> Validated Projects History
       </button>
     </mat-card-header>
@@ -19,37 +19,35 @@
       </div>
 
       <div class="projects-list" *ngIf="!isLoading && submittedProjects.length > 0">
-        <mat-card *ngFor="let project of submittedProjects" class="project-card">
-          <mat-card-header>
-            <mat-card-title>{{ project.title }}</mat-card-title>
-            <mat-card-subtitle>
-              {{ project.apprenantName || 'Submitted by Apprenant #' + project.profileId }}
-              <span *ngIf="project.startDate"> • Started: {{ project.startDate | date }}</span>
-              <span *ngIf="project.endDate"> • Ended: {{ project.endDate | date }}</span>
+        <mat-card *ngFor="let project of submittedProjects" class="project-review-card">
+          <mat-card-header class="project-card-header">
+            <mat-card-title class="project-title">{{ project.title }}</mat-card-title>
+            <mat-card-subtitle class="project-subtitle">
+              Submitted by: <span class="apprenant-name">{{ project.apprenantName || 'Apprenant #' + project.profileId }}</span>
+              <span class="project-dates" *ngIf="project.startDate"> • Started: {{ project.startDate | date:'mediumDate' }}</span>
+              <span class="project-dates" *ngIf="project.endDate"> • Ended: {{ project.endDate | date:'mediumDate' }}</span>
             </mat-card-subtitle>
           </mat-card-header>
 
-          <mat-card-content>
-            <p>{{ project.description }}</p>
+          <mat-card-content class="project-card-content">
+            <p class="project-description">{{ project.description }}</p>
 
             <div *ngIf="project.skills?.length" class="skills-section">
-              <p><strong>Skills Used:</strong></p>
+              <p class="skills-title"><strong>Skills Used:</strong></p>
               <div class="skills-container">
                 <span class="skill-badge" *ngFor="let skill of project.skills">{{ skill }}</span>
               </div>
             </div>
           </mat-card-content>
 
-          <mat-card-actions>
-            <button mat-raised-button color="primary" (click)="reviewProject(project.id, getSubmitStatus().VALIDATED)">
-              <mat-icon>check_circle</mat-icon>
-              Validate
+          <mat-card-actions class="project-card-actions">
+            <button mat-raised-button color="primary" (click)="reviewProject(project.id, getSubmitStatus().VALIDATED)" class="action-button validate-button">
+              <mat-icon>check_circle</mat-icon> Validate
             </button>
-            <button mat-raised-button color="warn" (click)="reviewProject(project.id, getSubmitStatus().REJECTED)">
-              <mat-icon>cancel</mat-icon>
-              Reject
+            <button mat-raised-button color="warn" (click)="reviewProject(project.id, getSubmitStatus().REJECTED)" class="action-button reject-button">
+              <mat-icon>cancel</mat-icon> Reject
             </button>
-            <button mat-icon-button color="accent" (click)="openFeedbackDialog(project.id)" matTooltip="Give Feedback">
+            <button mat-icon-button color="accent" (click)="openFeedbackDialog(project.id)" matTooltip="Give Feedback" class="feedback-button">
               <mat-icon>feedback</mat-icon>
             </button>
           </mat-card-actions>

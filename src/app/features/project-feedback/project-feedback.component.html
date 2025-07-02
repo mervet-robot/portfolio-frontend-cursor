@@ -1,27 +1,48 @@
-<div class="feedback-container">
-  <h2 mat-dialog-title>Add Feedback for Project</h2>
+<div class="feedback-dialog-container">
+  <h2 mat-dialog-title class="dialog-title">Add Feedback for Project</h2>
 
-  <mat-dialog-content class="mat-typography">
+  <mat-dialog-content class="dialog-content mat-typography">
     <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()" class="feedback-form">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline" class="full-width-field">
         <mat-label>Comment</mat-label>
-        <textarea matInput formControlName="comment" rows="4" required></textarea>
+        <textarea matInput formControlName="comment" rows="5" required placeholder="Provide detailed feedback here..."></textarea>
+        <mat-error *ngIf="feedbackForm.get('comment')?.hasError('required')">Comment is required</mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Technical Score (0-10)</mat-label>
-        <input matInput type="number" formControlName="technicalScore" min="0" max="10" required>
-      </mat-form-field>
+      <div class="score-fields">
+        <div class="score-group">
+          <label class="score-label">Technical Score:</label>
+          <div class="star-rating">
+            <mat-icon *ngFor="let star of [1,2,3,4,5]" 
+                      [ngClass]="{'filled-star': star <= feedbackForm.get('technicalScore')?.value}"
+                      (click)="feedbackForm.get('technicalScore')?.setValue(star); feedbackForm.get('technicalScore')?.markAsTouched();">
+              {{ star <= feedbackForm.get('technicalScore')?.value ? 'star' : 'star_border' }}
+            </mat-icon>
+          </div>
+          <mat-error *ngIf="feedbackForm.get('technicalScore')?.hasError('required') && feedbackForm.get('technicalScore')?.touched">Technical score is required</mat-error>
+          <mat-error *ngIf="(feedbackForm.get('technicalScore')?.hasError('min') || feedbackForm.get('technicalScore')?.hasError('max')) && feedbackForm.get('technicalScore')?.touched">Score must be between 1 and 5</mat-error>
+        </div>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Attitude Score (0-10)</mat-label>
-        <input matInput type="number" formControlName="attitudeScore" min="0" max="10" required>
-      </mat-form-field>
+        <div class="score-group">
+          <label class="score-label">Attitude Score:</label>
+          <div class="star-rating">
+            <mat-icon *ngFor="let star of [1,2,3,4,5]" 
+                      [ngClass]="{'filled-star': star <= feedbackForm.get('attitudeScore')?.value}"
+                      (click)="feedbackForm.get('attitudeScore')?.setValue(star); feedbackForm.get('attitudeScore')?.markAsTouched();">
+              {{ star <= feedbackForm.get('attitudeScore')?.value ? 'star' : 'star_border' }}
+            </mat-icon>
+          </div>
+          <mat-error *ngIf="feedbackForm.get('attitudeScore')?.hasError('required') && feedbackForm.get('attitudeScore')?.touched">Attitude score is required</mat-error>
+          <mat-error *ngIf="(feedbackForm.get('attitudeScore')?.hasError('min') || feedbackForm.get('attitudeScore')?.hasError('max')) && feedbackForm.get('attitudeScore')?.touched">Score must be between 1 and 5</mat-error>
+        </div>
+      </div>
     </form>
   </mat-dialog-content>
 
-  <mat-dialog-actions align="end">
-    <button mat-stroked-button (click)="onCancel()">Cancel</button>
-    <button mat-raised-button color="primary" (click)="submitFeedback()" [disabled]="!feedbackForm.valid">Submit Feedback</button>
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button (click)="onCancel()" class="cancel-button">Cancel</button>
+    <button mat-flat-button color="primary" (click)="submitFeedback()" [disabled]="!feedbackForm.valid" class="submit-button">
+      Submit Feedback
+    </button>
   </mat-dialog-actions>
 </div>

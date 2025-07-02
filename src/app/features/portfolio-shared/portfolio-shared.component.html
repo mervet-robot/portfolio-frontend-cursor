@@ -140,6 +140,32 @@
 
     <!-- Right Column -->
     <div class="cv-right-column">
+
+      <!-- Social Links Section -->
+      <div class="cv-section-card">
+        <section class="cv-section">
+          <h2 class="section-title">
+            <mat-icon>public</mat-icon> Social Links
+          </h2>
+          <div class="social-links-list">
+            <div *ngFor="let link of socialLinks" class="social-link-item">
+              <a [href]="link.url" target="_blank" rel="noopener noreferrer" class="social-link-content">
+                <mat-icon
+                  [fontSet]="getFontAwesomeSet(link.platform)"
+                  [fontIcon]="getFontAwesomeIcon(link.platform)"
+                  aria-hidden="true"
+                  class="social-icon">
+                </mat-icon>
+                <span class="social-link-text">{{ link.platform | titlecase }}: {{ link.url }}</span>
+              </a>
+            </div>
+            <div *ngIf="socialLinks.length === 0" class="empty-state">
+              <p>No social links available.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
       <!-- Skills Section -->
       <section class="cv-section">
         <h2 class="section-title">
@@ -220,36 +246,36 @@
       </section>
 
       <!-- Languages Section -->
-      <section class="cv-section">
-        <h2 class="section-title">
-          <mat-icon>language</mat-icon> Languages
-        </h2>
-
-        <!-- Language List -->
-        <div class="language-list">
-          <div *ngFor="let language of languages" class="language-item">
-            <div class="language-header">
-              <h3>{{language.name}}</h3>
-              <span class="proficiency">{{language.proficiency | titlecase}}</span>
-              <span *ngIf="language.nativeLanguage" class="native-tag">(Native)</span>
-            </div>
-            <div *ngIf="language.certification || language.certificateUrl" class="language-details">
-              <div *ngIf="language.certification">
-                <strong>Certification:</strong> {{language.certification}}
+      <div class="cv-section-card">
+        <section class="cv-section">
+          <h2 class="section-title">
+            <mat-icon>language</mat-icon> Languages
+          </h2>
+          <div class="language-list">
+            <div *ngFor="let language of languages" class="language-item">
+              <div class="language-header">
+                <h3>{{language.name}}</h3>
+                <span class="proficiency">{{language.proficiency | titlecase}}</span>
+                <span *ngIf="language.nativeLanguage" class="native-tag">(Native)</span>
               </div>
-              <div *ngIf="language.certificateUrl">
-                <a [href]="language.certificateUrl" target="_blank" rel="noopener noreferrer">
+              <div *ngIf="language.certification || language.certificateUrl" class="language-details">
+                <div *ngIf="language.certification">
+                  <strong>Certification:</strong> {{language.certification}}
+                </div>
+                <div *ngIf="language.certificateUrl">
+                  <a [href]="language.certificateUrl" target="_blank" rel="noopener noreferrer">
                   <mat-icon class="link-icon">open_in_new</mat-icon> View Certificate
                 </a>
+                </div>
               </div>
             </div>
+            <div *ngIf="languages.length === 0" class="empty-state">
+              <p>No languages available.</p>
+            </div>
           </div>
+        </section>
+      </div>
 
-          <div *ngIf="languages.length === 0" class="empty-state">
-            <p>No languages available</p>
-          </div>
-        </div>
-      </section>
     </div>
   </main>
 </div>
