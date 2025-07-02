@@ -63,6 +63,7 @@ const routes: Routes = [
   //route Portfolio
   { path: 'portfolio', component: PortfolioComponent , canActivate: [AuthGuard] },
   { path: 'portfolio-shared', component: PortfolioSharedComponent, canActivate: [AuthGuard] },
+  { path: 'portfolio-shared/:id', component: PortfolioSharedComponent, canActivate: [AuthGuard] },
 
 
 

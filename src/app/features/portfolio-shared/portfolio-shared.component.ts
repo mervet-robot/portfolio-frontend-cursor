@@ -8,6 +8,7 @@ import { TechSkillService } from '../../_services/tech-skill.service';
 import { CertificationService } from '../../_services/certification.service';
 import { ProjectService } from '../../_services/project.service';
 import { TokenService } from '../../_services/token.service';
+import { ActivatedRoute } from '@angular/router';
 import { Profile } from '../../_models/profile';
 import { Experience } from '../../_models/experience';
 import { Formation } from '../../_models/formation';
@@ -49,12 +50,24 @@ export class PortfolioSharedComponent implements OnInit {
     private certificationService: CertificationService,
     private languageService: LanguageService,
     private projectService: ProjectService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    const targetUserId = this.userId || this.tokenService.getUser().id;
-    this.loadData(targetUserId);
+    this.route.paramMap.subscribe(params => {
+      const idParam = params.get('id');
+      if (idParam) {
+        const targetUserId = +idParam; // Convert string to number
+        this.loadData(targetUserId);
+      } else {
+        // Fallback to authenticated user's ID if no ID in route (e.g., for viewing own portfolio)
+        const authenticatedUserId = this.tokenService.getUser().id;
+        if (authenticatedUserId) {
+          this.loadData(authenticatedUserId);
+        }
+      }
+    });
   }
 
   loadData(userId: number): void {

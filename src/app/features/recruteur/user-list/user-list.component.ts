@@ -88,7 +88,7 @@ export class UserListComponent implements OnInit {
   }
 
   viewResponsable(id: number): void {
-    this.router.navigate(['/profile', id]);
+    this.router.navigate(['/portfolio-shared', id]);
   }
 
 }

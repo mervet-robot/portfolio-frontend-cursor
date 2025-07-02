@@ -408,7 +408,7 @@ export class ProfileWizardComponent  implements OnInit {
       { inputs: base64Image },
       {
         headers: {
-          'Authorization': 'Bearer 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', // Get free key from Hugging Face
+          'Authorization': 'Bearer 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', // Get free key from Hugging Face
           'Content-Type': 'application/json'
         }
       }
