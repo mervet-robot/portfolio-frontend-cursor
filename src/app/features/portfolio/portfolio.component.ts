@@ -28,6 +28,7 @@ import {SocialLinkDialogComponent, SocialLinkDialogData} from './social-link-dia
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {BioCorrectionDialogComponent} from '../bio-correction-dialog/bio-correction-dialog.component';
+import { CertifMediaService } from '../../_services/certif-media.service';
 
 @Component({
   selector: 'app-portfolio',
@@ -138,6 +139,7 @@ export class PortfolioComponent implements OnInit {
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
     private http: HttpClient,
+    private certifMediaService: CertifMediaService,
   ) {
     this.userId = this.tokenService.getUser().id;
   }
@@ -1568,5 +1570,20 @@ export class PortfolioComponent implements OnInit {
       case 'other': return 'fa-link';                     // fallback generic icon
       default: return 'fa-link';                          // default fallback
     }
+  }
+
+  getCertificationLink(certification: CertificationResponse): string {
+    if (certification.certifMediaId) {
+      return `${this.certifMediaService.apiUrl}/download/${certification.certifMediaId}`;
+    } else if (certification.validationLink) {
+      return certification.validationLink;
+    } else if (certification.certificateUrl) {
+      return certification.certificateUrl;
+    }
+    return '#'; // Fallback for no link
+  }
+
+  isLinkValid(url: string | undefined): boolean {
+    return url !== '#' && url !== undefined && url !== null && url.trim() !== '';
   }
 }

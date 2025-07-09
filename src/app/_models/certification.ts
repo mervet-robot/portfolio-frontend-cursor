@@ -18,4 +18,5 @@ export interface CertificationResponse {
   certificateUrl?: string;
   validationLink?: string;
   profileId: number;
+  certifMediaId?: number;
 }

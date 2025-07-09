@@ -66,6 +66,10 @@
         <mat-icon>download</mat-icon>
         Download
       </button>
+      <button mat-button color="primary" (click)="addMediaAsCertification(media.userId, media.id)">
+        <mat-icon>assignment_turned_in</mat-icon>
+        Add to Certifications
+      </button>
       <!-- Delete button can be added here if responsable has delete permissions -->
     </mat-card-actions>
   </mat-card>

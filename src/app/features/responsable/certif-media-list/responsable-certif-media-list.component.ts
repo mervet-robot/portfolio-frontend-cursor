@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CertifMediaService } from '../../../_services/certif-media.service';
 import { CertifMedia, MediaType } from '../../../_models/certif-media';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CertificationService } from '../../../_services/certification.service';
+import { CertificationResponse } from '../../../_models/certification';
 
 @Component({
   selector: 'app-responsable-certif-media-list',
@@ -33,7 +35,8 @@ export class ResponsableCertifMediaListComponent implements OnInit {
 
   constructor(
     private certifMediaService: CertifMediaService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private certificationService: CertificationService
   ) { }
 
   ngOnInit(): void {
@@ -98,6 +101,23 @@ export class ResponsableCertifMediaListComponent implements OnInit {
         document.body.removeChild(a);
       },
       error: (err: any) => this.showError('Failed to download certif media', err)
+    });
+  }
+
+  addMediaAsCertification(userId: number, certifMediaId: number): void {
+    this.certificationService.createCertificationFromMedia(userId, certifMediaId).subscribe({
+      next: (certification: CertificationResponse) => {
+        this.snackBar.open('Certification added to user portfolio successfully!', 'Close', {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        });
+        // Optionally, you might want to refresh the media list or update UI
+        // this.loadAllCertifMedia();
+      },
+      error: (err: any) => {
+        console.error('Failed to add media as certification:', err);
+        this.showError('Failed to add media as certification: ' + (err.error?.message || err.message), err);
+      }
     });
   }
 

@@ -8,7 +8,7 @@ import {MediaType, CertifMedia} from '../_models/certif-media';
   providedIn: 'root'
 })
 export class CertifMediaService {
-  private apiUrl  = 'http://localhost:8080/api/certif-media';
+  apiUrl  = 'http://localhost:8080/api/certif-media';
 
   constructor(private http: HttpClient) { }
 
@@ -67,4 +67,4 @@ export class CertifMediaService {
   getAllCertifMedia(): Observable<CertifMedia[]> {
     return this.http.get<CertifMedia[]>(`${this.apiUrl}/all`);
   }
-} 
+}

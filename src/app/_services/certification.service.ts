@@ -42,4 +42,10 @@ export class CertificationService {
       `${this.apiUrl}/${id}`
     );
   }
+
+  createCertificationFromMedia(userId: number, certifMediaId: number): Observable<CertificationResponse> {
+    return this.http.post<CertificationResponse>(
+      `${this.apiUrl}/from-media/user/${userId}/media/${certifMediaId}`, {}
+    );
+  }
 }
