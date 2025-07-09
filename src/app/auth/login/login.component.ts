@@ -140,10 +140,10 @@ export class LoginComponent implements OnInit {
         }
         break;
       case 'RESPONSABLE':
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/review-projects']);
         break;
       case 'RECRUTEUR':
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/user-list']);
         break;
       case 'DIRECTEUR':
         this.router.navigate(['/directeur/responsables']);

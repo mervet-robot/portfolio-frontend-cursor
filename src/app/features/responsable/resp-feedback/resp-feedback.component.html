@@ -9,7 +9,7 @@
     </div>
     <mat-card *ngFor="let feedback of feedbacks" class="feedback-card">
       <mat-card-header>
-        <mat-card-title>Reviewer ID: {{ feedback.reviewerId }}</mat-card-title>
+<!--        <mat-card-title>Reviewer ID: {{ feedback.reviewerId }}</mat-card-title>-->
         <mat-card-subtitle>Submitted on: {{ feedback.createdAt | date:'short' }}</mat-card-subtitle>
         <span class="spacer"></span>
         <button mat-icon-button (click)="startEdit(feedback)">
@@ -75,4 +75,4 @@
   <button mat-raised-button color="primary" (click)="submitFeedback()" [disabled]="!feedbackForm.valid">
     {{ isEditing ? 'Update Feedback' : 'Submit Feedback' }}
   </button>
-</mat-dialog-actions> 
+</mat-dialog-actions>

@@ -73,6 +73,7 @@ import {
 import {
   SubmittedProjectsHistoryComponent
 } from './features/submitted-projects-history/submitted-projects-history.component';
+import {CertifMediaManagementComponent} from './features/certif-media-management/certif-media-management.component';
 
 
 
@@ -115,14 +116,15 @@ import {
     ProjectFeedbackComponent,
 
     ValidatedProjectsHistoryComponent,
-    SubmittedProjectsHistoryComponent
+    SubmittedProjectsHistoryComponent,
+
+    CertifMediaManagementComponent
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-
 
     CommonModule,
     MatCardModule,
@@ -173,7 +175,6 @@ import {
 
     MatExpansionModule,
     MatPaginator,
-
 
   ],
   providers: [

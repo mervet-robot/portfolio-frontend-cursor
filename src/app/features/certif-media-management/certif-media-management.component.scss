@@ -1,0 +1,131 @@
+.media-management-container {
+  padding: 20px;
+
+  h2 {
+    color: #3f51b5;
+    margin-bottom: 20px;
+  }
+
+  .upload-section,
+  .media-list-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+
+    h3 {
+      color: #303f9f;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+  }
+
+  .upload-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+
+    mat-form-field {
+      width: 100%;
+    }
+
+    button {
+      justify-self: start;
+      align-self: center;
+    }
+  }
+
+  .selected-files {
+    margin-top: 10px;
+    ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+  }
+
+  .upload-progress {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    mat-progress-bar {
+      flex-grow: 1;
+    }
+  }
+
+  .filter-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+
+    .filter-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      align-items: center;
+
+      mat-form-field {
+        width: 100%;
+      }
+
+      .search-field {
+        grid-column: span 2; /* Make search bar span two columns */
+      }
+    }
+  }
+
+  .no-media {
+    text-align: center;
+    color: #757575;
+    padding: 20px;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+  }
+
+  .media-card {
+    margin-bottom: 15px;
+
+    mat-card-header {
+      padding-bottom: 10px;
+    }
+
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+
+    mat-card-subtitle {
+      font-size: 0.9em;
+      color: #555;
+      div {
+        margin-top: 5px;
+      }
+    }
+
+    mat-card-actions {
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  // SnackBar Styles
+  .success-snackbar {
+    background-color: #4CAF50 !important; // Green
+    color: white !important;
+  }
+
+  .error-snackbar {
+    background-color: #F44336 !important; // Red
+    color: white !important;
+  }
+} 
