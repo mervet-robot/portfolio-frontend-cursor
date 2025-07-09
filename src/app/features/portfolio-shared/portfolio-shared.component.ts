@@ -21,6 +21,7 @@ import { SocialLink } from '../../_models/social-link';
 import {forkJoin} from 'rxjs';
 import html2canvas from 'html2canvas';
 import jspdf from 'jspdf';
+import { CertifMediaService } from '../../_services/certif-media.service';
 
 @Component({
   selector: 'app-portfolio-shared',
@@ -51,7 +52,8 @@ export class PortfolioSharedComponent implements OnInit {
     private languageService: LanguageService,
     private projectService: ProjectService,
     private tokenService: TokenService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private certifMediaService: CertifMediaService,
   ) {}
 
   ngOnInit(): void {
@@ -171,5 +173,20 @@ export class PortfolioSharedComponent implements OnInit {
       case 'other': return 'fa-link';
       default: return 'fa-link';
     }
+  }
+
+  getCertificationLink(certification: CertificationResponse): string {
+    if (certification.certifMediaId) {
+      return `${this.certifMediaService.apiUrl}/download/${certification.certifMediaId}`;
+    } else if (certification.validationLink) {
+      return certification.validationLink;
+    } else if (certification.certificateUrl) {
+      return certification.certificateUrl;
+    }
+    return '#'; // Fallback for no link
+  }
+
+  isLinkValid(url: string | undefined): boolean {
+    return url !== '#' && url !== undefined && url !== null && url.trim() !== '';
   }
 }

@@ -28,6 +28,7 @@ import { Centre } from '../../_models/centre.enum';
 import { SocialLink, SocialLinkRequest } from '../../_models/social-link';
 import { UserMediaService } from '../../_services/user-media.service';
 import { UserMedia } from '../../_models/user-media';
+import { CertifMediaService } from '../../_services/certif-media.service';
 
 @Component({
   selector: 'app-profile-wizard',
@@ -141,6 +142,7 @@ export class ProfileWizardComponent  implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient,
     private userMediaService: UserMediaService,
+    private certifMediaService: CertifMediaService,
   ) {
     this.userId = this.tokenService.getUser().id;
   }
@@ -1357,4 +1359,18 @@ export class ProfileWizardComponent  implements OnInit {
     }
   }
 
+  getCertificationLink(certification: CertificationResponse): string {
+    if (certification.certifMediaId) {
+      return `${this.certifMediaService.apiUrl}/download/${certification.certifMediaId}`;
+    } else if (certification.validationLink) {
+      return certification.validationLink;
+    } else if (certification.certificateUrl) {
+      return certification.certificateUrl;
+    }
+    return '#'; // Fallback for no link
+  }
+
+  isLinkValid(url: string | undefined): boolean {
+    return url !== '#' && url !== undefined && url !== null && url.trim() !== '';
+  }
 }

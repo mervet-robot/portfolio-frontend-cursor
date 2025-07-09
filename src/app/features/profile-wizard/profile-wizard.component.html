@@ -423,9 +423,9 @@
               <div *ngIf="cert.certificateUrl">
                 <strong>Credential ID:</strong> {{cert.certificateUrl}}
               </div>
-              <div *ngIf="cert.validationLink">
+              <div *ngIf="isLinkValid(getCertificationLink(cert))">
                 <strong>Verify:</strong>
-                <a [href]="cert.validationLink" target="_blank" rel="noopener noreferrer">
+                <a [href]="getCertificationLink(cert)" target="_blank" rel="noopener noreferrer">
                   View Credential
                   <mat-icon class="link-icon" style="font-size: 1em; vertical-align: middle;">open_in_new</mat-icon>
                 </a>
