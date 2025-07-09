@@ -31,6 +31,7 @@ import {
   SubmittedProjectsHistoryComponent
 } from './features/submitted-projects-history/submitted-projects-history.component';
 import {CertifMediaManagementComponent} from "./features/certif-media-management/certif-media-management.component";
+import { ResponsableCertifMediaListComponent } from './features/responsable/certif-media-list/responsable-certif-media-list.component';
 
 const routes: Routes = [
 
@@ -72,6 +73,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'certifications', component: CertificationsComponent },
   { path: 'responsable/certif-media', component: CertifMediaManagementComponent , canActivate: [AuthGuard] },
+  { path: 'responsable/all-certif-media', component: ResponsableCertifMediaListComponent, canActivate: [AuthGuard] },
 
 
   { path: 'responsable/projects', component: RespProjectsComponent },

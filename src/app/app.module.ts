@@ -74,7 +74,7 @@ import {
   SubmittedProjectsHistoryComponent
 } from './features/submitted-projects-history/submitted-projects-history.component';
 import {CertifMediaManagementComponent} from './features/certif-media-management/certif-media-management.component';
-
+import {ResponsableCertifMediaListComponent} from './features/responsable/certif-media-list/responsable-certif-media-list.component';
 
 
 @NgModule({
@@ -118,7 +118,8 @@ import {CertifMediaManagementComponent} from './features/certif-media-management
     ValidatedProjectsHistoryComponent,
     SubmittedProjectsHistoryComponent,
 
-    CertifMediaManagementComponent
+    CertifMediaManagementComponent,
+    ResponsableCertifMediaListComponent
 
   ],
   imports: [

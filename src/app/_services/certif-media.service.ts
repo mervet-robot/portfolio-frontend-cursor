@@ -63,4 +63,8 @@ export class CertifMediaService {
   searchCertifMedia(username: string, title: string): Observable<CertifMedia[]> {
     return this.http.get<CertifMedia[]>(`${this.apiUrl}/${username}/search`, { params: { title } });
   }
+
+  getAllCertifMedia(): Observable<CertifMedia[]> {
+    return this.http.get<CertifMedia[]>(`${this.apiUrl}/all`);
+  }
 } 

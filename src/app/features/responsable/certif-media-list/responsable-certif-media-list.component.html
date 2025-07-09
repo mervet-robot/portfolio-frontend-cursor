@@ -1,0 +1,72 @@
+<!-- responsable-certif-media-list.component.html -->
+<div class="media-management-container">
+  <h2>All Certification Media (Responsable View)</h2>
+
+  <div class="filter-section">
+    <h3>Filters and Search</h3>
+    <div class="filter-controls">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search by Title</mat-label>
+        <input matInput [(ngModel)]="searchQuery" (keyup.enter)="applyFilters()" placeholder="Enter title">
+        <button mat-icon-button matSuffix (click)="applyFilters()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Filter by Category</mat-label>
+        <mat-select [(ngModel)]="selectedCategory" (selectionChange)="applyFilters()">
+          <mat-option value="">All Categories</mat-option>
+          <mat-option *ngFor="let docCategory of docCategories" [value]="docCategory">
+            {{ docCategory }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Filter by Type</mat-label>
+        <mat-select [(ngModel)]="selectedMediaType" (selectionChange)="applyFilters()">
+          <mat-option value="">All Types</mat-option>
+          <mat-option *ngFor="let type of mediaTypes" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-button (click)="resetFilters()" color="primary">
+        <mat-icon>refresh</mat-icon>
+        Reset Filters
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="mediaList.length === 0" class="no-media">
+    <p>No certification media files found.</p>
+  </div>
+
+  <mat-card *ngFor="let media of mediaList" class="media-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>{{ getMediaIcon(media.mediaType) }}</mat-icon>
+        {{ media.titre || media.fileName }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ media.mediaType }} • {{ media.fileSize }} • Uploaded: {{ media.uploadDate }}
+        <div *ngIf="media.description">{{ media.description }}</div>
+        <div>Category: {{ media.category }}</div>
+        <div>
+          <mat-icon>{{ media.verified ? 'lock' : 'public' }}</mat-icon>
+          {{ media.verified ? 'Verified' : 'Unverified' }}
+        </div>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-actions align="end">
+      <button mat-button (click)="downloadMedia(media)">
+        <mat-icon>download</mat-icon>
+        Download
+      </button>
+      <!-- Delete button can be added here if responsable has delete permissions -->
+    </mat-card-actions>
+  </mat-card>
+</div>
